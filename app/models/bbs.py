@@ -23,7 +23,7 @@ class Bbs_post(db.Model):
 	ctime = db.Column(db.DateTime)
 	is_anony = db.Column(db.Boolean, default=False)
 	n_marked = db.Column(db.Integer, default=0)
-	n_marked = db.Column(db.Integer, default=0)
+	n_liked = db.Column(db.Integer, default=0)
 	seen = db.Column(db.SmallInteger, default=1)
 	status = db.Column(db.SmallInteger, default=1)
 
@@ -51,9 +51,11 @@ class Bbs_post(db.Model):
 	def liked_by(self, user):
 		if self.has_liked_by(user):
 			self.liker.remove(user)
+			self.n_liked -= 1
 			return 0
 		else:
 			self.liker.append(user)
+			self.n_liked += 1
 			return 1
 
 	def has_liked_by(self, user):
@@ -62,9 +64,11 @@ class Bbs_post(db.Model):
 	def marked_by(self, user):
 		if self.has_marked_by(user):
 			self.marker.remove(user)
+			self.n_marked -= 1
 			return 0
 		else:
 			self.marker.append(user)
+			self.n_marked += 1
 			return 1
 
 	def has_marked_by(self, user):

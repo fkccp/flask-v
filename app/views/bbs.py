@@ -1,5 +1,5 @@
-from flask import Blueprint, render_template, redirect, url_for, g, flash, request
-from app.forms import BbsAddForm, BbsPostLikeForm
+from flask import Blueprint, render_template, redirect, url_for, g, flash, request, abort
+from app.forms import BbsAddForm, ActionForm
 from app.models import Bbs_post, Bbs_node
 from datetime import datetime
 from app import db
@@ -45,12 +45,12 @@ def add(nodename=''):
 
 @bbs.route('/detail/<int:post_id>')
 def detail(post_id):
-	post = Bbs_post.query.filter_by(id=post_id).first()
+	post = Bbs_post.query.get(post_id)
 	if post is None:
 		abort(404)
 
 	args = {'post': post}
-	like_form = BbsPostLikeForm()
+	like_form = ActionForm()
 	args['like_form'] = like_form
 
 	return render_template('bbs/detail.html', X=args)
@@ -62,7 +62,7 @@ def action(type, post_id):
 
 	if 0 == cmt_id:
 		if 'like' == type:
-			form = BbsPostLikeForm()
+			form = ActionForm()
 			if form.validate_on_submit():
 				post = Bbs_post.query.get(post_id)
 				r = post.liked_by(g.user)
@@ -73,7 +73,7 @@ def action(type, post_id):
 				db.session.commit()
 				return redirect(url_for('.detail', post_id=post_id))
 		elif 'mark' == type:
-			form = BbsPostLikeForm()
+			form = ActionForm()
 			if form.validate_on_submit():
 				post = Bbs_post.query.get(post_id)
 				r = post.marked_by(g.user)
@@ -83,4 +83,4 @@ def action(type, post_id):
 					flash('Unmarked')
 				db.session.commit()
 				return redirect(url_for('.detail', post_id=post_id))
-	return type
+	abort(404)
