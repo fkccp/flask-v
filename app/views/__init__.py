@@ -35,7 +35,7 @@ def init_tpl_info():
 		'header_hl': 0
 	}
 
-	for i,j in enumerate(['_', 'site', 'bbs', 'user']):
+	for i,j in enumerate(['site', 'bbs', 'user']):
 		if request.path.startswith('/' + j):
 			g.tpl['header_hl'] = i
 			break

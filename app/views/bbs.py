@@ -1,5 +1,5 @@
-from flask import Blueprint, render_template, redirect, url_for, g, flash
-from app.forms import BbsAddForm
+from flask import Blueprint, render_template, redirect, url_for, g, flash, request
+from app.forms import BbsAddForm, BbsPostLikeForm
 from app.models import Bbs_post, Bbs_node
 from datetime import datetime
 from app import db
@@ -18,7 +18,6 @@ def index(nodename=''):
 	args['nodename'] = nodename
 	return render_template('bbs/bbs.html', X=args)
 
-@bbs.route('/add', methods=['GET', 'POST'])
 @bbs.route('/add/', methods=['GET', 'POST'])
 @bbs.route('/add/<nodename>', methods=['GET', 'POST'])
 def add(nodename=''):
@@ -36,7 +35,7 @@ def add(nodename=''):
 		post = Bbs_post(title=form.title.data, content=form.content.data, ctime=datetime.utcnow(), author=g.user, node=node)
 		db.session.add(post)
 		db.session.commit()
-		flash('Post suss')
+		flash('Post succ')
 		return redirect(url_for('bbs.index'))
 
 	args = {'form': form}
@@ -51,4 +50,19 @@ def detail(post_id):
 		abort(404)
 
 	args = {'post': post}
+	like_form = BbsPostLikeForm()
+	args['like_form'] = like_form
+
 	return render_template('bbs/detail.html', X=args)
+
+@bbs.route('/action/<type>/<int:post_id>', methods=['POST'])
+def action(type, post_id):
+	cmt_id = request.args.get('cmt_id', 0)
+	cmt_id = int(cmt_id)
+	if 'like' == type and 0 == cmt_id:
+		form = BbsPostLikeForm()
+		if form.validate_on_submit():
+			post = Bbs_post.query.get(post_id)
+			post.liked_by(g.user)
+			print post.has_liked_by(g.user)
+	return type

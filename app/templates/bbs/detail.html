@@ -4,4 +4,10 @@
 <p>{{ X.post.author.nickname }} - {{ X.post.ctime }}</p>
 <div>{{ X.post.content }}</div>
 <p><a href="{{ url_for('.index', nodename=X.post.node.name) }}">{{ X.post.node.name }}({{ X.post.node.n_post }})</a></p>
+
+<form action="{{ url_for('.action', type='like', post_id=X.post.id) }}" method="post">
+	{{ X.like_form.hidden_tag() }}
+	<input type="submit" value="Like" />
+</form>
+
 {% endblock %}

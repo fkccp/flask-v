@@ -1,4 +1,4 @@
-from flask.ext.wtf import Form, TextField, TextAreaField, BooleanField
+from flask.ext.wtf import Form, TextField, TextAreaField, BooleanField, HiddenField
 from flask.ext.wtf import Required
 
 class BbsAddForm(Form):
@@ -6,3 +6,6 @@ class BbsAddForm(Form):
 	title = TextField('title', validators=[Required()])
 	content = TextAreaField('content', validators=[Required()])
 	is_anony = BooleanField('is_anony', default=False)
+
+class BbsPostLikeForm(Form):
+	like = HiddenField('like', default='like')
