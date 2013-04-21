@@ -1,6 +1,6 @@
-from flask import g, request, flash, redirect, url_for
+from flask import g, request, flash, redirect, url_for, render_template
 from flask.ext.login import LoginManager, current_user
-from app import app
+from app import app, db
 from app.models import User
 
 from .user import user
@@ -25,6 +25,15 @@ def before_request():
 		return redirect(url_for('site.login', next=request.path))
 
 	init_tpl_info()
+
+@app.errorhandler(404)
+def error(error):
+	return render_template('error/404.html')
+
+@app.errorhandler(500)
+def error(error):
+	db.session.rollback()
+	return render_template('error/500.html')
 
 # init the tpl info
 def init_tpl_info():

@@ -1,13 +1,24 @@
 {% extends 'base.html' %}
 {% block main %}
 <h1>{{ X.post.title }}</h1>
-<p>{{ X.post.author.nickname }} - {{ X.post.ctime }}</p>
+<p>
+	{% if X.post.is_anony %}
+	{{ X.post.author.anonyname }}
+	{% else %}
+	{{ X.post.author.nickname }}
+	{% endif %}
+	 - {{ X.post.ctime }}
+</p>
 <div>{{ X.post.content }}</div>
 <p><a href="{{ url_for('.index', nodename=X.post.node.name) }}">{{ X.post.node.name }}({{ X.post.node.n_post }})</a></p>
 
 <form action="{{ url_for('.action', type='like', post_id=X.post.id) }}" method="post">
 	{{ X.like_form.hidden_tag() }}
-	<input type="submit" value="Like" />
+	<input type="submit" value="{% if X.post.has_liked_by(g.user) %}Unlike{% else %}Like{% endif %}" />
+</form>
+<form action="{{ url_for('.action', type='mark', post_id=X.post.id) }}" method="post">
+	{{ X.like_form.hidden_tag() }}
+	<input type="submit" value="{% if X.post.has_marked_by(g.user) %}Unmark{% else %}Mark{% endif %}" />
 </form>
 
 {% endblock %}

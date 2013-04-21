@@ -1,5 +1,4 @@
 from app import db
-from .bbs import Bbs_post, Bbs_cmt
 
 class User(db.Model):
 	id = db.Column(db.Integer, primary_key=True)
@@ -14,9 +13,6 @@ class User(db.Model):
 	bbs_post = db.relationship('Bbs_post', backref='author', lazy='dynamic')
 	bbs_cmt = db.relationship('Bbs_cmt', backref='author', lazy='dynamic')
 
-	def __init__(self):
-		pass
-
 	def is_authenticated(self):
 		return True
 
@@ -28,3 +24,4 @@ class User(db.Model):
 
 	def __repr__(self):
 		return '<User %r>' % (self.nickname)
+

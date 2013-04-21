@@ -32,7 +32,7 @@ def add(nodename=''):
 			node.n_post += 1
 			db.session.add(node)
 			db.session.commit()
-		post = Bbs_post(title=form.title.data, content=form.content.data, ctime=datetime.utcnow(), author=g.user, node=node)
+		post = Bbs_post(title=form.title.data, content=form.content.data, ctime=datetime.utcnow(), author=g.user, node=node, is_anony=form.is_anony.data)
 		db.session.add(post)
 		db.session.commit()
 		flash('Post succ')
@@ -59,10 +59,28 @@ def detail(post_id):
 def action(type, post_id):
 	cmt_id = request.args.get('cmt_id', 0)
 	cmt_id = int(cmt_id)
-	if 'like' == type and 0 == cmt_id:
-		form = BbsPostLikeForm()
-		if form.validate_on_submit():
-			post = Bbs_post.query.get(post_id)
-			post.liked_by(g.user)
-			print post.has_liked_by(g.user)
+
+	if 0 == cmt_id:
+		if 'like' == type:
+			form = BbsPostLikeForm()
+			if form.validate_on_submit():
+				post = Bbs_post.query.get(post_id)
+				r = post.liked_by(g.user)
+				if 1 == r:
+					flash('Liked')
+				else:
+					flash('Unliked')
+				db.session.commit()
+				return redirect(url_for('.detail', post_id=post_id))
+		elif 'mark' == type:
+			form = BbsPostLikeForm()
+			if form.validate_on_submit():
+				post = Bbs_post.query.get(post_id)
+				r = post.marked_by(g.user)
+				if 1 == r:
+					flash('Marked')
+				else:
+					flash('Unmarked')
+				db.session.commit()
+				return redirect(url_for('.detail', post_id=post_id))
 	return type
