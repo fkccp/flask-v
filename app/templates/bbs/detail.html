@@ -1,0 +1,7 @@
+{% extends 'base.html' %}
+{% block main %}
+<h1>{{ X.post.title }}</h1>
+<p>{{ X.post.author.nickname }} - {{ X.post.ctime }}</p>
+<div>{{ X.post.content }}</div>
+<p><a href="{{ url_for('.index', nodename=X.post.node.name) }}">{{ X.post.node.name }}({{ X.post.node.n_post }})</a></p>
+{% endblock %}
