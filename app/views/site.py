@@ -39,3 +39,8 @@ def cmt_like(cmt_id):
 		flash('Unliked')
 	db.session.commit()
 	return redirect(request.headers['Referer'])
+
+@site.route('/logout')
+def logout():
+	logout_user()
+	return redirect( url_for('.login') )

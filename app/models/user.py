@@ -10,11 +10,19 @@ class User(db.Model):
 	seen = db.Column(db.SmallInteger, default=1)
 	status = db.Column(db.SmallInteger, default=1)
 
+	sex = db.Column(db.SmallInteger, default=1)
+	birth = db.Column(db.DateTime)
+	job = db.Column(db.String(30))
+	sign = db.Column(db.String(250))
+
 	bbs_post = db.relationship('Bbs_post', backref='author', lazy='dynamic')
 	cmt = db.relationship('Cmt', backref='author', lazy='dynamic')
 
 	def is_authenticated(self):
 		return True
+
+	def is_anonymous(self):
+		return False
 
 	def is_active(self):
 		return True

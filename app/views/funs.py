@@ -4,7 +4,7 @@ from app.models import Bbs_post, Bbs_node, User, Cmt
 from datetime import datetime
 from app import db
 
-from flask.ext.login import login_user
+from flask.ext.login import login_user, logout_user
 
 CMT_TYPE_BBS = 1
 

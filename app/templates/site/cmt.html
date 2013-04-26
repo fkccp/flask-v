@@ -11,10 +11,12 @@
 		:{{ cmt.ctime }}
 		<p>{{ cmt.content }}</p>
 		<p>
+			{% if g.user != cmt.author %}
 			<form action="{{ url_for('site.cmt_like', cmt_id=cmt.id) }}" method="post">
 				{{ X.act_form.hidden_tag() }}
 				<input type="submit" value="{% if g.user in  cmt.liker %}Unlike{% else %}Like{% endif %}">
 			</form>
+			{% endif %}
 			<span>{{ cmt.n_liked }}</span>
 		</p>
 	</div>

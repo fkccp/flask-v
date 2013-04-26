@@ -2,4 +2,5 @@
 	<a href="{{ url_for('site.index') }}" {% if 0 == g.tpl.header_hl %}class="hl"{% endif %}>LOGO</a>
 	<a href="{{ url_for('bbs.index') }}" {% if 1 == g.tpl.header_hl %}class="hl"{% endif %}>BBS</a>
 	<a href="{{ url_for('user.info') }}" {% if 2 == g.tpl.header_hl %}class="hl"{% endif %}>USER</a>
+	<a href="{{ url_for('site.logout') }}">LOGOUT</a>
 </div>
