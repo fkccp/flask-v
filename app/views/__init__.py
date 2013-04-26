@@ -2,6 +2,7 @@ from flask import g, request, flash, redirect, url_for, render_template
 from flask.ext.login import LoginManager, current_user
 from app import app, db
 from app.models import User
+from app.forms import CmtForm
 
 from .user import user
 from .site import site
@@ -48,3 +49,8 @@ def init_tpl_info():
 		if request.path.startswith('/' + j):
 			g.tpl['header_hl'] = i
 			break
+
+def f_cmt_form():
+	cmt_form = CmtForm()
+
+	return cmt_form

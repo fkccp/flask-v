@@ -1,8 +1,4 @@
-from flask import Blueprint, render_template, redirect, flash, request, url_for
-from flask.ext.login import login_user
-from app import db
-from app.forms import LoginForm
-from app.models import User
+from .funs import *
 
 from datetime import datetime
 
@@ -32,3 +28,14 @@ def login():
 
 	args = {'form': form}
 	return render_template('site/login.html', X=args)
+
+@site.route('/cmt_like/<int:cmt_id>', methods=['POST'])
+def cmt_like(cmt_id):
+	cmt = Cmt.query.get(cmt_id)
+	r = cmt.liked_by(g.user)
+	if 1 == r:
+		flash('Liked')
+	else:
+		flash('Unliked')
+	db.session.commit()
+	return redirect(request.headers['Referer'])

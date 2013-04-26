@@ -11,11 +11,6 @@ bbs_post_mark = db.Table('bbs_post_mark',
 	db.Column('user_id', db.Integer, db.ForeignKey('user.id'))
 )
 
-bbs_cmt_like = db.Table('bbs_cmt_like',
-	db.Column('user_id', db.Integer, db.ForeignKey('user.id')),
-	db.Column('cmt_id', db.Integer, db.ForeignKey('bbs_cmt.id'))
-)
-
 class Bbs_post(db.Model):
 	id = db.Column(db.Integer, primary_key=True)
 	title = db.Column(db.String(100))
@@ -92,31 +87,3 @@ class Bbs_append(db.Model):
 	status = db.Column(db.SmallInteger, default=1)
 
 	post_id = db.Column(db.Integer, db.ForeignKey('bbs_post.id'))
-
-class Bbs_cmt(db.Model):
-	id = db.Column(db.Integer, primary_key=True)
-	content = db.Column(db.Text)
-	ctime = db.Column(db.DateTime)
-	seen = db.Column(db.SmallInteger, default=1)
-	status = db.Column(db.SmallInteger, default=1)
-
-	user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
-
-	liker = db.relationship('User',
-		secondary = bbs_cmt_like,
-		primaryjoin = (bbs_cmt_like.c.cmt_id == id),
-		secondaryjoin = (bbs_cmt_like.c.user_id == User.id),
-		backref = db.backref('liked_cmts', lazy='dynamic'),
-		lazy = 'dynamic'
-	)
-
-	def liked_by(self, user):
-		if self.has_liked_by(user):
-			self.liker.remove(user)
-			return 0
-		else:
-			self.liker.append(user)
-			return 1
-
-	def has_liked_by(self, user):
-		return self.liker.filter(bbs_cmt_like.c.user_id == user.id).count() > 0

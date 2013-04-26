@@ -1,0 +1,35 @@
+<hr>
+<p>Total : {{ X.cmt.list.count() }}</p>
+<div>
+	{% for cmt in X.cmt.list.all() %}
+	<div>
+		{% if cmt.is_anony %}
+		<span>{{ cmt.author.anonyname }}</span>
+		{% else %}
+		<a href="{{ url_for('user.info', urlname=cmt.author.urlname) }}">{{ cmt.author.nickname }}</a>
+		{% endif %}
+		:{{ cmt.ctime }}
+		<p>{{ cmt.content }}</p>
+		<p>
+			<form action="{{ url_for('site.cmt_like', cmt_id=cmt.id) }}" method="post">
+				{{ X.act_form.hidden_tag() }}
+				<input type="submit" value="{% if g.user in  cmt.liker %}Unlike{% else %}Like{% endif %}">
+			</form>
+			<span>{{ cmt.n_liked }}</span>
+		</p>
+	</div>
+	<hr>
+	{% endfor %}
+</div>
+
+<div>
+	<form method="post">
+		{{ X.cmt.form.hidden_tag() }}
+		<p>{{ X.cmt.form.content }}</p>
+		{% for error in X.cmt.form.errors.content %}
+		<p class="error">[{{ error }}]</p>
+		{% endfor %}
+		<p>{{ X.cmt.form.is_anony }} is anony</p>
+		<p><input type="submit" value="Submit" /></p>
+	</form>
+</div>

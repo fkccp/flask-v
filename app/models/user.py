@@ -11,7 +11,7 @@ class User(db.Model):
 	status = db.Column(db.SmallInteger, default=1)
 
 	bbs_post = db.relationship('Bbs_post', backref='author', lazy='dynamic')
-	bbs_cmt = db.relationship('Bbs_cmt', backref='author', lazy='dynamic')
+	cmt = db.relationship('Cmt', backref='author', lazy='dynamic')
 
 	def is_authenticated(self):
 		return True

@@ -1,8 +1,5 @@
-from flask import Blueprint, render_template, redirect, url_for, g, flash, request, abort
-from app.forms import BbsAddForm, ActionForm
-from app.models import Bbs_post, Bbs_node
-from datetime import datetime
-from app import db
+from .funs import *
+
 
 bbs = Blueprint('bbs', __name__, url_prefix='/bbs')
 
@@ -43,44 +40,44 @@ def add(nodename=''):
 		form.nodename.data = nodename
 	return render_template('bbs/add.html', X=args)
 
-@bbs.route('/detail/<int:post_id>')
+@bbs.route('/detail/<int:post_id>', methods=['GET', 'POST'])
 def detail(post_id):
 	post = Bbs_post.query.get(post_id)
 	if post is None:
 		abort(404)
 
 	args = {'post': post}
-	like_form = ActionForm()
-	args['like_form'] = like_form
+	act_form = ActionForm()
+	args['act_form'] = act_form
+
+	args['cmt'] = f_cmt(post)
+	if 0 == args['cmt']:
+		return redirect(request.path)
 
 	return render_template('bbs/detail.html', X=args)
 
 @bbs.route('/action/<type>/<int:post_id>', methods=['POST'])
 def action(type, post_id):
-	cmt_id = request.args.get('cmt_id', 0)
-	cmt_id = int(cmt_id)
-
-	if 0 == cmt_id:
-		if 'like' == type:
-			form = ActionForm()
-			if form.validate_on_submit():
-				post = Bbs_post.query.get(post_id)
-				r = post.liked_by(g.user)
-				if 1 == r:
-					flash('Liked')
-				else:
-					flash('Unliked')
-				db.session.commit()
-				return redirect(url_for('.detail', post_id=post_id))
-		elif 'mark' == type:
-			form = ActionForm()
-			if form.validate_on_submit():
-				post = Bbs_post.query.get(post_id)
-				r = post.marked_by(g.user)
-				if 1 == r:
-					flash('Marked')
-				else:
-					flash('Unmarked')
-				db.session.commit()
-				return redirect(url_for('.detail', post_id=post_id))
+	if 'like' == type:
+		form = ActionForm()
+		if form.validate_on_submit():
+			post = Bbs_post.query.get(post_id)
+			r = post.liked_by(g.user)
+			if 1 == r:
+				flash('Liked')
+			else:
+				flash('Unliked')
+			db.session.commit()
+			return redirect(url_for('.detail', post_id=post_id))
+	elif 'mark' == type:
+		form = ActionForm()
+		if form.validate_on_submit():
+			post = Bbs_post.query.get(post_id)
+			r = post.marked_by(g.user)
+			if 1 == r:
+				flash('Marked')
+			else:
+				flash('Unmarked')
+			db.session.commit()
+			return redirect(url_for('.detail', post_id=post_id))
 	abort(404)

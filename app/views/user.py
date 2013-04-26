@@ -1,5 +1,5 @@
-from flask import Blueprint, render_template, g
-from app.models import User
+from .funs import *
+
 
 user = Blueprint('user', __name__, url_prefix='/user')
 
