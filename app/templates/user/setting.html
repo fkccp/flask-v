@@ -7,6 +7,9 @@
 		{{ rad }} {{ rad.label }}
 		{% endfor %}
 	</p>
+	{% for error in X.form.errors.sex %}
+	<p class="error">[{{ error }}]</p>
+	{% endfor %}
 	<p>Birth : {{ X.form.birth }}</p>
 	{% for error in X.form.errors.birth %}
 	<p class="error">[{{ error }}]</p>

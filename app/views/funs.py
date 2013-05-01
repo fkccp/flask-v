@@ -1,6 +1,6 @@
 from flask import Blueprint, render_template, redirect, url_for, g, flash, request, abort
-from app.forms import BbsAddForm, ActionForm, CmtForm, LoginForm
-from app.models import Bbs_post, Bbs_node, User, Cmt
+from app.forms import BbsAddForm, BbsAppendForm, ActionForm, CmtForm, LoginForm
+from app.models import Bbs_post, Bbs_node, Bbs_append, User, Cmt
 from datetime import datetime
 from app import db
 

@@ -3,8 +3,8 @@ from flask.ext.wtf import Required
 
 class UserSetForm(Form):
 	sex = RadioField('sex', choices=[
-		(1, 'Male'),
-		(0, 'Female')
+		('1', 'Male'),
+		('0', 'Female')
 		], default=1)
 
 	birth = DateField('birth')

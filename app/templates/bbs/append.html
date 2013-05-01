@@ -1,0 +1,11 @@
+{% extends 'base.html' %}
+{% block main %}
+<form action="{{ url_for('.append', post_id=X.post.id) }}" method="post">
+	{{ X.form.hidden_tag() }}
+	<p>{{ X.form.content }}</p>
+	{% for error in X.form.errors.content %}
+	<p class="error">{{ error }}</p>
+	{% endfor %}
+	<p><input type="submit" value="Submit"></p>
+</form>
+{% endblock %}

@@ -81,3 +81,25 @@ def action(type, post_id):
 			db.session.commit()
 			return redirect(url_for('.detail', post_id=post_id))
 	abort(404)
+
+@bbs.route('/append/<int:post_id>', methods=['GET', 'POST'])
+def append(post_id):
+	post = Bbs_post.query.get(post_id)
+	if post.author != g.user:
+		return redirect(url_for('.detail', post_id=post_id))
+	form = BbsAppendForm()
+	if form.validate_on_submit():
+		append = Bbs_append(content=form.content.data, ctime=datetime.utcnow(), post_id=post.id)
+		db.session.add(append)
+		db.session.commit()
+		print append.id
+
+	args = {'form': form}
+	args['post'] = post
+	return render_template('bbs/append.html', X=args)
+
+@bbs.route('/nodes')
+def nodes():
+	nodes = Bbs_node.query.order_by('n_post desc').all()
+	args = {'nodes': nodes}
+	return render_template('bbs/nodes.html', X=args)
