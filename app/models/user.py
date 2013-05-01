@@ -11,7 +11,7 @@ class User(db.Model):
 	status = db.Column(db.SmallInteger, default=1)
 
 	sex = db.Column(db.SmallInteger, default=1)
-	birth = db.Column(db.DateTime)
+	birth = db.Column(db.Date)
 	job = db.Column(db.String(30))
 	sign = db.Column(db.String(250))
 

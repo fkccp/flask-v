@@ -3,12 +3,13 @@
 <div>
 	{% for cmt in X.cmt.list.all() %}
 	<div>
+		[{{ J.floorSign(loop.index) }}]
 		{% if cmt.is_anony %}
 		<span>{{ cmt.author.anonyname }}</span>
 		{% else %}
 		<a href="{{ url_for('user.info', urlname=cmt.author.urlname) }}">{{ cmt.author.nickname }}</a>
 		{% endif %}
-		:{{ cmt.ctime }}
+		:{{ J.fromNow(cmt.ctime) }}
 		<p>{{ cmt.content }}</p>
 		<p>
 			{% if g.user != cmt.author %}
@@ -17,7 +18,7 @@
 				<input type="submit" value="{% if g.user in  cmt.liker %}Unlike{% else %}Like{% endif %}">
 			</form>
 			{% endif %}
-			<span>{{ cmt.n_liked }}</span>
+			<span>Like : {{ cmt.n_liked }}</span>
 		</p>
 	</div>
 	<hr>

@@ -7,7 +7,7 @@
 	{% else %}
 	{{ X.post.author.nickname }}
 	{% endif %}
-	 - {{ X.post.ctime }}
+	 - {{ J.fromNow(X.post.ctime) }}
 </p>
 <div>{{ X.post.content }}</div>
 
