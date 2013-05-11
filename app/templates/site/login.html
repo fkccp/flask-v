@@ -1,16 +1,8 @@
 {% extends 'layout_unlogin.html' %}
-{% from 'macros/_forms.html' import render_form_field %}
+{% from 'macros/_forms.html' import render_form %}
 
 {% block title %}Login{% endblock %}
 
 {% block content %}
-<form action="{{ url_for('index') }}" method='post'>
-	{{ form.hidden_tag() }}
-	{{ form.next }}
-	<ul>
-		<li>{{ render_form_field(form.nickname) }}</li>
-		<li>{{ render_form_field(form.remember_me) }}</li>
-		<li><input type="submit" value='Login'></li>
-	</ul>
-</form>
+{{ render_form(form) }}
 {% endblock %}

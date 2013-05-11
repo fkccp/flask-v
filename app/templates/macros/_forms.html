@@ -1,11 +1,22 @@
-{% macro render_form_field(field) %}
-{{ field.label }}
-{{ field() }}
-{% if field.errors %}
-<ul class="errors">
-	{% for error in field.errors %}
-	<li class="error">{{ error }}</li>
-	{% endfor %}
-</ul>
-{% endif %}
+{% macro render_form(form, tag='p', action='', submitvalue="Submit") %}
+<form action="{{ action }}" method="POST">
+{% for field in form %}
+	{% if field.name == 'csrf_token' %}
+		{{ field() }}
+	{% else %}
+		<{{ tag }}>{{ field.label }}
+		{{ field() }}
+		{% if field.errors %}
+			<ul class="errors">
+				{% for error in field.errors %}
+				<li class="error">{{ error }}</li>
+				{% endfor %}
+			</ul>
+		{% endif %}
+		</{{ tag }}>
+	{% endif %}
+{% endfor %}
+	
+<{{ tag }}><input type="submit" value="{{ submitvalue }}"></{{ tag }}>
+</form>
 {% endmacro %}

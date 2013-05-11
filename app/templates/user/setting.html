@@ -1,27 +1,5 @@
 {% extends 'layout.html' %}
+
 {% block main %}
-<form action="{{ url_for('setting') }}" method="post">
-	{{ X.form.hidden_tag() }}
-	<p>Sex : 
-		{% for rad in X.form.sex %}
-		{{ rad }} {{ rad.label }}
-		{% endfor %}
-	</p>
-	{% for error in X.form.errors.sex %}
-	<p class="error">[{{ error }}]</p>
-	{% endfor %}
-	<p>Birth : {{ X.form.birth }}</p>
-	{% for error in X.form.errors.birth %}
-	<p class="error">[{{ error }}]</p>
-	{% endfor %}
-	<p>Job : {{ X.form.job }}</p>
-	{% for error in X.form.errors.job %}
-	<p class="error">[{{ error }}]</p>
-	{% endfor %}
-	<p>Sign : {{ X.form.sign }}</p>
-	{% for error in X.form.errors.sign %}
-	<p class="error">[{{ error }}]</p>
-	{% endfor %}
-	<p><input type="submit" value="submit" /></p>
-</form>
+{{ render_form(X.form) }}
 {% endblock %}

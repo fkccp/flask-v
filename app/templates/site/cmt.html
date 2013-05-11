@@ -25,14 +25,4 @@
 	{% endfor %}
 </div>
 
-<div>
-	<form method="post">
-		{{ X.cmt.form.hidden_tag() }}
-		<p>{{ X.cmt.form.content }}</p>
-		{% for error in X.cmt.form.errors.content %}
-		<p class="error">[{{ error }}]</p>
-		{% endfor %}
-		<p>{{ X.cmt.form.is_anony }} is anony</p>
-		<p><input type="submit" value="Submit" /></p>
-	</form>
-</div>
+<div>{{ render_form(X.cmt.form) }}</div>

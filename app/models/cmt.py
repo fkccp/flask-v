@@ -27,6 +27,14 @@ class Cmt(db.Model):
 		lazy = 'dynamic'
 	)
 
+	@staticmethod
+	def get_type(obj):
+		types = {
+			'bbs_post': 1
+		}
+		type = obj.__tablename__
+		return types[type]
+
 	def liked_by(self, user):
 		if self.has_liked_by(user):
 			self.liker.remove(user)

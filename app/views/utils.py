@@ -3,26 +3,22 @@ from app.exts import db
 from app.forms import CmtForm
 from app.models import Cmt
 
-CMT_TYPE_BBS = 1
-
 def f_cmt(obj):
 	cmt_form = CmtForm()
-	types = {
-		'bbs_post': CMT_TYPE_BBS
-	}
+	type = Cmt.get_type(obj)
 
 	if cmt_form.validate_on_submit():	
 		cmt = Cmt(content = cmt_form.content.data,
 			is_anony = cmt_form.is_anony.data,
 			author = g.user,
-			type=types[obj.__tablename__],
+			type=type,
 			sid = obj.id)
 		db.session.add(cmt)
 		db.session.commit()
 		flash('Cmt succ')
 		return 0 # redirect
 
-	cmts = Cmt.query.filter_by(type=types[obj.__tablename__],
+	cmts = Cmt.query.filter_by(type=type,
 		sid=obj.id,
 		seen = 1)
 
