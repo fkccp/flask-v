@@ -1,8 +1,8 @@
-from .funs import *
+from .utils import *
+from app.models import User
 from app.forms import UserSetForm
 
-
-user = Blueprint('user', __name__, url_prefix='/user')
+user = Module(__name__)
 
 @user.route('/info')
 @user.route('/info/<urlname>')
@@ -28,7 +28,7 @@ def setting():
 		db.session.add(g.user)
 		db.session.commit()
 		flash('User set succ')
-		return redirect( url_for('.info') )
+		return redirect( url_for('info') )
 
 	args = {'form': form}
 	return render_template('user/setting.html', X=args)

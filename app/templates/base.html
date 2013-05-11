@@ -1,22 +1,16 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+<!DOCTYPE html>
+<html>
 <head>
 	<meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
-	<title>{{ g.tpl.title }}</title>
-	{% for css in g.tpl.csses %}
-	<link rel="stylesheet" href="{{ url_for('static', filename='css/' + css) }}" />
-	{% endfor %}
+	<title>{% block title %}index{% endblock %} - vvv</title>
+	<link rel="stylesheet" href="{{ url_for('.static', filename='css/global.css') }}">
+	{% block css %}{% endblock %}
+	<script src="{{ url_for('.static', filename='js/base.js') }}"></script>
+	{% block js %}{% endblock %}
 </head>
 <body>
-	{% include 'header.html' %}
-	<div id="main">{% block main %}{% endblock %}</div>
-	<ul id="flash">
-	{% for msg in get_flashed_messages() %}
-	<li>{{ msg }}</li>
-	{% endfor %}
-	</ul>
+	<div id="container">
+		{% block content %}{% endblock %}
+	</div>
 </body>
 </html>
-{% for js in g.tpl.jses %}
-<script src="{{ url_for('static', filename='js/' + js) }}"></script>
-{% endfor %}

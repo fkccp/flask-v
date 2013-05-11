@@ -1,18 +1,15 @@
-{% extends 'base.html' %}
+{% extends 'layout.html' %}
+{% from 'macros/_forms.html' import render_form_field %}
+
 {% block main %}
-<form action="{{ url_for('.add') }}" method="post">
-	{{ X.form.hidden_tag() }}
-	<p>Nodename : {{ X.form.nodename }}</p>
-	{% for error in X.form.errors.nodename %}
-	<p class="error">[{{ error }}]</p>
-	{% endfor %}<p>title : {{ X.form.title }}</p>
-	{% for error in X.form.errors.title %}
-	<p class="error">[{{ error }}]</p>
-	{% endfor %}<p>content : {{ X.form.content }}</p>
-	{% for error in X.form.errors.content %}
-	<p class="error">[{{ error }}]</p>
-	{% endfor %}
-	<p>{{ X.form.is_anony }} is anony</p>
-	<p><input type="submit" value="Submit" /></p>
+<form action="{{ url_for('add') }}" method="post">
+	{{ form.hidden_tag() }}
+	<ul>
+		<li>{{ render_form_field(form.nodename) }}</li>
+		<li>{{ render_form_field(form.title) }}</li>
+		<li>{{ render_form_field(form.content) }}</li>
+		<li>{{ render_form_field(form.is_anony) }}</li>
+		<li><input type="submit" value="Submit" /></li>
+	</ul>
 </form>
 {% endblock %}

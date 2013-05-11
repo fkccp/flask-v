@@ -1,4 +1,4 @@
-from app import db
+from .utils import *
 from .user import User
 
 cmt_like = db.Table('cmt_like',
@@ -9,7 +9,7 @@ cmt_like = db.Table('cmt_like',
 class Cmt(db.Model):
 	id  = db.Column(db.Integer, primary_key=True)
 	content = db.Column(db.Text)
-	ctime = db.Column(db.DateTime)
+	ctime = db.Column(db.DateTime, default=datetime.utcnow)
 	sid = db.Column(db.Integer)
 	type = db.Column(db.SmallInteger)
 	n_liked = db.Column(db.Integer, default=0)

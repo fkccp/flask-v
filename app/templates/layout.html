@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+{% block content %}
+<div id="header">
+	<ul id="header_menu">
+		<li><a href="{{ url_for('site.index') }}">Index</a></li>
+		<li><a href="{{ url_for('bbs.index') }}">Bbs</a></li>
+	</ul>
+
+	<ul id="header_link">
+		<li><a href="{{ url_for('user.setting') }}">setting</a></li>
+		<li><a href="{{ url_for('site.logout') }}">Logout</a></li>
+	</ul>
+	<span>{{ g.user.nickname }}</span>
+</div>
+
+<div id="bc">{% block bc %}{% endblock %}</div>
+
+<div id="main">{% block main %}{% endblock %}</div>
+
+<div id="footer">Footer</div>
+
+{% endblock %}

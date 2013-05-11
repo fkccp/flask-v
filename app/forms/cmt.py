@@ -1,5 +1,4 @@
-from flask.ext.wtf import Form, TextField, TextAreaField, BooleanField, HiddenField
-from flask.ext.wtf import Required
+from .utils import *
 
 class CmtForm(Form):
 	content = TextAreaField('content', validators=[Required()])

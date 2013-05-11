@@ -1,4 +1,4 @@
-from app import db
+from .utils import *
 from .user import User
 
 bbs_post_like = db.Table('bbs_post_like',
@@ -15,7 +15,7 @@ class Bbs_post(db.Model):
 	id = db.Column(db.Integer, primary_key=True)
 	title = db.Column(db.String(100))
 	content = db.Column(db.Text)
-	ctime = db.Column(db.DateTime)
+	ctime = db.Column(db.DateTime, default=datetime.utcnow)
 	is_anony = db.Column(db.Boolean, default=False)
 	n_marked = db.Column(db.Integer, default=0)
 	n_liked = db.Column(db.Integer, default=0)
@@ -82,7 +82,7 @@ class Bbs_node(db.Model):
 class Bbs_append(db.Model):
 	id = db.Column(db.Integer, primary_key=True)
 	content = db.Column(db.Text)
-	ctime = db.Column(db.DateTime)
+	ctime = db.Column(db.DateTime, default=datetime.utcnow)
 	seen = db.Column(db.SmallInteger, default=1)
 	status = db.Column(db.SmallInteger, default=1)
 

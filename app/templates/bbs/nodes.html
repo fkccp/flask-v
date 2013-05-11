@@ -1,8 +1,9 @@
-{% extends 'base.html' %}
+{% extends 'layout.html' %}
+
 {% block main %}
 <ul>
 	{% for node in X.nodes %}
-	<li><a href="{{ url_for('.index' ,nodename=node.name) }}">{{ node.name }} ({{ node.n_post }})</a></li>
+	<li><a href="{{ url_for('index' ,nodename=node.name) }}">{{ node.name }} ({{ node.n_post }})</a></li>
 	{% endfor %}
 </ul>
 {% endblock %}

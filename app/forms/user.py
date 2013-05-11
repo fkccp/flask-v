@@ -1,5 +1,4 @@
-from flask.ext.wtf import Form, TextField, TextAreaField, BooleanField, RadioField, DateField
-from flask.ext.wtf import Required
+from .utils import *
 
 class UserSetForm(Form):
 	sex = RadioField('sex', choices=[

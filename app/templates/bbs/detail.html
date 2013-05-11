@@ -1,4 +1,4 @@
-{% extends 'base.html' %}
+{% extends 'layout.html' %}
 {% block main %}
 <h1>{{ X.post.title }}</h1>
 <p>
@@ -7,22 +7,22 @@
 	{% else %}
 	{{ X.post.author.nickname }}
 	{% endif %}
-	 - {{ J.fromNow(X.post.ctime) }}
+	 - {{ X.post.ctime|timesince }}
 </p>
 <div>{{ X.post.content }}</div>
 
 {% for append in X.post.appends %}
 <div class="error">
 	<p>{{ append.content }}</p>
-	<p>{{ append.ctime }}</p>
+	<p>{{ append.ctime|timesince }}</p>
 	<hr>
 </div>
 {% endfor %}
 
-<p><a href="{{ url_for('.index', nodename=X.post.node.name) }}">{{ X.post.node.name }}({{ X.post.node.n_post }})</a></p>
+<p><a href="{{ url_for('index', nodename=X.post.node.name) }}">{{ X.post.node.name }}({{ X.post.node.n_post }})</a></p>
 
 {% if X.post.author != g.user %}
-<form action="{{ url_for('.action', type='like', post_id=X.post.id) }}" method="post">
+<form action="{{ url_for('action', type='like', post_id=X.post.id) }}" method="post">
 	{{ X.act_form.hidden_tag() }}
 	<input type="submit" value="{% if g.user in  X.post.liker %}Unlike{% else %}Like{% endif %}" />
 </form>
@@ -30,7 +30,7 @@
 {{ X.post.n_liked }}
 
 {% if X.post.author != g.user %}
-<form action="{{ url_for('.action', type='mark', post_id=X.post.id) }}" method="post">
+<form action="{{ url_for('action', type='mark', post_id=X.post.id) }}" method="post">
 	{{ X.act_form.hidden_tag() }}
 	<input type="submit" value="{% if g.user in X.post.marker %}Unmark{% else %}Mark{% endif %}" />
 </form>
@@ -38,7 +38,7 @@
 {{ X.post.n_marked }}
 
 {% if X.post.author == g.user %}
-<a href="{{ url_for('.append', post_id=X.post.id) }}">append</a>
+<a href="{{ url_for('append', post_id=X.post.id) }}">append</a>
 {% endif %}
 
 <div>

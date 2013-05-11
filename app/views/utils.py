@@ -1,10 +1,7 @@
-from flask import Blueprint, render_template, redirect, url_for, g, flash, request, abort
-from app.forms import BbsAddForm, BbsAppendForm, ActionForm, CmtForm, LoginForm
-from app.models import Bbs_post, Bbs_node, Bbs_append, User, Cmt
-from datetime import datetime
-from app import db
-
-from flask.ext.login import login_user, logout_user
+from flask import Module, url_for, render_template, redirect, g, request, flash
+from app.exts import db
+from app.forms import CmtForm
+from app.models import Cmt
 
 CMT_TYPE_BBS = 1
 
@@ -17,7 +14,6 @@ def f_cmt(obj):
 	if cmt_form.validate_on_submit():	
 		cmt = Cmt(content = cmt_form.content.data,
 			is_anony = cmt_form.is_anony.data,
-			ctime=datetime.utcnow(),
 			author = g.user,
 			type=types[obj.__tablename__],
 			sid = obj.id)

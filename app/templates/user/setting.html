@@ -1,6 +1,6 @@
-{% extends 'base.html' %}
+{% extends 'layout.html' %}
 {% block main %}
-<form action="{{ url_for('.setting') }}" method="post">
+<form action="{{ url_for('setting') }}" method="post">
 	{{ X.form.hidden_tag() }}
 	<p>Sex : 
 		{% for rad in X.form.sex %}

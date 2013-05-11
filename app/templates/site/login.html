@@ -1,12 +1,16 @@
-{% extends 'base.html' %}
-{% block main %}
-<form action="{{ url_for('.login') }}" method="post">
-	{{ X.form.hidden_tag() }}
-	<p>Nickname : {{ X.form.nickname }}</p>
-	{% for error in X.form.errors.nickname %}
-	<p class="error">[{{ error }}]</p>
-	{% endfor %}
-	<p>{{ X.form.remember_me }} Remember Me</p>
-	<input type="submit" value="Submit" />
+{% extends 'layout_unlogin.html' %}
+{% from 'macros/_forms.html' import render_form_field %}
+
+{% block title %}Login{% endblock %}
+
+{% block content %}
+<form action="{{ url_for('index') }}" method='post'>
+	{{ form.hidden_tag() }}
+	{{ form.next }}
+	<ul>
+		<li>{{ render_form_field(form.nickname) }}</li>
+		<li>{{ render_form_field(form.remember_me) }}</li>
+		<li><input type="submit" value='Login'></li>
+	</ul>
 </form>
 {% endblock %}

@@ -2,6 +2,7 @@ from .funs import *
 
 
 bbs = Blueprint('bbs', __name__, url_prefix='/bbs')
+bbs = Module(__name__)
 
 @bbs.route('/')
 @bbs.route('/<nodename>')

@@ -1,33 +1,34 @@
-from .funs import *
+from .utils import *
+from app.forms import LoginForm
+from app.models import User
+from app.exts import login_user, logout_user
 
-from datetime import datetime
+site = Module(__name__)
 
-site = Blueprint('site', __name__)
-
-@site.route('/')
+@site.route('/', methods=['GET', 'POST'])
 def index():
-	return render_template('site/site.html')
+	if g.user.is_authenticated():
+		return redirect(url_for('bbs.index'))
+	else:
+		form = LoginForm()
+		if form.validate_on_submit():
+			user = User.query.filter_by(nickname=form.nickname.data).first()
+			if user is None:
+				flash('Error nickname')
+			else:
+				login_user(user, form.remember_me.data)
+				return redirect(request.args.get('next') or url_for('bbs.index'))
+
+		return render_template('site/login.html', form=form)
 
 @site.route('/welcome')
 def welcome():
 	return render_template('site/welcome.html')
 
-@site.route('/login', methods=['GET', 'POST'])
-def login():
-	form = LoginForm()
-	if form.validate_on_submit():
-		user = User.query.filter_by(nickname=form.nickname.data).first()
-		if user is None:
-			flash('Error nickname')
-		else:
-			user.last_login = datetime.utcnow()
-			db.session.add(user)
-			db.session.commit()
-			login_user(user, form.remember_me.data)
-			return redirect(request.args.get('next') or url_for('.index'))
-
-	args = {'form': form}
-	return render_template('site/login.html', X=args)
+@site.route('/logout')
+def logout():
+	logout_user()
+	return redirect(url_for('index'))
 
 @site.route('/cmt_like/<int:cmt_id>', methods=['POST'])
 def cmt_like(cmt_id):
@@ -39,8 +40,3 @@ def cmt_like(cmt_id):
 		flash('Unliked')
 	db.session.commit()
 	return redirect(request.headers['Referer'])
-
-@site.route('/logout')
-def logout():
-	logout_user()
-	return redirect( url_for('.login') )

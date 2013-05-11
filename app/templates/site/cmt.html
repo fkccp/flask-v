@@ -3,13 +3,13 @@
 <div>
 	{% for cmt in X.cmt.list.all() %}
 	<div>
-		[{{ J.floorSign(loop.index) }}]
+		[{{ loop.index|floorsign }}]
 		{% if cmt.is_anony %}
 		<span>{{ cmt.author.anonyname }}</span>
 		{% else %}
 		<a href="{{ url_for('user.info', urlname=cmt.author.urlname) }}">{{ cmt.author.nickname }}</a>
 		{% endif %}
-		:{{ J.fromNow(cmt.ctime) }}
+		:{{ cmt.ctime|timesince }}
 		<p>{{ cmt.content }}</p>
 		<p>
 			{% if g.user != cmt.author %}
