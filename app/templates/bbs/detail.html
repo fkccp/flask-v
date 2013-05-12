@@ -1,4 +1,6 @@
 {% extends 'layout.html' %}
+{% from 'macros/_cmt.html' import render_cmt with context %}
+
 {% block main %}
 <h1>{{ X.post.title }}</h1>
 <p>
@@ -41,8 +43,6 @@
 <a href="{{ url_for('append', post_id=X.post.id) }}">append</a>
 {% endif %}
 
-<div>
-	{% include 'site/cmt.html' %}
-</div>
+<div>{{ render_cmt(X.cmt) }}</div>
 
 {% endblock %}

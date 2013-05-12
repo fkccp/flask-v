@@ -16,7 +16,7 @@ def f_cmt(obj):
 		db.session.add(cmt)
 		db.session.commit()
 		flash('Cmt succ')
-		return 0 # redirect
+		return cmt.id # redirect
 
 	cmts = Cmt.query.filter_by(type=type,
 		sid=obj.id,

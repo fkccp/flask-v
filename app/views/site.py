@@ -14,7 +14,7 @@ def index():
 		if form.validate_on_submit():
 			user = User.query.filter_by(nickname=form.nickname.data).first()
 			if user is None:
-				flash('Error nickname')
+				flash('Error nickname', 'error')
 			else:
 				login_user(user, form.remember_me.data)
 				return redirect(request.args.get('next') or url_for('bbs.index'))
@@ -39,4 +39,4 @@ def cmt_like(cmt_id):
 	else:
 		flash('Unliked')
 	db.session.commit()
-	return redirect(request.headers['Referer'])
+	return redirect(request.headers['Referer'] + '#cmt_' + str(cmt.id))

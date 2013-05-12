@@ -12,5 +12,11 @@
 	<div id="container">
 		{% block content %}{% endblock %}
 	</div>
+
+	<ul id="flash">
+		{% for status, message in get_flashed_messages(True) %}
+		<li class="{{ status }}">{{ message }}</li>
+		{% endfor %}
+	</ul>
 </body>
 </html>

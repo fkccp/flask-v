@@ -7,7 +7,7 @@ cmt_like = db.Table('cmt_like',
 )
 
 class Cmt(db.Model):
-	id  = db.Column(db.Integer, primary_key=True)
+	id = db.Column(db.Integer, primary_key=True)
 	content = db.Column(db.Text)
 	ctime = db.Column(db.DateTime, default=datetime.utcnow)
 	sid = db.Column(db.Integer)

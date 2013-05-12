@@ -1,17 +1,37 @@
 {% extends 'layout.html' %}
 {% block main %}
 
-<p>Nickname : {{ X.nickname }}</p>
-<p>Urlname : {{ X.urlname }}</p>
-<p>Anonyname : {{ X.anonyname }}</p>
-<p>Regtime : {{ X.regtime }}</p>
-<p>last_login : {{ X.last_login }}</p>
-<p>Seen : {{ X.seen }}</p>
-<p>Status : {{ X.status }}</p>
+<p>Nickname : {{ X.user.nickname }}</p>
+<p>Urlname : {{ X.user.urlname }}</p>
+<p>Anonyname : {{ X.user.anonyname }}</p>
+<p>Date_joined : {{ X.user.date_joined|timesince }}</p>
+<p>Last_login : {{ X.user.date_last_login|timesince }}</p>
+<p>Seen : {{ X.user.seen }}</p>
+<p>Status : {{ X.user.status }}</p>
 
-<p>Sex : {{ X.sex }}</p>
-<p>Birth : {{ X.birth }}</p>
-<p>Job : {{ X.job }}</p>
-<p>Sign : {{ X.sign }}</p>
+<p>Sex : {{ X.user.sex }}</p>
+<p>Birth : {{ X.user.birth }}</p>
+<p>Job : {{ X.user.job }}</p>
+<p>Sign : {{ X.user.sign }}</p>
+
+<hr>
+
+<h4>Posts :</h4>
+<ul>
+	{% for post in X.posts %}
+	<li>{{ X.user.nickname }} posted <a target="_blank" href="{{ url_for('bbs.detail', post_id=post.id) }}">{{ post.title }}</a> {{ post.ctime|timesince }}</li>
+	{% endfor %}
+	<li><a href="{{ url_for('user.posts', urlname=X.user.urlname) }}">More</a></li>
+</ul>
+<hr>
+<ul>
+	{% for cmt in X.cmts %}
+	<li>
+		{{ X.user.nickname }} replied <a target="_blank" href="{{ url_for('bbs.detail', post_id=cmt.sid, _anchor='cmt_%d'%cmt.id) }}">{{ cmt.title }}</a> {{ cmt.ctime|timesince }} :
+		<p>{{ cmt.content }}</p>
+	</li>
+	{% endfor %}
+	<li><a href="{{ url_for('user.post_cmts', urlname=X.user.urlname) }}">More</a></li>
+</ul>
 
 {% endblock %}

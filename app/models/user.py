@@ -1,11 +1,7 @@
 from .utils import *
 
-class UserQuery(BaseQuery):
-	pass
-
 class User(db.Model):
 	__tablename__ = 'user'
-	query_class = UserQuery
 
 	# roles
 	R_ADMIN = 1
@@ -62,3 +58,15 @@ class User(db.Model):
 		self.date_last_login = datetime.utcnow()
 		db.session.add(self)
 		db.session.commit()
+
+	def get_bbs_posts(self):
+		return self.bbs_post.filter_by(seen=1).order_by('ctime desc')
+
+	def get_cmts(self, Post):
+		from .cmt import Cmt
+		obj = self.cmt \
+				.add_columns(Cmt.content, Cmt.id, Cmt.sid, Cmt.ctime, Post.title) \
+				.join(Post, db.and_(Cmt.sid==Post.id, Cmt.type==Post.CMT_TYPE)) \
+				.filter(Cmt.author==self, Cmt.seen==1, Post.seen==1) \
+				.order_by(Cmt.ctime.desc())
+		return obj

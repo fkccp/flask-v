@@ -1,8 +1,11 @@
+{% macro render_cmt(cmt_obj) %}
+{% from 'macros/_forms.html' import render_form %}
+
 <hr>
-<p>Total : {{ X.cmt.list.count() }}</p>
+<p>Total : {{ cmt_obj.list.count() }}</p>
 <div>
-	{% for cmt in X.cmt.list.all() %}
-	<div>
+	{% for cmt in cmt_obj.list.all() %}
+	<div id="cmt_{{ cmt.id }}">
 		[{{ loop.index|floorsign }}]
 		{% if cmt.is_anony %}
 		<span>{{ cmt.author.anonyname }}</span>
@@ -25,4 +28,5 @@
 	{% endfor %}
 </div>
 
-<div>{{ render_form(X.cmt.form) }}</div>
+<div>{{ render_form(cmt_obj.form) }}</div>
+{% endmacro %}

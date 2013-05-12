@@ -12,6 +12,10 @@ bbs_post_mark = db.Table('bbs_post_mark',
 )
 
 class Bbs_post(db.Model):
+
+	PER_PAGE = 5
+	CMT_TYPE = 1
+
 	id = db.Column(db.Integer, primary_key=True)
 	title = db.Column(db.String(100))
 	content = db.Column(db.Text)
@@ -19,6 +23,7 @@ class Bbs_post(db.Model):
 	is_anony = db.Column(db.Boolean, default=False)
 	n_marked = db.Column(db.Integer, default=0)
 	n_liked = db.Column(db.Integer, default=0)
+	n_visited = db.Column(db.Integer, default=0)
 	seen = db.Column(db.SmallInteger, default=1)
 	status = db.Column(db.SmallInteger, default=1)
 
@@ -68,6 +73,11 @@ class Bbs_post(db.Model):
 
 	def has_marked_by(self, user):
 		return self.marker.filter(bbs_post_mark.c.user_id == user.id).count() > 0
+
+	def inc_pv(self):
+		self.n_visited += 1
+		db.session.add(self)
+		db.session.commit()
 
 
 class Bbs_node(db.Model):

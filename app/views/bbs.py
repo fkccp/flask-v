@@ -5,16 +5,29 @@ from app.forms import BbsAddForm, ActionForm, BbsAppendForm
 bbs = Module(__name__)
 
 @bbs.route('/')
-@bbs.route('/<nodename>')
-def index(nodename=''):
+@bbs.route('/<int:page>')
+@bbs.route('/node/<nodename>')
+@bbs.route('/node/<nodename>/<int:page>')
+def index(nodename='', page=1):
 	if nodename == '':
-		posts = Bbs_post.query.order_by('ctime desc').all()
+		post_obj = Bbs_post.query.filter_by(seen=1).order_by('ctime desc')
 	else:
-		node = Bbs_node.query.filter_by(name=nodename).first()
-		posts = Bbs_post.query.filter_by(node=node).order_by('ctime desc').all()
-	X = {'posts': posts}
+		node = Bbs_node.query.filter_by(name=nodename).first_or_404()
+		post_obj = Bbs_post.query.filter_by(node=node, seen=1).order_by('ctime desc')
+
+	X = {}
 	X['nodename'] = nodename
-	return render_template('bbs/index.html', X=X)
+	X['pager_url'] = lambda page: url_for('index', page=page, nodename=nodename) if nodename else url_for('index', page=page)
+
+	if 1 == page:
+		posts = post_obj.limit(Bbs_post.PER_PAGE + 1).all()
+		X['posts'] = posts
+		X['per_page'] = Bbs_post.PER_PAGE
+		return render_template('bbs/index.html', X=X)
+	else:
+		post_obj = post_obj.paginate(page, per_page=Bbs_post.PER_PAGE)
+		X['post_obj'] = post_obj
+		return render_template('bbs/list.html', X=X)
 
 @bbs.route('/add/', methods=['GET', 'POST'])
 @bbs.route('/add/<nodename>', methods=['GET', 'POST'])
@@ -52,9 +65,10 @@ def detail(post_id):
 	X['act_form'] = act_form
 
 	X['cmt'] = f_cmt(post)
-	if 0 == X['cmt']:
-		return redirect(request.path)
+	if type(X['cmt']) is int:
+		return redirect(request.path + '#cmt_' + str(X['cmt']))
 
+	post.inc_pv()
 	return render_template('bbs/detail.html', X=X)
 
 @bbs.route('/action/<type>/<int:post_id>', methods=['POST'])

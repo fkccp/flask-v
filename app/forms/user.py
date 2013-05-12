@@ -9,3 +9,7 @@ class UserSetForm(Form):
 	birth = DateField('birth')
 	job = TextField('job')
 	sign = TextAreaField('sign')
+
+	def __init__(self, user, *args, **kwargs):
+		kwargs['obj'] = user
+		super(UserSetForm, self).__init__(*args, **kwargs)

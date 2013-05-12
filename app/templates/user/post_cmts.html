@@ -1,0 +1,17 @@
+{% extends 'layout.html' %}
+{% from 'macros/_pager.html' import render_pager %}
+
+{% block main %}
+<h4>Post_cmts :</h4>
+<ul>
+	{% for cmt in X.post_cmts.items %}
+	<li>
+		{{ X.user.nickname }} replied <a target="_blank" href="{{ url_for('bbs.detail', post_id=cmt.sid, _anchor='cmt_%d'%cmt.id) }}">{{ cmt.title }}</a> {{ cmt.ctime|timesince }} :
+		<p>{{ cmt.content }}</p>
+	</li>
+	{% endfor %}
+</ul>
+
+<div>{{ render_pager(X.post_cmts, X.pager_url) }}</div>
+
+{% endblock %}
