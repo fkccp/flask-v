@@ -1,5 +1,5 @@
 from .utils import *
-from app.models import User, Bbs_post
+from app.models import User, Bbs_post, Invite
 from app.forms import UserSetForm
 
 user = Module(__name__)
@@ -57,3 +57,14 @@ def get_user(urlname):
 	else:
 		u = g.user
 	return u
+
+@user.route('/invite')
+def invite():
+	invites = Invite.query.filter_by(user_id=g.user.id).order_by(Invite.ctime.desc()).all()
+	X = {'invites': invites}
+	return render_template('user/invite.html', X=X)
+
+@user.route('/gen_invite')
+def gen_invite():
+	Invite().generate(g.user)
+	return redirect(url_for('invite'))

@@ -30,6 +30,7 @@ class User(db.Model):
 
 	bbs_post = db.relationship('Bbs_post', backref='author', lazy='dynamic')
 	cmt = db.relationship('Cmt', backref='author', lazy='dynamic')
+	invite = db.relationship('Invite', backref='guest', lazy='dynamic')
 
 	def __init__(self, *args, **kwargs):
 		super(User, self).__init__(*args, **kwargs)
@@ -70,3 +71,43 @@ class User(db.Model):
 				.filter(Cmt.author==self, Cmt.seen==1, Post.seen==1) \
 				.order_by(Cmt.ctime.desc())
 		return obj
+
+class Invite(db.Model):
+
+	# status
+	S_UNUSED = 0
+	S_USED = 1
+
+	id = db.Column(db.Integer, primary_key=True)
+	code = db.Column(db.String(20), unique=True)
+	user_id = db.Column(db.Integer)
+	status = db.Column(db.SmallInteger, default=S_UNUSED)
+	guest_id = db.Column(db.Integer, db.ForeignKey('user.id'), default=0)
+	ctime = db.Column(db.DateTime, default=datetime.utcnow)
+	utime = db.Column(db.DateTime, default=datetime.utcnow)
+
+	def generate(self, user):
+		import string, random
+
+		code = ''
+		while True:
+			code = ''.join(random.choice(string.letters + string.digits) for ii in range (15))
+			if self.query.filter_by(code=code).first() is None:
+				break
+
+		print code
+		self.code = code
+		self.user_id = user.id
+		db.session.add(self)
+		db.session.commit()
+
+	def active(self, user, code):
+		invite = self.query.filter_by(code=code).first()
+		if first is not None:
+			invite.utime = datetime.utcnow()
+			invite.status = 1
+			invite.guest_id = user.id
+			db.session.add(invite)
+			db.session.commit()
+			return True
+		return False

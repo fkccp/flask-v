@@ -1,0 +1,24 @@
+{% extends 'layout.html' %}
+
+{% block main %}
+<a href="{{ url_for('gen_invite') }}">Generate</a>
+
+<table border='1'>
+	<tr>
+		<th>Code</th>
+		<th>Ctime</th>
+		<th>Status</th>
+		<th>Utime</th>
+		<th>User</th>
+	</tr>
+	{% for invite in X.invites %}
+	<tr>
+		<td>{{ invite.code }}</td>
+		<td>{{ invite.ctime|timesince }}</td>
+		<td>{% if invite.status %}Used{% else %}Unused{% endif %}</td>
+		<td>{% if invite.status %} {{ invite.utime|timesince }} {% endif %}</td>
+		<td>{% if invite.status %} <a href="{{ url_for('user.info', urlname=invite.guest.urlname) }}">{{ invite.guest.nickname }} {% endif %}</td>
+	</tr>
+	{% endfor %}
+</table>
+{% endblock %}

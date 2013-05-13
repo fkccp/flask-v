@@ -10,7 +10,8 @@
 	</ul>
 
 	<ul id="header_link">
-		<li><a href="{{ url_for('user.setting') }}">setting</a></li>
+		<li><a href="{{ url_for('user.setting') }}">Setting</a></li>
+		<li><a href="{{ url_for('user.invite') }}">Invite</a></li>
 		<li><a href="{{ url_for('site.logout') }}">Logout</a></li>
 	</ul>
 	<span>{{ g.user.nickname }}</span>
