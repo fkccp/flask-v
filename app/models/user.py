@@ -1,4 +1,5 @@
 from .utils import *
+from app.helpers import rand_string
 
 class User(db.Model):
 	__tablename__ = 'user'
@@ -26,6 +27,7 @@ class User(db.Model):
 	job = db.Column(db.String(30))
 	sign = db.Column(db.String(250))
 
+	# _QQ_access_token = db.Column('QQ_access_token', db.String(80), unique=True)
 	_QQ_openid = db.Column('QQ_openid', db.String(80), unique=True)
 
 	bbs_post = db.relationship('Bbs_post', backref='author', lazy='dynamic')
@@ -91,11 +93,10 @@ class Invite(db.Model):
 
 		code = ''
 		while True:
-			code = ''.join(random.choice(string.letters + string.digits) for ii in range (15))
+			code = rand_string(15)
 			if self.query.filter_by(code=code).first() is None:
 				break
 
-		print code
 		self.code = code
 		self.user_id = user.id
 		db.session.add(self)

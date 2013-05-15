@@ -2,6 +2,7 @@ from .utils import *
 from app.forms import LoginForm
 from app.models import User
 from app.exts import login_user, logout_user
+from app.api.qqlogin import QQLogin
 
 site = Module(__name__)
 
@@ -40,3 +41,32 @@ def cmt_like(cmt_id):
 		flash('Unliked')
 	db.session.commit()
 	return redirect(request.headers['Referer'] + '#cmt_' + str(cmt.id))
+
+@site.route('/qq_test')
+def qq_test():
+	return render_template('site/qq_test.html')
+
+@site.route('/connect/<provider>')
+def connect(provider='qq'):
+	client = QQLogin()
+	login_uri = client.login()
+	return redirect(login_uri)
+
+@site.route('/connect/callback/<provider>')
+def connect_callback(provider='qq'):
+	client = QQLogin()
+	code = client.login_callback(request)
+	if code is None:
+		abort(401)
+	else:
+		print ' --- code : ', code
+
+	# user = User.query.get(1)
+	# user._QQ_openid = code
+	# db.session.add(user)
+	# db.session.commit()
+
+	user = User.query.filter_by(_QQ_openid=code).first()
+
+	login_user(user, True)
+	return redirect(request.args.get('next') or url_for('bbs.index'))

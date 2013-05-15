@@ -1,6 +1,6 @@
 import os, logging
 from logging.handlers import RotatingFileHandler
-from flask import Flask, request, jsonify, render_template, url_for, redirect, g
+from flask import Flask, request, jsonify, render_template, url_for, redirect, g, flash
 from app import views, helpers
 from app.models import User
 from .config import DefaultConfig
@@ -73,19 +73,19 @@ def config_error_handlers(app):
 	def page_not_found(error):
 		if request.is_xhr:
 			return jsonify(error='Sorry, page not found')
-		return render_template('errors/404.html', error=error)
+		return render_template('errors/404.html', error=error), 404
 
 	@app.errorhandler(401)
 	def unauthenized(error):
 		if request.is_xhr:
 			return jsonify(error='Login required')
 		flash('Please login to see this page', 'error')
-		return redirect(url_for('site.login', next=request.path))
+		return redirect(url_for('site.index', next=request.path)), 401
 
 	@app.errorhandler(500)
 	def error(error):
 		db.session.rollback()
-		return render_template('error/500.html', error=error)
+		return render_template('error/500.html', error=error), 500
 
 def config_exts(app):
 	db.init_app(app)

@@ -1,3 +1,4 @@
+import string, random
 from datetime import datetime
 
 def timesince(dt, default=None):
@@ -33,3 +34,6 @@ def timesince(dt, default=None):
 
 def floorsign(floor=1):
 	return 'Floor %d' % floor
+
+def rand_string(length=15):
+	return ''.join(random.choice(string.letters + string.digits) for ii in range (length))
