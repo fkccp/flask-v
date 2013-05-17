@@ -1,7 +1,7 @@
 from flask import Module, url_for, render_template, redirect, g, request, flash, session, abort
 from app.exts import db
 from app.forms import CmtForm
-from app.models import Cmt
+from app.models import Cmt, Point
 
 def f_cmt(obj):
 	cmt_form = CmtForm()
@@ -15,7 +15,8 @@ def f_cmt(obj):
 			sid = obj.id)
 		db.session.add(cmt)
 		db.session.commit()
-		flash('Cmt succ')
+		point = Point(g.user, Point.E_BBS_CMT).get_point()
+		flash('Cmt succ with getting %d points' % point, 'message')
 		return cmt.id # redirect
 
 	cmts = Cmt.query.filter_by(type=type,

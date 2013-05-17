@@ -35,5 +35,9 @@ def timesince(dt, default=None):
 def floorsign(floor=1):
 	return 'Floor %d' % floor
 
+def pointevent(event):
+	from app.models import Point
+	return Point.POINTS[event][1]
+
 def rand_string(length=15):
 	return ''.join(random.choice(string.letters + string.digits) for ii in range (length))

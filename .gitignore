@@ -2,3 +2,4 @@
 db_repository/*
 .DS_Store
 *.db
+.directory

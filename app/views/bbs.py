@@ -1,5 +1,5 @@
 from .utils import *
-from app.models import Bbs_post, Bbs_node, Bbs_append
+from app.models import Bbs_post, Bbs_node, Bbs_append, Point
 from app.forms import BbsAddForm, ActionForm, BbsAppendForm
 
 bbs = Module(__name__)
@@ -46,7 +46,8 @@ def add(nodename=''):
 		post = Bbs_post(title=form.title.data, content=form.content.data, author=g.user, node=node, is_anony=form.is_anony.data)
 		db.session.add(post)
 		db.session.commit()
-		flash('Post succ')
+		point = Point(g.user, Point.E_BBS_POST).get_point()
+		flash('Post succ with getting %d points' % point, 'message')
 		return redirect(url_for('bbs.index'))
 
 	if nodename and not form.nodename.data:

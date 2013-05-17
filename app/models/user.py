@@ -21,11 +21,17 @@ class User(db.Model):
 	date_joined = db.Column(db.DateTime, default=datetime.utcnow)
 	date_last_login = db.Column(db.DateTime, default=datetime.utcnow)
 	role = db.Column(db.Integer, default=R_MEMBER)
+	level = db.Column(db.SmallInteger, default=0)
 
 	sex = db.Column(db.SmallInteger, default=S_MALE)
 	birth = db.Column(db.Date)
 	job = db.Column(db.String(30))
 	sign = db.Column(db.String(250))
+
+	date_last_check_in = db.Column(db.DateTime)
+	check_in_days = db.Column(db.Integer, default=0)
+	point = db.Column(db.Integer, default=0)
+	money = db.Column(db.Integer, default=0)
 
 	# _QQ_access_token = db.Column('QQ_access_token', db.String(80), unique=True)
 	_QQ_openid = db.Column('QQ_openid', db.String(80), unique=True)
@@ -50,15 +56,23 @@ class User(db.Model):
 		return False
 
 	def is_authenticated(self):
-		self._set_login_time()
+		self._refresh_login_time()
 		return True
 
 	def get_id(self):
-		self._set_login_time()
+		self._refresh_login_time()
 		return unicode(self.id)
 
-	def _set_login_time(self):
-		self.date_last_login = datetime.utcnow()
+	def _refresh_login_time(self):
+		# check-in everyday
+		now = datetime.utcnow()
+		day_delta = (now.date() - self.date_last_login.date()).days
+		print ' -- day_delta : ', day_delta
+		if day_delta > 0:
+			point = Point(self, Point.E_CHECK_IN).get_point()
+			flash('Got %d points for everyday\'s coming' % point, 'message')
+
+		self.date_last_login = now
 		db.session.add(self)
 		db.session.commit()
 
@@ -112,3 +126,51 @@ class Invite(db.Model):
 			db.session.commit()
 			return True
 		return False
+
+class Point(db.Model):
+
+	E_START = 0
+	E_CHECK_IN = 1
+	E_BBS_POST = 2
+	E_BBS_CMT = 3
+
+	POINTS = [
+		[50, 'start'],
+		[10, 'check-in'],
+		[8, 'bbs_post'],
+		[2, 'bbs_cmt'],
+	]
+
+	LEVEL = [1, 2, 3, 5, 8, 13, 21, 34, 55, 89, 144]
+	LEVEL_RATE = 50
+
+	id = db.Column(db.Integer, primary_key=True)
+	uid = db.Column(db.Integer, nullable=False)
+	point = db.Column(db.Integer, nullable=False)
+	event = db.Column(db.SmallInteger, nullable=False, default=0)
+	ctime = db.Column(db.DateTime, default=datetime.utcnow)
+
+	def __init__(self, user, event, *args, **kwargs):
+		self.uid = user.id
+		self.event = event
+		point = self.POINTS[event][0]
+
+		user.point += point
+		self.point = point
+
+		super(Point, self).__init__(*args, **kwargs)
+
+		# upgrade
+		level = user.level
+		while user.point > self.LEVEL[level + 1] * self.LEVEL_RATE:
+			level += 1
+			pass
+		if level > user.level:
+			user.level = level
+			flash('U have just upgraded to level %d' % level, 'message')
+		db.session.add(self)
+		db.session.add(user)
+		db.session.commit()
+
+	def get_point(self):
+		return self.point

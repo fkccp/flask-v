@@ -1,5 +1,5 @@
 from .utils import *
-from app.models import User, Bbs_post, Invite
+from app.models import User, Bbs_post, Invite, Point
 from app.forms import UserSetForm
 
 user = Module(__name__)
@@ -68,3 +68,10 @@ def invite():
 def gen_invite():
 	Invite().generate(g.user)
 	return redirect(url_for('invite'))
+
+@user.route('/point')
+def point():
+	points = Point.query.filter_by(uid=g.user.id).order_by(Point.ctime.desc()).all()
+	X = {'points': points}
+
+	return render_template('user/point.html', X=X)
