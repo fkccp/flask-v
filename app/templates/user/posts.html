@@ -1,7 +1,8 @@
-{% extends 'layout.html' %}
+{% extends 'user/layout.html' %}
 {% from 'macros/_pager.html' import render_pager %}
+{% set user_curr_tab = "posts" %}
 
-{% block main %}
+{% block user_main %}
 <h4>Posts :</h4>
 <ul>
 	{% for post in X.posts.items %}

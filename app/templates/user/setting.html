@@ -1,5 +1,6 @@
-{% extends 'layout.html' %}
+{% extends 'user/layout.html' %}
+{% set user_curr_tab = "setting" %}
 
-{% block main %}
+{% block user_main %}
 {{ render_form(X.form) }}
 {% endblock %}

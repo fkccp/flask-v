@@ -14,7 +14,7 @@ def setting():
 		flash('User set succ')
 		return redirect( url_for('info') )
 
-	X = {'form': form}
+	X = {'form': form, 'user': g.user}
 	return render_template('user/setting.html', X=X)
 
 @user.route('/info')
@@ -59,7 +59,7 @@ def get_user(urlname):
 @user.route('/invite')
 def invite():
 	invites = Invite.query.filter_by(user_id=g.user.id).order_by(Invite.ctime.desc()).all()
-	X = {'invites': invites}
+	X = {'invites': invites, 'user': g.user}
 	return render_template('user/invite.html', X=X)
 
 @user.route('/gen_invite')
@@ -70,6 +70,6 @@ def gen_invite():
 @user.route('/point')
 def point():
 	points = Point.query.filter_by(uid=g.user.id).order_by(Point.ctime.desc()).all()
-	X = {'points': points}
+	X = {'points': points, 'user': g.user}
 
 	return render_template('user/point.html', X=X)

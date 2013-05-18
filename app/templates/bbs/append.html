@@ -1,5 +1,5 @@
-{% extends 'layout.html' %}
+{% extends 'bbs/layout.html' %}
 
-{% block main %}
+{% block bbs_main %}
 {{ render_form(X.form, action=url_for('append', post_id=X.post.id)) }}
 {% endblock %}

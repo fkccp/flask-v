@@ -1,24 +1,19 @@
 {% extends 'base.html' %}
 {% from 'macros/_forms.html' import render_form %}
+{% from 'macros/_utils.html' import tabbed_link %}
 
 {% block content %}
 <div id="header">
 	<ul id="header_menu">
-		<li><a href="{{ url_for('site.index') }}">Index</a></li>
-		<li><a href="{{ url_for('bbs.index') }}">Bbs</a></li>
-		<li><a href="{{ url_for('user.info') }}">User</a></li>
-	</ul>
-
-	<ul id="header_link">
-		<li><a href="{{ url_for('user.setting') }}">Setting</a></li>
-		<li><a href="{{ url_for('user.invite') }}">Invite</a></li>
+		<li>{{ tabbed_link(header_curr_tab, 'index', 'Index', url_for('site.index')) }}</li>
+		<li>{{ tabbed_link(header_curr_tab, 'bbs', 'Bbs', url_for('bbs.index')) }}</li>
+		<li>{{ tabbed_link(header_curr_tab, 'user', g.user.nickname, url_for('user.info')) }}</li>
 		<li><a href="{{ url_for('site.logout') }}">Logout</a></li>
 	</ul>
-	<span>{{ g.user.nickname }}</span>
 </div>
 
 <div id="bc">{% block bc %}{% endblock %}</div>
-<hr>
+
 <div id="main">{% block main %}{% endblock %}</div>
 <hr>
 <div id="footer">Footer</div>

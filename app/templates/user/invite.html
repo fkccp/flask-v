@@ -1,6 +1,7 @@
-{% extends 'layout.html' %}
+{% extends 'user/layout.html' %}
+{% set user_curr_tab = "invite" %}
 
-{% block main %}
+{% block user_main %}
 <a href="{{ url_for('gen_invite') }}">Generate</a>
 
 <table border='1'>

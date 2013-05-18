@@ -1,0 +1,17 @@
+{% extends 'layout.html' %}
+{% from 'macros/_utils.html' import tabbed_link %}
+{% set header_curr_tab = 'user' %}
+
+{% block main %}
+<ul id="tabs">
+	<li>{{ tabbed_link(user_curr_tab, 'info', 'Info', url_for('user.info', urlname=X.user.urlname)) }}</li>
+	<li>{{ tabbed_link(user_curr_tab, 'posts', 'Posts', url_for('user.posts', urlname=X.user.urlname)) }}</li>
+	<li>{{ tabbed_link(user_curr_tab, 'post_cmts', 'Post_cmts', url_for('user.post_cmts', urlname=X.user.urlname)) }}</li>
+	{% if X.user == g.user %}
+	<li>{{ tabbed_link(user_curr_tab, 'point', 'Point', url_for('user.point')) }}</li>
+	<li>{{ tabbed_link(user_curr_tab, 'invite', 'Invite', url_for('user.invite')) }}</li>
+	<li>{{ tabbed_link(user_curr_tab, 'setting', 'Setting', url_for('user.setting')) }}</li>
+	{% endif %}
+</ul>
+{% block user_main %}{% endblock %}
+{% endblock %}

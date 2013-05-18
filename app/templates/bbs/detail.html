@@ -1,7 +1,7 @@
-{% extends 'layout.html' %}
+{% extends 'bbs/layout.html' %}
 {% from 'macros/_cmt.html' import render_cmt with context %}
 
-{% block main %}
+{% block bbs_main %}
 <h1>{{ X.post.title }}</h1>
 <p>
 	{% if X.post.is_anony %}

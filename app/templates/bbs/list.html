@@ -1,9 +1,9 @@
-{% extends 'layout.html' %}
+{% extends 'bbs/layout.html' %}
 {% from 'macros/_bbs.html' import render_post %}
 {% from 'macros/_pager.html' import render_pager %}
 
 
-{% block main %}
+{% block bbs_main %}
 <a href="{{ url_for('add', nodename=X.nodename) }}">ADD</a>
 
 {% for post in X.post_obj.items %}

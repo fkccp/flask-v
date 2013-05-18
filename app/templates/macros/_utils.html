@@ -1,0 +1,7 @@
+{% macro tabbed_link(curr_tab, tab, text, url) %}
+	{% if tab==curr_tab %}
+	<a href="{{ url }}"><strong>{{ text }}</strong></a>
+	{% else %}
+	<a href="{{ url }}">{{ text }}</a>
+	{% endif %}
+{% endmacro %}

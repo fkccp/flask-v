@@ -1,6 +1,6 @@
-{% extends 'layout.html' %}
+{% extends 'bbs/layout.html' %}
 
-{% block main %}
+{% block bbs_main %}
 <ul>
 	{% for node in X.nodes %}
 	<li><a href="{{ url_for('index' ,nodename=node.name) }}">{{ node.name }} ({{ node.n_post }})</a></li>
