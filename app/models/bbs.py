@@ -24,6 +24,7 @@ class Bbs_post(db.Model):
 	n_marked = db.Column(db.Integer, default=0)
 	n_liked = db.Column(db.Integer, default=0)
 	n_visited = db.Column(db.Integer, default=0)
+	n_cmt = db.Column(db.Integer, default=0)
 	seen = db.Column(db.SmallInteger, default=1)
 	status = db.Column(db.SmallInteger, default=1)
 
@@ -78,6 +79,9 @@ class Bbs_post(db.Model):
 		self.n_visited += 1
 		db.session.add(self)
 		db.session.commit()
+
+	def get_link(self, cmt_id=0):
+		return url_for('bbs.detail', post_id=self.id, _anchor='cmt_%d'%cmt_id)
 
 
 class Bbs_node(db.Model):

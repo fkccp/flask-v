@@ -17,6 +17,11 @@ def setting():
 	X = {'form': form, 'user': g.user}
 	return render_template('user/setting.html', X=X)
 
+@user.route('/msg')
+@user.route('/msg/<read>')
+def msg(read='unread'):
+	return 'msg'
+
 @user.route('/info')
 @user.route('/info/<urlname>')
 def info(urlname=''):
@@ -58,7 +63,7 @@ def get_user(urlname):
 
 @user.route('/invite')
 def invite():
-	invites = Invite.query.filter_by(user_id=g.user.id).order_by(Invite.ctime.desc()).all()
+	invites = Invite.query.filter_by(uid=g.user.id).order_by(Invite.ctime.desc()).all()
 	X = {'invites': invites, 'user': g.user}
 	return render_template('user/invite.html', X=X)
 

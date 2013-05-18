@@ -44,6 +44,7 @@ class User(db.Model):
 	bbs_post = db.relationship('Bbs_post', backref='author', lazy='dynamic')
 	cmt = db.relationship('Cmt', backref='author', lazy='dynamic')
 	invite = db.relationship('Invite', backref='guest', lazy='dynamic')
+	msg = db.relationship('Msg', backref='sendto', lazy='dynamic')
 
 	def __init__(self, *args, **kwargs):
 		super(User, self).__init__(*args, **kwargs)
@@ -73,11 +74,11 @@ class User(db.Model):
 		# check-in everyday
 		now = datetime.utcnow()
 		day_delta = (now.date() - self.date_last_login.date()).days
-		print ' -- day_delta : ', day_delta
 		if day_delta > 0:
 			point = Point(self, Point.E_CHECK_IN).get_point()
 			flash('Got %d points for everyday\'s coming' % point, 'message')
 
+		# last login
 		self.date_last_login = now
 		db.session.add(self)
 		db.session.commit()
@@ -100,6 +101,9 @@ class User(db.Model):
 			obj = obj.filter(Cmt.is_anony==0, Post.is_anony==0)
 		return obj
 
+	def msg_count(self):
+		return self.msg.count()
+
 class Invite(db.Model):
 
 	# status
@@ -108,7 +112,7 @@ class Invite(db.Model):
 
 	id = db.Column(db.Integer, primary_key=True)
 	code = db.Column(db.String(20), unique=True)
-	user_id = db.Column(db.Integer)
+	uid = db.Column(db.Integer)
 	status = db.Column(db.SmallInteger, default=S_UNUSED)
 	guest_id = db.Column(db.Integer, db.ForeignKey('user.id'), default=0)
 	ctime = db.Column(db.DateTime, default=datetime.utcnow)
@@ -124,7 +128,7 @@ class Invite(db.Model):
 				break
 
 		self.code = code
-		self.user_id = user.id
+		self.uid = user.id
 		db.session.add(self)
 		db.session.commit()
 
@@ -137,7 +141,7 @@ class Invite(db.Model):
 		self.guest_id = user.id
 		user.urlname = self.code
 		user.status = User.S_NORMAL
-		point = Point(User.query.get(self.user_id), Point.E_INVITE)
+		point = Point(User.query.get(self.uid), Point.E_INVITE)
 		db.session.add(self)
 		db.session.add(user)
 		db.session.add(point)
@@ -194,3 +198,18 @@ class Point(db.Model):
 
 	def get_point(self):
 		return self.point
+
+class Msg(db.Model):
+	# status
+	S_UNREAD = 1
+	S_READ = 2
+
+	id  = db.Column(db.Integer, primary_key=True)
+	uid = db.Column(db.Integer, db.ForeignKey('user.id'))
+	ctime = db.Column(db.DateTime, default=datetime.utcnow)
+	content = db.Column(db.Text)
+	status = db.Column(db.SmallInteger, default=S_UNREAD)
+
+	def send(self):
+		db.session.add(self)
+		db.session.commit()

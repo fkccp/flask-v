@@ -8,6 +8,7 @@
 		<li>{{ tabbed_link(header_curr_tab, 'index', 'Index', url_for('site.index')) }}</li>
 		<li>{{ tabbed_link(header_curr_tab, 'bbs', 'Bbs', url_for('bbs.index')) }}</li>
 		<li>{{ tabbed_link(header_curr_tab, 'user', g.user.nickname, url_for('user.info')) }}</li>
+		<li><a href="{{ url_for('user.msg') }}">Msg({{ g.user.msg_count() }})</a></li>
 		<li><a href="{{ url_for('site.logout') }}">Logout</a></li>
 	</ul>
 </div>

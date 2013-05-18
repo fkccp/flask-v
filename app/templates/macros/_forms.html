@@ -1,7 +1,7 @@
 {% macro render_form(form, tag='p', action='', submitvalue="Submit") %}
 <form action="{{ action }}" method="POST">
 {% for field in form %}
-	{% if field.name == 'csrf_token' %}
+	{% if field.name == 'csrf_token' or field.type == 'HiddenField' %}
 		{{ field() }}
 	{% else %}
 		<{{ tag }}>{{ field.label }}
@@ -16,7 +16,6 @@
 		</{{ tag }}>
 	{% endif %}
 {% endfor %}
-	
 <{{ tag }}><input type="submit" value="{{ submitvalue }}"></{{ tag }}>
 </form>
 {% endmacro %}
