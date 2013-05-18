@@ -13,16 +13,20 @@ class User(db.Model):
 	S_FEMALE = 0
 	S_MALE = 1
 
+	# status
+	S_NORMAL = 1
+	S_UNACTIVE = 2
+
 	id = db.Column(db.Integer, primary_key=True)
-	nickname = db.Column(db.Unicode(60), unique=True, nullable=False)
+	nickname = db.Column(db.String(60), unique=True, nullable=False)
 	urlname = db.Column(db.String(60), unique=True, nullable=False)
 	anonyname = db.Column(db.String(60), unique=True, nullable=False)
-	email = db.Column(db.String(150), unique=True, nullable=False)
 	date_joined = db.Column(db.DateTime, default=datetime.utcnow)
 	date_last_login = db.Column(db.DateTime, default=datetime.utcnow)
 	role = db.Column(db.Integer, default=R_MEMBER)
-	level = db.Column(db.SmallInteger, default=0)
+	status = db.Column(db.SmallInteger, default=S_UNACTIVE)
 
+	email = db.Column(db.String(150))
 	sex = db.Column(db.SmallInteger, default=S_MALE)
 	birth = db.Column(db.Date)
 	job = db.Column(db.String(30))
@@ -31,6 +35,7 @@ class User(db.Model):
 	date_last_check_in = db.Column(db.DateTime)
 	check_in_days = db.Column(db.Integer, default=0)
 	point = db.Column(db.Integer, default=0)
+	level = db.Column(db.SmallInteger, default=0)
 	money = db.Column(db.Integer, default=0)
 
 	# _QQ_access_token = db.Column('QQ_access_token', db.String(80), unique=True)
@@ -51,6 +56,7 @@ class User(db.Model):
 
 	def is_active(self):
 		return True
+		return self.status == self.S_NORMAL
 
 	def is_anonymous(self):
 		return False
@@ -77,7 +83,11 @@ class User(db.Model):
 		db.session.commit()
 
 	def get_bbs_posts(self):
-		return self.bbs_post.filter_by(seen=1).order_by('ctime desc')
+		from .bbs import Bbs_post
+		obj = self.bbs_post.filter_by(seen=1).order_by(Bbs_post.ctime.desc())
+		if self != g.user:
+			obj = obj.filter_by(is_anony=0)
+		return obj
 
 	def get_cmts(self, Post):
 		from .cmt import Cmt
@@ -86,6 +96,8 @@ class User(db.Model):
 				.join(Post, db.and_(Cmt.sid==Post.id, Cmt.type==Post.CMT_TYPE)) \
 				.filter(Cmt.author==self, Cmt.seen==1, Post.seen==1) \
 				.order_by(Cmt.ctime.desc())
+		if self != g.user:
+			obj = obj.filter(Cmt.is_anony==0, Post.is_anony==0)
 		return obj
 
 class Invite(db.Model):
@@ -116,16 +128,21 @@ class Invite(db.Model):
 		db.session.add(self)
 		db.session.commit()
 
-	def active(self, user, code):
-		invite = self.query.filter_by(code=code).first()
-		if first is not None:
-			invite.utime = datetime.utcnow()
-			invite.status = 1
-			invite.guest_id = user.id
-			db.session.add(invite)
-			db.session.commit()
-			return True
-		return False
+	def active_user(self, user):
+		if self.status == self.S_USED or user.status == User.S_NORMAL:
+			return False
+
+		self.utime = datetime.utcnow()
+		self.status = self.S_USED
+		self.guest_id = user.id
+		user.urlname = self.code
+		user.status = User.S_NORMAL
+		point = Point(User.query.get(self.user_id), Point.E_INVITE)
+		db.session.add(self)
+		db.session.add(user)
+		db.session.add(point)
+		db.session.commit()
+		return True
 
 class Point(db.Model):
 
@@ -133,12 +150,14 @@ class Point(db.Model):
 	E_CHECK_IN = 1
 	E_BBS_POST = 2
 	E_BBS_CMT = 3
+	E_INVITE = 4
 
 	POINTS = [
 		[50, 'start'],
 		[10, 'check-in'],
 		[8, 'bbs_post'],
 		[2, 'bbs_cmt'],
+		[9, 'invite'],
 	]
 
 	LEVEL = [1, 2, 3, 5, 8, 13, 21, 34, 55, 89, 144]
@@ -167,7 +186,8 @@ class Point(db.Model):
 			pass
 		if level > user.level:
 			user.level = level
-			flash('U have just upgraded to level %d' % level, 'message')
+			if user == g.user:
+				flash('U have just upgraded to level %d' % level, 'message')
 		db.session.add(self)
 		db.session.add(user)
 		db.session.commit()

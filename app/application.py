@@ -10,18 +10,18 @@ __all__ = ['create_app']
 
 DEFAULT_APP_NAME = 'app'
 
-DEFAULT_MODULES = (
+DEFAULT_BLUEPRINTS = (
 	(views.site, ''),
 	(views.bbs, '/bbs'),
 	(views.user, '/user'),
 )
 
-def create_app(config=None, app_name=None, modules=None):
+def create_app(config=None, app_name=None, blueprints=None):
 	if app_name is None:
 		app_name = DEFAULT_APP_NAME
 
-	if modules is None:
-		modules = DEFAULT_MODULES
+	if blueprints is None:
+		blueprints = DEFAULT_BLUEPRINTS
 
 	app = Flask(app_name)
 
@@ -33,7 +33,7 @@ def create_app(config=None, app_name=None, modules=None):
 	config_after_handlers(app)
 	config_template_filters(app)
 	config_context_processors(app)
-	config_modules(app, modules)
+	config_blueprints(app, blueprints)
 
 	return app
 
@@ -121,6 +121,6 @@ def config_template_filters(app):
 def config_context_processors(app):
 	pass
 
-def config_modules(app, modules):
-	for module, url_prefix in modules:
-		app.register_module(module, url_prefix=url_prefix)
+def config_blueprints(app, blueprints):
+	for blueprint, url_prefix in blueprints:
+		app.register_blueprint(blueprint, url_prefix=url_prefix)

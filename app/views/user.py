@@ -27,8 +27,6 @@ def info(urlname=''):
 
 	return render_template('user/info.html', X=X)
 
-
-
 @user.route('/posts')
 @user.route('/posts/<int:page>')
 @user.route('/posts/<urlname>')

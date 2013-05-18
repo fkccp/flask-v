@@ -21,9 +21,10 @@
 	{% for post in X.posts %}
 	<li>{{ X.user.nickname }} posted <a target="_blank" href="{{ url_for('bbs.detail', post_id=post.id) }}">{{ post.title }}</a> {{ post.ctime|timesince }}</li>
 	{% endfor %}
-	<li><a href="{{ url_for('user.posts', urlname=X.user.urlname) }}">More</a></li>
+	{% if 5 == X.posts|count %}<li><a href="{{ url_for('user.posts', urlname=X.user.urlname) }}">More</a></li>{% endif %}
 </ul>
 <hr>
+<h4>Cmts :</h4>
 <ul>
 	{% for cmt in X.cmts %}
 	<li>
@@ -31,7 +32,7 @@
 		<p>{{ cmt.content }}</p>
 	</li>
 	{% endfor %}
-	<li><a href="{{ url_for('user.post_cmts', urlname=X.user.urlname) }}">More</a></li>
+	{% if 5 == X.cmts|count %}<li><a href="{{ url_for('user.post_cmts', urlname=X.user.urlname) }}">More</a></li>{% endif %}
 </ul>
 
 {% endblock %}
