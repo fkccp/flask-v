@@ -1,4 +1,5 @@
 {% extends 'user/layout.html' %}
+{% from 'macros/_pager.html' import render_pager %}
 {% set user_curr_tab = "point" %}
 
 {% block user_main %}
@@ -8,7 +9,7 @@
 		<th>Point</th>
 		<th>Ctime</th>
 	</tr>
-	{% for point in X.points %}
+	{% for point in X.points.items %}
 	<tr>
 		<td>{{ point.event|pointevent }}</td>
 		<td>{{ point.point }}</td>
@@ -16,4 +17,5 @@
 	</tr>
 	{% endfor %}
 </table>
+{{ render_pager(X.points, X.pager_url) }}
 {% endblock %}

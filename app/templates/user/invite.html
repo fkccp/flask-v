@@ -1,4 +1,5 @@
 {% extends 'user/layout.html' %}
+{% from 'macros/_pager.html' import render_pager %}
 {% set user_curr_tab = "invite" %}
 
 {% block user_main %}
@@ -12,7 +13,7 @@
 		<th>Utime</th>
 		<th>User</th>
 	</tr>
-	{% for invite in X.invites %}
+	{% for invite in X.invites.items %}
 	<tr>
 		<td>{{ invite.code }}</td>
 		<td>{{ invite.ctime|timesince }}</td>
@@ -22,4 +23,5 @@
 	</tr>
 	{% endfor %}
 </table>
+{{ render_pager(X.invites, X.pager_url) }}
 {% endblock %}

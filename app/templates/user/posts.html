@@ -8,7 +8,6 @@
 	{% for post in X.posts.items %}
 	<li>{{ X.user.nickname }} posted <a target="_blank" href="{{ url_for('bbs.detail', post_id=post.id) }}">{{ post.title }}</a> {{ post.ctime|timesince }}</li>
 	{% endfor %}
-	<li><a href="{{ url_for('user.posts', urlname=X.user.urlname) }}">More</a></li>
 </ul>
 
 <div>{{ render_pager(X.posts, X.pager_url) }}</div>

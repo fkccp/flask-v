@@ -101,8 +101,11 @@ class User(db.Model):
 			obj = obj.filter(Cmt.is_anony==0, Post.is_anony==0)
 		return obj
 
-	def msg_count(self):
-		return self.msg.count()
+	def get_msg(self, unread=True):
+		obj = self.msg.order_by(Msg.status.asc()).order_by(Msg.ctime.desc())
+		if unread:
+			obj = obj.filter_by(status=Msg.S_UNREAD)
+		return obj
 
 class Invite(db.Model):
 
@@ -141,10 +144,14 @@ class Invite(db.Model):
 		self.guest_id = user.id
 		user.urlname = self.code
 		user.status = User.S_NORMAL
-		point = Point(User.query.get(self.uid), Point.E_INVITE)
+		inviter = User.query.get(self.uid)
+		point = Point(inviter, Point.E_INVITE)
 		db.session.add(self)
 		db.session.add(user)
 		db.session.add(point)
+
+		Msg(uid=self.uid, content=render_template('msg/invite.html', user=user, inviter=inviter)).send()
+
 		db.session.commit()
 		return True
 
@@ -164,7 +171,7 @@ class Point(db.Model):
 		[9, 'invite'],
 	]
 
-	LEVEL = [1, 2, 3, 5, 8, 13, 21, 34, 55, 89, 144]
+	LEVEL = [0, 1, 2, 3, 5, 8, 13, 21, 34, 55, 89, 144]
 	LEVEL_RATE = 50
 
 	id = db.Column(db.Integer, primary_key=True)
@@ -190,8 +197,7 @@ class Point(db.Model):
 			pass
 		if level > user.level:
 			user.level = level
-			if user == g.user:
-				flash('U have just upgraded to level %d' % level, 'message')
+			Msg(uid=user.id, content='U have just upgraded to level %d' % level).send()
 		db.session.add(self)
 		db.session.add(user)
 		db.session.commit()

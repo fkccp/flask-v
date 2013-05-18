@@ -10,3 +10,5 @@ html {background-color: #eef;}
 #tabs {background-color: #fff;width: 100%;float: left;}
 #header_menu {width: 100%; float: left;}
 #header_menu li , #tabs li {float: left;margin-right: 10px;}
+
+.unread {font-weight: bolder;}

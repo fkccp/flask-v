@@ -18,9 +18,19 @@ def setting():
 	return render_template('user/setting.html', X=X)
 
 @user.route('/msg')
-@user.route('/msg/<read>')
-def msg(read='unread'):
-	return 'msg'
+@user.route('/msg/<int:page>')
+def msg(page=1):
+	X = {'msgs': g.user.get_msg(unread=False).paginate(page, per_page=20) , 'user':g.user, 'S_UNREAD': Msg.S_UNREAD}
+	X['pager_url'] = lambda page: url_for('msg', page=page)
+	return render_template('user/msg.html', X=X)
+
+@user.route('/mark_as_read')
+def mark_as_read():
+	for msg in g.user.msg:
+		msg.status = Msg.S_READ
+		db.session.add(msg)
+	db.session.commit()
+	return redirect(url_for('msg'))
 
 @user.route('/info')
 @user.route('/info/<urlname>')
@@ -62,9 +72,11 @@ def get_user(urlname):
 	return u
 
 @user.route('/invite')
-def invite():
-	invites = Invite.query.filter_by(uid=g.user.id).order_by(Invite.ctime.desc()).all()
+@user.route('/invite/<int:page>')
+def invite(page=1):
+	invites = Invite.query.filter_by(uid=g.user.id).order_by(Invite.ctime.desc()).paginate(page=page, per_page=20)
 	X = {'invites': invites, 'user': g.user}
+	X['pager_url'] = lambda page: url_for('invite', page=page)
 	return render_template('user/invite.html', X=X)
 
 @user.route('/gen_invite')
@@ -73,8 +85,10 @@ def gen_invite():
 	return redirect(url_for('invite'))
 
 @user.route('/point')
-def point():
-	points = Point.query.filter_by(uid=g.user.id).order_by(Point.ctime.desc()).all()
+@user.route('/point/<int:page>')
+def point(page=1):
+	points = Point.query.filter_by(uid=g.user.id).order_by(Point.ctime.desc()).paginate(page, per_page=20)
 	X = {'points': points, 'user': g.user}
+	X['pager_url'] = lambda page: url_for('point', page=page)
 
 	return render_template('user/point.html', X=X)

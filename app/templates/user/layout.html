@@ -8,6 +8,7 @@
 	<li>{{ tabbed_link(user_curr_tab, 'posts', 'Posts', url_for('user.posts', urlname=X.user.urlname)) }}</li>
 	<li>{{ tabbed_link(user_curr_tab, 'post_cmts', 'Post_cmts', url_for('user.post_cmts', urlname=X.user.urlname)) }}</li>
 	{% if X.user == g.user %}
+	<li>{{ tabbed_link(user_curr_tab, 'msg', 'Msg', url_for('user.msg')) }}</li>
 	<li>{{ tabbed_link(user_curr_tab, 'point', 'Point', url_for('user.point')) }}</li>
 	<li>{{ tabbed_link(user_curr_tab, 'invite', 'Invite', url_for('user.invite')) }}</li>
 	<li>{{ tabbed_link(user_curr_tab, 'setting', 'Setting', url_for('user.setting')) }}</li>
