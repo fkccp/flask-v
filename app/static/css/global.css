@@ -12,3 +12,4 @@ html {background-color: #eef;}
 #header_menu li , #tabs li {float: left;margin-right: 10px;}
 
 .unread {font-weight: bolder;}
+blockquote {border-left: 5px solid #aaa;padding-left: 5px;}

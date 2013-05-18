@@ -8,7 +8,7 @@
 	{% for cmt in X.post_cmts.items %}
 	<li>
 		{{ X.user.nickname }} replied <a target="_blank" href="{{ url_for('bbs.detail', post_id=cmt.sid, _anchor='cmt_%d'%cmt.id) }}">{{ cmt.title }}</a> {{ cmt.ctime|timesince }} :
-		<p>{{ cmt.content }}</p>
+		<p>{{ cmt.content|safe }}</p>
 	</li>
 	{% endfor %}
 </ul>

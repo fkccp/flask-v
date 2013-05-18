@@ -6,9 +6,12 @@ from app.models import Cmt, Point, Msg
 def f_cmt(obj):
 	cmt_form = CmtForm()
 	type = Cmt.get_type(obj)
+	content = cmt_form.content.data
+	pid = cmt_form.pid.data
 
 	if cmt_form.validate_on_submit():	
-		cmt = Cmt(content = cmt_form.content.data,
+		cmt = Cmt(content = content,
+			pid = pid,
 			is_anony = cmt_form.is_anony.data,
 			author = g.user,
 			type=type,
@@ -19,7 +22,9 @@ def f_cmt(obj):
 		db.session.commit()
 
 		# msg
-		if obj.author != g.user:
+		if pid > 0 and cmt.reply(obj):
+			pass
+		elif obj.author != g.user:
 			Msg(uid = obj.author.id, content=render_template('msg/cmt.html', cmt=cmt, obj=obj)).send()
 
 		point = Point(g.user, Point.E_BBS_CMT).get_point()

@@ -27,8 +27,9 @@ def msg(page=1):
 @user.route('/mark_as_read')
 def mark_as_read():
 	for msg in g.user.msg:
-		msg.status = Msg.S_READ
-		db.session.add(msg)
+		if msg.status != Msg.S_READ:
+			msg.status = Msg.S_READ
+			db.session.add(msg)
 	db.session.commit()
 	return redirect(url_for('msg'))
 

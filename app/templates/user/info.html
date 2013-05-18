@@ -31,7 +31,7 @@
 	{% for cmt in X.cmts %}
 	<li>
 		{{ X.user.nickname }} replied <a target="_blank" href="{{ url_for('bbs.detail', post_id=cmt.sid, _anchor='cmt_%d'%cmt.id) }}">{{ cmt.title }}</a> {{ cmt.ctime|timesince }} :
-		<p>{{ cmt.content }}</p>
+		<p>{{ cmt.content|safe }}</p>
 	</li>
 	{% endfor %}
 	{% if 5 == X.cmts|count %}<li><a href="{{ url_for('user.post_cmts', urlname=X.user.urlname) }}">More</a></li>{% endif %}

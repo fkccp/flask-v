@@ -19,6 +19,17 @@ class Cmt(db.Model):
 
 	user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
 
+	def __init__(self, content, pid, *args, **kwargs):
+		cnt = ''
+		if pid > 0:
+			reply = Cmt.query.get(pid)
+			if reply is not None:
+				cnt += '<blockquote>%s</blockquote>' % reply.content
+				self.reply_cmt = reply
+		cnt += content
+		self.content = cnt
+		super(Cmt, self).__init__(*args, **kwargs)
+
 	liker = db.relationship('User',
 		secondary = cmt_like,
 		primaryjoin = (cmt_like.c.cmt_id == id),
@@ -47,3 +58,11 @@ class Cmt(db.Model):
 
 	def has_liked_by(self, user):
 		return self.liker.filter(cmt_like.c.user_id == user.id).count() > 0
+
+	def reply(self, obj):
+		if self.reply_cmt is not None and self.reply_cmt.user_id != self.user_id:
+			from .user import Msg
+			Msg(uid=self.reply_cmt.user_id, content=render_template('msg/reply.html', obj=obj, cmt=self)).send()
+			return True
+
+		return False
