@@ -11,6 +11,7 @@ class Cmt(db.Model):
 	content = db.Column(db.Text)
 	ctime = db.Column(db.DateTime, default=datetime.utcnow)
 	sid = db.Column(db.Integer)
+	pid = db.Column(db.Integer)
 	type = db.Column(db.SmallInteger)
 	n_liked = db.Column(db.Integer, default=0)
 	is_anony = db.Column(db.Boolean, default=False)
@@ -24,7 +25,10 @@ class Cmt(db.Model):
 		if pid > 0:
 			reply = Cmt.query.get(pid)
 			if reply is not None:
-				cnt += '<blockquote>%s</blockquote>' % reply.content
+				p = re.compile('<blockquote>(.*?)</blockquote>')
+				cnt = '<blockquote><a href="#cmt_%d">%s</a>: %s</blockquote>' % (reply.id,
+					reply.author.nickname if not reply.is_anony else reply.author.anonyname,
+					p.sub('', reply.content))
 				self.reply_cmt = reply
 		cnt += content
 		self.content = cnt

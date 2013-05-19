@@ -40,6 +40,7 @@ class User(db.Model):
 
 	# _QQ_access_token = db.Column('QQ_access_token', db.String(80), unique=True)
 	_QQ_openid = db.Column('QQ_openid', db.String(80), unique=True)
+	_QQ_info = db.Column('QQ_info', db.Text)
 
 	bbs_post = db.relationship('Bbs_post', backref='author', lazy='dynamic')
 	cmt = db.relationship('Cmt', backref='author', lazy='dynamic')
