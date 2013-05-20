@@ -1,7 +1,13 @@
 {% macro render_post(post) %}
-<div>
-	<h2><a href="{{ url_for('detail', post_id=post.id) }}">{{ post.title }}</a></h2>
-	<p><a href="{{ url_for('index', nodename=post.node.name) }}">{{ post.node.name }}({{ post.node.n_post }})</a></p>
+<div class="arts">
+	<img src="/static/img/avatar.png" alt="">
+	<div>
+		<p>
+			<a href="{{ url_for('user.info', urlname=post.author.urlname) }}">{{ post.author.nickname }}</a> posted {{ post.ctime|timesince }}
+			<span class="statis">{{ post.n_cmt }} / {{post.n_visited}}</span>
+		</p>
+		<p><a href="{{ url_for('detail', post_id=post.id) }}">{{ post.title }}</a></p>
+		<p><a href="{{ url_for('index', nodename=post.node.name) }}">{{ post.node.name }}({{ post.node.n_post }})</a></p>
+	</div>
 </div>
-<hr>
 {% endmacro %}

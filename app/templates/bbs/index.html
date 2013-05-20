@@ -1,9 +1,15 @@
 {% extends 'bbs/layout.html' %}
 {% from 'macros/_bbs.html' import render_post %}
 
-{% block bbs_main %}
-<a href="{{ url_for('add', nodename=X.nodename) }}">ADD</a>
+{% block bc %}
+<a href="{{ url_for('bbs.index') }}">Index page</a>
+{% if X.nodename %}
+&gt; {{ X.nodename }}
+{% endif %}
+<a href="{{ url_for('add', nodename=X.nodename) }}" class="bbs_add_entry">ADD</a>
+{% endblock %}
 
+{% block bbs_main %}
 {% for post in X.posts %}
 {% if loop.index0 < X.per_page %}
 {{ render_post(post) }}
@@ -11,7 +17,6 @@
 {% endfor %}
 
 {% if X.posts|length > X.per_page %}
-<a href="{{ X.pager_url(2) }}">Next page</a>
+<div id="pager"><a href="{{ X.pager_url(2) }}">Next page</a></div>
 {% endif %}
-
 {% endblock %}

@@ -1,0 +1,12 @@
+{% macro right_user(user) %}
+<div id="right_user">
+	<img src="/static/img/avatar.png" alt="">
+	<div>
+		<a href="{{ url_for('user.info', urlname=user.urlname) }}">{{ user.nickname }}</a><br>
+		{% if user == g.user %}
+		<a href="{{ url_for('user.msg') }}">Msg({{ user.get_msg().count() }})</a><br>
+		<a href="{{ url_for('user.point') }}">Point({{ user.point }})</a>
+		{% endif %}
+	</div>
+</div>
+{% endmacro %}

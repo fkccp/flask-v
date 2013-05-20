@@ -1,35 +1,33 @@
 {% macro render_cmt(cmt_obj) %}
 {% from 'macros/_forms.html' import render_form %}
 
-<hr>
 <p>Total : {{ cmt_obj.list.count() }}</p>
-<div>
+<div id="cmt_list">
 	{% for cmt in cmt_obj.list.all() %}
-	<div id="cmt_{{ cmt.id }}">
-		[{{ loop.index|floorsign }}]
-		{% if cmt.is_anony %}
+	<img class="avatar" src="/static/img/avatar.png" alt="">
+	<div class="cmt_item" id="cmt_{{ cmt.id }}">
+		<p>{% if cmt.is_anony %}
 		<span>{{ cmt.author.anonyname }}</span>
 		{% else %}
 		<a href="{{ url_for('user.info', urlname=cmt.author.urlname) }}">{{ cmt.author.nickname }}</a>
 		{% endif %}
-		:{{ cmt.ctime|timesince }}
+		:{{ cmt.ctime|timesince }}</p>
 		<p>{{ cmt.content|safe }}</p>
 		<p>
+			[{{ loop.index|floorsign }}]
 			{% if g.user != cmt.author %}
 			<form action="{{ url_for('site.cmt_like', cmt_id=cmt.id) }}" method="post">
 				{{ X.act_form.hidden_tag() }}
 				<input type="submit" value="{% if g.user in  cmt.liker %}Unlike{% else %}Like{% endif %}">
 			</form>
 			{% endif %}
-			<span>Like : {{ cmt.n_liked }}</span>
+			<span>Like({{ cmt.n_liked }})</span>
 			<a href="javascript:;" class="cmt_reply">Reply</a>
 		</p>
 	</div>
-	<hr>
 	{% endfor %}
 </div>
 
-<script></script>
-
+<p>Add your opinions:</p>
 <div>{{ render_form(cmt_obj.form) }}</div>
 {% endmacro %}

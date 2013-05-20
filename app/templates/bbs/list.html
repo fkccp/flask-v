@@ -2,6 +2,13 @@
 {% from 'macros/_bbs.html' import render_post %}
 {% from 'macros/_pager.html' import render_pager %}
 
+{% block bc %}
+<a href="{{ url_for('bbs.index') }}">Index page</a>
+{% if X.nodename %}
+&gt; <a href="{{ url_for('bbs.index', nodename=X.nodename) }}">{{ X.nodename }}</a>
+{% endif %}
+<a href="{{ url_for('add', nodename=X.nodename) }}" class="bbs_add_entry">ADD</a>
+{% endblock %}
 
 {% block bbs_main %}
 <a href="{{ url_for('add', nodename=X.nodename) }}">ADD</a>

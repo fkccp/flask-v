@@ -9,10 +9,7 @@
 	{% block js %}{% endblock %}
 </head>
 <body>
-	<div id="container">
-		{% block content %}{% endblock %}
-	</div>
-
+	{% block content %}{% endblock %}
 	<ul id="flash">
 		{% for status, message in get_flashed_messages(True) %}
 		<li class="{{ status }}">{{ message }}</li>

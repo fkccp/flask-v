@@ -1,8 +1,14 @@
 {% extends 'bbs/layout.html' %}
 {% from 'macros/_cmt.html' import render_cmt with context %}
 
+{% block bc %}
+<a href="{{ url_for('bbs.index') }}">Index page</a> &gt;
+<a href="{{ url_for('bbs.index', nodename=X.post.node.name) }}">{{ X.post.node.name }}</a> &gt;
+{{ X.post.title }}
+{% endblock %}
+
 {% block bbs_main %}
-<h1>{{ X.post.title }}</h1>
+<h3>{{ X.post.title }}</h3>
 <p>
 	{% if X.post.is_anony %}
 	{{ X.post.author.anonyname }}
@@ -29,7 +35,7 @@
 	<input type="submit" value="{% if g.user in  X.post.liker %}Unlike{% else %}Like{% endif %}" />
 </form>
 {% endif %}
-{{ X.post.n_liked }}
+Liked({{ X.post.n_liked }})
 
 {% if X.post.author != g.user %}
 <form action="{{ url_for('action', type='mark', post_id=X.post.id) }}" method="post">
@@ -37,12 +43,17 @@
 	<input type="submit" value="{% if g.user in X.post.marker %}Unmark{% else %}Mark{% endif %}" />
 </form>
 {% endif %}
-{{ X.post.n_marked }}
+Marked({{ X.post.n_marked }})
 
 {% if X.post.author == g.user %}
 <a href="{{ url_for('append', post_id=X.post.id) }}">append</a>
 {% endif %}
 
 <div>{{ render_cmt(X.cmt) }}</div>
+{% endblock %}
 
+
+{% from 'macros/_right.html' import right_user with context %}
+{% block right %}
+{{ right_user(X.post.author) }}
 {% endblock %}

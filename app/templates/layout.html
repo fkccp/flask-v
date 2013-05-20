@@ -5,18 +5,27 @@
 {% block content %}
 <div id="header">
 	<ul id="header_menu">
+		<li><a href="">LOGO</a></li>
 		<li>{{ tabbed_link(header_curr_tab, 'index', 'Index', url_for('site.index')) }}</li>
 		<li>{{ tabbed_link(header_curr_tab, 'bbs', 'Bbs', url_for('bbs.index')) }}</li>
 		<li>{{ tabbed_link(header_curr_tab, 'user', g.user.nickname, url_for('user.info')) }}</li>
 		<li><a href="{{ url_for('user.msg') }}">Msg({{ g.user.get_msg().count() }})</a></li>
 		<li><a href="{{ url_for('site.logout') }}">Logout</a></li>
 	</ul>
+	<div class="clear"></div>
 </div>
-
-<div id="bc">{% block bc %}{% endblock %}</div>
-
-<div id="main">{% block main %}{% endblock %}</div>
-<hr>
-<div id="footer">Footer</div>
+<div id="container">
+	<div id="main">
+		<div id="bc">{% block bc %}bc{% endblock %}</div>
+		{% block main %}{% endblock %}</div>
+	<div id="right">
+		{% block right %}
+			{% from 'macros/_right.html' import right_user with context %}
+			{{ right_user(g.user) }}
+		{% endblock %}
+	</div>
+	<div class="clear"></div>
+	<div id="footer">Footer</div>
+</div>
 
 {% endblock %}
