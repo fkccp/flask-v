@@ -55,18 +55,14 @@ def connect(provider='qq'):
 @site.route('/connect/callback/<provider>')
 def connect_callback(provider='qq'):
 	client = QQLogin()
-	code = client.login_callback(request)
-	if code is None:
+	backinfo = client.login_callback(request)
+	if backinfo is None:
 		abort(401)
-	else:
-		print ' --- code : ', code
 
-	# user = User.query.get(1)
-	# user._QQ_openid = code
-	# db.session.add(user)
-	# db.session.commit()
+	print backinfo
+	user = User.query.filter_by(_QQ_openid=backinfo['openid']).first()
+	if user is not None:
+		login_user(user, True)
+		return redirect(request.args.get('next') or url_for('bbs.index'))
 
-	user = User.query.filter_by(_QQ_openid=code).first()
-
-	login_user(user, True)
-	return redirect(request.args.get('next') or url_for('bbs.index'))
+	user = User()

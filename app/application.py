@@ -50,10 +50,10 @@ def config_logging(app):
 	if app.debug or app.testing:
 		return
 
-	formatter = logging.Formtter(
+	formatter = logging.Formatter(
 		'%(asctime)s %(levelname)s: %(message)s [in %(pathname)s:%(lineno)d]')
 
-	debug_log = ps.path.join(app.root_path, app.config['DEBUG_LOG'])
+	debug_log = os.path.join(app.root_path, app.config['DEBUG_LOG'])
 	debug_file_handler = RotatingFileHandler(debug_log, maxBytes=100000, backupCount=10)
 	debug_file_handler.setLevel(logging.DEBUG)
 	debug_file_handler.setFormatter(formatter)

@@ -1,6 +1,7 @@
 import random
 import urllib
 import urllib2
+import json
 from flask import session
 
 class QQLogin(object):
@@ -58,9 +59,14 @@ class QQLogin(object):
 		}
 		userinfo_url = self.get_user_info_url + '?' + urllib.urlencode(args)
 		res = self.get(userinfo_url)
-		print ' -- res : userinfo : ', res
+		userinfo = json.loads(res)
 
-		return (access_token, openid)
+		return {'access_token': access_token, 'openid': openid, 'userinfo': userinfo}
 
 	def get(self, url):
 		return urllib2.urlopen(url).read()
+
+
+
+
+

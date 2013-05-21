@@ -5,8 +5,6 @@
 	<title>{% block title %}index{% endblock %} - vvv</title>
 	<link rel="stylesheet" href="{{ url_for('.static', filename='css/global.css') }}">
 	{% block css %}{% endblock %}
-	<script src="{{ url_for('.static', filename='js/base.js') }}"></script>
-	{% block js %}{% endblock %}
 </head>
 <body>
 	{% block content %}{% endblock %}
@@ -16,4 +14,6 @@
 		{% endfor %}
 	</ul>
 </body>
+<script src="{{ url_for('.static', filename='js/base.js') }}"></script>
+{% block js %}{% endblock %}
 </html>

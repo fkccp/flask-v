@@ -31,6 +31,8 @@ class User(db.Model):
 	birth = db.Column(db.Date)
 	job = db.Column(db.String(30))
 	sign = db.Column(db.String(250))
+	home_pos = db.Column(db.String(50))
+	live_pos = db.Column(db.String(50))
 
 	date_last_check_in = db.Column(db.DateTime)
 	check_in_days = db.Column(db.Integer, default=0)

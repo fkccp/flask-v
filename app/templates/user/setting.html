@@ -3,4 +3,15 @@
 
 {% block user_main %}
 {{ render_form(X.form) }}
+
+<div id="setting_map"></div>
+{% endblock %}
+
+{% block js %}
+<script src="http://map.soso.com/api/v2/main.js"></script>
+<script src="/static/js/map.js"></script>
+<script>
+	document.getElementById('home_pos').onclick = function(){init(this)}
+	document.getElementById('live_pos').onclick = function(){init(this)}
+</script>
 {% endblock %}
