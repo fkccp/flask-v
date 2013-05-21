@@ -110,6 +110,18 @@ class User(db.Model):
 			obj = obj.filter_by(status=Msg.S_UNREAD)
 		return obj
 
+	def avatar(self, is_anony, width=50):
+		if is_anony:
+			return '<img class="avatar" src="/static/img/avatar.png" width="%d" height="%d">' % (width, width)
+		else:
+			return '<img class="avatar" src="/static/img/avatar.png" width="%d" height="%d">' % (width, width)
+
+	def name(self, is_anony):
+		if is_anony:
+			return self.anonyname
+		else:
+			return '<a href="%s">%s</a>' % (url_for('user.info', urlname=self.urlname), self.nickname)
+
 class Invite(db.Model):
 
 	# status

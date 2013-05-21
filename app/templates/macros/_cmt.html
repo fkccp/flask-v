@@ -1,17 +1,14 @@
 {% macro render_cmt(cmt_obj) %}
 {% from 'macros/_forms.html' import render_form %}
 
+{% set cmt_total = cmt_obj.list.count() %}
+{% if cmt_total %}
 <p>Total : {{ cmt_obj.list.count() }}</p>
 <div id="cmt_list">
 	{% for cmt in cmt_obj.list.all() %}
-	<img class="avatar" src="/static/img/avatar.png" alt="">
+	{{ cmt.author.avatar(cmt.is_anony)|safe }}
 	<div class="cmt_item" id="cmt_{{ cmt.id }}">
-		<p>{% if cmt.is_anony %}
-		<span>{{ cmt.author.anonyname }}</span>
-		{% else %}
-		<a href="{{ url_for('user.info', urlname=cmt.author.urlname) }}">{{ cmt.author.nickname }}</a>
-		{% endif %}
-		:{{ cmt.ctime|timesince }}</p>
+		<p>{{ cmt.author.name(cmt.is_anony)|safe }}:{{ cmt.ctime|timesince }}</p>
 		<p>{{ cmt.content|safe }}</p>
 		<p>
 			[{{ loop.index|floorsign }}]
@@ -27,7 +24,10 @@
 	</div>
 	{% endfor %}
 </div>
-
+{% else %}
+暂无评论
+{% endif %}
+<hr>	
 <p>Add your opinions:</p>
 <div>{{ render_form(cmt_obj.form) }}</div>
 {% endmacro %}

@@ -18,23 +18,28 @@
 
 <hr>
 
+{% if X.posts|count %}
 <h4>Posts :</h4>
-<ul>
 	{% for post in X.posts %}
-	<li>{{ X.user.nickname }} posted <a target="_blank" href="{{ url_for('bbs.detail', post_id=post.id) }}">{{ post.title }}</a> {{ post.ctime|timesince }}</li>
+	<p>{{ X.user.nickname }} posted <a target="_blank" href="{{ url_for('bbs.detail', post_id=post.id) }}">{{ post.title }}</a> {{ post.ctime|timesince }}</p>
 	{% endfor %}
-	{% if 5 == X.posts|count %}<li><a href="{{ url_for('user.posts', urlname=X.user.urlname) }}">More</a></li>{% endif %}
-</ul>
+	{% if 5 == X.posts|count %}<p><a href="{{ url_for('user.posts', urlname=X.user.urlname) }}">More</a></p>{% endif %}
+{% else %}
+这位童鞋还没有发表过主题
+{% endif %}
+
 <hr>
+{% if X.cmts|count %}
 <h4>Cmts :</h4>
-<ul>
 	{% for cmt in X.cmts %}
-	<li>
+	<p>
 		{{ X.user.nickname }} replied <a target="_blank" href="{{ url_for('bbs.detail', post_id=cmt.sid, _anchor='cmt_%d'%cmt.id) }}">{{ cmt.title }}</a> {{ cmt.ctime|timesince }} :
 		<p>{{ cmt.content|safe }}</p>
-	</li>
+	</p>
 	{% endfor %}
-	{% if 5 == X.cmts|count %}<li><a href="{{ url_for('user.post_cmts', urlname=X.user.urlname) }}">More</a></li>{% endif %}
-</ul>
+	{% if 5 == X.cmts|count %}<p><a href="{{ url_for('user.post_cmts', urlname=X.user.urlname) }}">More</a></p>{% endif %}
+{% else %}
+这位童鞋还没有留下过评论
+{% endif %}
 
 {% endblock %}

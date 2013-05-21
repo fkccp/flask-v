@@ -8,9 +8,10 @@ class UserSetForm(Form):
 
 	birth = DateField('birth')
 	job = TextField('job')
-	sign = TextAreaField('sign')
 	home_pos = TextField('home pos', id="home_pos")
 	live_pos = TextField('live pos', id="live_pos")
+	sign = TextAreaField('sign')
+	submit = SubmitField('Submit')
 
 	def __init__(self, user, *args, **kwargs):
 		kwargs['obj'] = user

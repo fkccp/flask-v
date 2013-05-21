@@ -1,6 +1,6 @@
 {% macro right_user(user) %}
 <div id="right_user">
-	<img src="/static/img/avatar.png" alt="">
+	{{ user.avatar(0, 100)|safe }}
 	<div>
 		<a href="{{ url_for('user.info', urlname=user.urlname) }}">{{ user.nickname }}</a><br>
 		{% if user == g.user %}

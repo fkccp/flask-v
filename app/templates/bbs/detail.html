@@ -1,5 +1,6 @@
 {% extends 'bbs/layout.html' %}
 {% from 'macros/_cmt.html' import render_cmt with context %}
+{% from 'macros/_forms.html' import render_form %}
 
 {% block bc %}
 <a href="{{ url_for('bbs.index') }}">Index page</a> &gt;
@@ -8,46 +9,40 @@
 {% endblock %}
 
 {% block bbs_main %}
-<h3>{{ X.post.title }}</h3>
+<h2 class="nmnp">{{ X.post.title }}</h2>
 <p>
-	{% if X.post.is_anony %}
-	{{ X.post.author.anonyname }}
-	{% else %}
-	{{ X.post.author.nickname }}
-	{% endif %}
-	 - {{ X.post.ctime|timesince }}
+	[<a href="{{ url_for('index', nodename=X.post.node.name) }}">{{ X.post.node.name }}({{ X.post.node.n_post }})</a>]
+	{{ X.post.author.name(X.post.is_anony)|safe }} - {{ X.post.ctime|timesince }}
 </p>
-<div>{{ X.post.content }}</div>
+<div class="pad5">{{ X.post.content }}</div>
 
 {% for append in X.post.appends %}
-<div class="error">
+<div class="b-yellow">
+	<p>附言添加于{{ append.ctime|timesince }}</p>
 	<p>{{ append.content }}</p>
-	<p>{{ append.ctime|timesince }}</p>
-	<hr>
 </div>
 {% endfor %}
 
-<p><a href="{{ url_for('index', nodename=X.post.node.name) }}">{{ X.post.node.name }}({{ X.post.node.n_post }})</a></p>
+<span class="left">Liked({{ X.post.n_liked }})
+Marked({{ X.post.n_marked }})
+</span>
 
+<span class="right">
 {% if X.post.author != g.user %}
-<form action="{{ url_for('action', type='like', post_id=X.post.id) }}" method="post">
+<form class="left" action="{{ url_for('action', type='like', post_id=X.post.id) }}" method="post">
 	{{ X.act_form.hidden_tag() }}
 	<input type="submit" value="{% if g.user in  X.post.liker %}Unlike{% else %}Like{% endif %}" />
 </form>
-{% endif %}
-Liked({{ X.post.n_liked }})
-
-{% if X.post.author != g.user %}
-<form action="{{ url_for('action', type='mark', post_id=X.post.id) }}" method="post">
+<form class="left" action="{{ url_for('action', type='mark', post_id=X.post.id) }}" method="post">
 	{{ X.act_form.hidden_tag() }}
 	<input type="submit" value="{% if g.user in X.post.marker %}Unmark{% else %}Mark{% endif %}" />
 </form>
+{% else %}
+<a href="{{ url_for('append', post_id=X.post.id) }}">添加附言</a>
 {% endif %}
-Marked({{ X.post.n_marked }})
+</span>
 
-{% if X.post.author == g.user %}
-<a href="{{ url_for('append', post_id=X.post.id) }}">append</a>
-{% endif %}
+<hr class="clear">
 
 <div>{{ render_cmt(X.cmt) }}</div>
 {% endblock %}

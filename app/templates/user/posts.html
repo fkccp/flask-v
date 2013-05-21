@@ -3,13 +3,14 @@
 {% set user_curr_tab = "posts" %}
 
 {% block user_main %}
-<h4>Posts :</h4>
-<ul>
+{% if X.posts.total %}
+<h4 class="nmnp">Posts :</h4>
 	{% for post in X.posts.items %}
-	<li>{{ X.user.nickname }} posted <a target="_blank" href="{{ url_for('bbs.detail', post_id=post.id) }}">{{ post.title }}</a> {{ post.ctime|timesince }}</li>
+	<p>{{ X.user.nickname }} posted <a target="_blank" href="{{ url_for('bbs.detail', post_id=post.id) }}">{{ post.title }}</a> {{ post.ctime|timesince }}</p>
 	{% endfor %}
-</ul>
 
 <div>{{ render_pager(X.posts, X.pager_url) }}</div>
-
+{% else %}
+这位童鞋还没有发表过主题
+{% endif %}
 {% endblock %}

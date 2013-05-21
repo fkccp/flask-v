@@ -14,7 +14,7 @@ def index(nodename='', page=1):
 	else:
 		node = Bbs_node.query.filter_by(name=nodename).first_or_404()
 		post_obj = Bbs_post.query.filter_by(node=node, seen=1).order_by('ctime desc')
-
+	flash('Post succ with getting 8 points')
 	X = {}
 	X['nodename'] = nodename
 	X['pager_url'] = lambda page: url_for('index', page=page, nodename=nodename) if nodename else url_for('index', page=page)

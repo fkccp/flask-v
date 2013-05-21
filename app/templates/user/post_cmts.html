@@ -3,16 +3,18 @@
 {% set user_curr_tab = "post_cmts" %}
 
 {% block user_main %}
-<h4>Post_cmts :</h4>
-<ul>
+{% if X.post_cmts.total %}
+<h4 class="nmnp">Post_cmts :</h4>
 	{% for cmt in X.post_cmts.items %}
-	<li>
+	<p>
 		{{ X.user.nickname }} replied <a target="_blank" href="{{ url_for('bbs.detail', post_id=cmt.sid, _anchor='cmt_%d'%cmt.id) }}">{{ cmt.title }}</a> {{ cmt.ctime|timesince }} :
 		<p>{{ cmt.content|safe }}</p>
-	</li>
+	</p>
 	{% endfor %}
-</ul>
 
 <div>{{ render_pager(X.post_cmts, X.pager_url) }}</div>
+{% else %}
+这位童鞋还没有留下过评论
+{% endif %}
 
 {% endblock %}
