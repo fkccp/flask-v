@@ -1,7 +1,9 @@
+# -*- coding: utf-8 -*-
+
 from .utils import *
 
 class CmtForm(Form):
-	content = TextAreaField('content', validators=[Required()])
-	pid = HiddenField('pid', default=24)
-	is_anony = BooleanField('is_anony', default=False)
-	submit = SubmitField('Submit')
+	content = TextAreaField(u'发表你的评论', validators=[Required(message=u'请输入评论内容')])
+	pid = HiddenField('pid', default=1)
+	is_anony = BooleanField(u'匿名评论', default=False)
+	submit = SubmitField(u'提交')

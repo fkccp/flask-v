@@ -1,26 +1,25 @@
 {% macro render_cmt(cmt_obj) %}
-{% from 'macros/_forms.html' import render_form %}
+{% from 'macros/_forms.html' import render_form , render_like_form with context %}
 
-<div class="pad10 bb">
+<div class="pad10">
 {% set cmt_total = cmt_obj.list.count() %}
 {% if cmt_total %}
-<strong class="bb clear">Total : {{ cmt_obj.list.count() }}</strong><br>
+<strong class="bb clear">{{ cmt_obj.list.count() }}条评论：</strong><br>
 	{% for cmt in cmt_obj.list.all() %}
-	<div class="cmt_item" id="cmt_{{ cmt.id }}">
+	<div class="cmt_item bb" id="cmt_{{ cmt.id }}">
 		{{ cmt.author.avatar(cmt.is_anony)|safe }}
-		<p>{{ cmt.author.name(cmt.is_anony)|safe }}:{{ cmt.ctime|timesince }}</p>
-		<p>{{ cmt.content|safe }}</p>
-		<p>
-			[{{ loop.index|floorsign }}]
-			{% if g.user != cmt.author %}
-			<form action="{{ url_for('site.cmt_like', cmt_id=cmt.id) }}" method="post">
-				{{ X.act_form.hidden_tag() }}
-				<input type="submit" value="{% if g.user in  cmt.liker %}Unlike{% else %}Like{% endif %}">
-			</form>
-			{% endif %}
-			<span class="status">赞({{ cmt.n_liked }})</span>
-			<a href="javascript:;" class="cmt_reply">Reply</a>
-		</p>
+		<div class="cmt_right">
+			<p>{{ cmt.author.name(cmt.is_anony)|safe }} 发表于 {{ cmt.ctime|timesince }}</p>
+			<p>{{ cmt.content|safe }}</p>
+			<div class="status_bar">
+				[{{ loop.index|floorsign }}]
+				<span class="status">赞({{ cmt.n_liked }})</span>
+				<a href="javascript:;" class="cmt_reply">Reply</a>
+				{% if g.user != cmt.author %}
+				{{ render_like_form(X.act_form, url_for('site.cmt_like', cmt_id=cmt.id), cmt.liker, '赞') }}
+				{% endif %}
+			</div>
+		</div>
 	</div>
 	{% endfor %}
 {% else %}
@@ -28,8 +27,5 @@
 {% endif %}
 </div>
 
-<div class="pad10">
-<p>Add your opinions:</p>
-<div>{{ render_form(cmt_obj.form) }}</div>
-</div>
+<div id="cmt_form" class="pad10">{{ render_form(cmt_obj.form) }}</div>
 {% endmacro %}

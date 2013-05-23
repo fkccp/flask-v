@@ -1,6 +1,6 @@
 {% extends 'bbs/layout.html' %}
 {% from 'macros/_cmt.html' import render_cmt with context %}
-{% from 'macros/_forms.html' import render_form %}
+{% from 'macros/_forms.html' import render_like_form with context %}
 
 {% block bc %}
 <a href="{{ url_for('bbs.index') }}">Index page</a> &gt;
@@ -10,10 +10,8 @@
 
 {% block bbs_main %}
 <div class="pad10 bb">
-	<h1 class="p0m0">{{ X.post.title }}</h1>
-	<p>
-		{{ X.post.author.name(X.post.is_anony)|safe }} - {{ X.post.ctime|timesince }}
-	</p>
+	<h2 class="p0m0">{{ X.post.title }}</h2>
+	{{ X.post.author.name(X.post.is_anony)|safe }} 发表于 {{ X.post.ctime|timesince }}
 </div>
 <div class="pad10">{{ X.post.content }}</div>
 
@@ -24,30 +22,24 @@
 </div>
 {% endfor %}
 
-<div class="pad10 bb">
-	<span class="status">赞({{ X.post.n_liked }})</span>
-	<span class="status">收藏({{ X.post.n_marked }})</span>
-
+<div class="status_bar pad10 bb">
+	<span class="left">
+		<span class="status">赞({{ X.post.n_liked }})</span>
+		<span class="status">收藏({{ X.post.n_marked }})</span>
+	</span>
+	
 	<span class="right">
 	{% if X.post.author != g.user %}
-	<form class="left" action="{{ url_for('action', type='like', post_id=X.post.id) }}" method="post">
-		{{ X.act_form.hidden_tag() }}
-		<input type="submit" value="{% if g.user in  X.post.liker %}Unlike{% else %}Like{% endif %}" />
-	</form>
-	<form class="left" action="{{ url_for('action', type='mark', post_id=X.post.id) }}" method="post">
-		{{ X.act_form.hidden_tag() }}
-		<input type="submit" value="{% if g.user in X.post.marker %}Unmark{% else %}Mark{% endif %}" />
-	</form>
+		{{ render_like_form(X.act_form, url_for('action', type='like', post_id=X.post.id), X.post.liker, '赞') }}
+		{{ render_like_form(X.act_form, url_for('action', type='mark', post_id=X.post.id), X.post.marker, '收藏') }}
 	{% else %}
-	<a href="{{ url_for('append', post_id=X.post.id) }}">添加附言</a>
+		<a href="{{ url_for('append', post_id=X.post.id) }}">添加附言</a>
 	{% endif %}
 	</span>
 	<div class="empty-clear"></div>
 </div>
-
 <div>{{ render_cmt(X.cmt) }}</div>
 {% endblock %}
-
 
 {% from 'macros/_right.html' import right_user with context %}
 {% block right %}

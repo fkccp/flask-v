@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 import string, random
 from datetime import datetime
 
@@ -33,7 +35,7 @@ def timesince(dt, default=None):
 	return default
 
 def floorsign(floor=1):
-	return 'Floor %d' % floor
+	return u'%d楼的朋友' % floor
 
 def pointevent(event):
 	from app.models import Point

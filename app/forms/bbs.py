@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 from .utils import *
 
 class BbsAddForm(Form):
@@ -8,6 +10,6 @@ class BbsAddForm(Form):
 	submit = SubmitField('Submit')
 
 class BbsAppendForm(Form):
-	content = TextAreaField('content', validators=[Required()])
+	content = TextAreaField(u'附言内容', validators=[Required(message=u'请输入附言内容')])
 	submit = SubmitField('Submit')
 	

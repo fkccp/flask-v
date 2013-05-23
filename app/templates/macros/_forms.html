@@ -1,22 +1,32 @@
-{% macro render_form(form, action='', submitvalue="Submit") %}
+{% macro render_form(form, action='') %}
 <form action="{{ action }}" method="POST">
 {% for field in form %}
-	{% if field.name == 'csrf_token' or field.type == 'HiddenField' or field.type == "SubmitField" %}
+	{% if field.name == 'csrf_token' or field.type == 'HiddenField' %}
 		{{ field() }}
+	{% elif 'SubmitField' == field.type %}
+		<p class="clear">{{ field() }}</p>
 	{% elif 'BooleanField' == field.type or 'RadioField' == field.type %}
 		<p class="clear"><span class="bold">{{ field.label }} :</span> {{ field() }}</p>
 	{% else %}
-		<p class="clear bold">{{ field.label }} :</p>
-		<p>{{ field() }}
+		<p class="clear"><strong>{{ field.label }} :</strong></p>
+		<p class="clear">{{ field() }}
 		{% if field.errors %}
 			<ul class="errors">
 				{% for error in field.errors %}
-				<li class="error">{{ error }}</li>
+				<li class="error"> - {{ error }}</li>
 				{% endfor %}
+				<li class="empty-clear"></li>
 			</ul>
 		{% endif %}
 		</p>
 	{% endif %}
 {% endfor %}
+</form>
+{% endmacro %}
+
+{% macro render_like_form(form, action='', sets='', word='') %}
+<form action="{{ action }}" method="post">
+	{{ form.hidden_tag() }}
+	<input class="btn" type="submit" value="{% if g.user in  sets %}取消{{ word }}{% else %}{{ word }}{% endif %}">
 </form>
 {% endmacro %}
