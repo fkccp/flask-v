@@ -10,13 +10,13 @@
 		<li>{{ tabbed_link(header_curr_tab, 'bbs', 'Bbs', url_for('bbs.index')) }}</li>
 		<li>{{ tabbed_link(header_curr_tab, 'user', g.user.nickname, url_for('user.info')) }}</li>
 		<li><a href="{{ url_for('user.msg') }}">Msg({{ g.user.get_msg().count() }})</a></li>
-		<li><a href="{{ url_for('site.logout') }}">Logout</a></li>
+		<li><a href="{{ url_for('site.logout') }}">退出</a></li>
 	</ul>
 	<div class="empty-clear"></div>
 </div>
 <div id="container">
-	<div id="bc">{% block bc %}bc{% endblock %}</div>
 	<div id="main">
+		<div id="bc">{% block bc %}bc{% endblock %}<div class="empty-clear"></div></div>
 		{% block main %}{% endblock %}</div>
 	<div id="right">
 		{% block right %}

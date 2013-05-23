@@ -1,13 +1,13 @@
 {% macro render_cmt(cmt_obj) %}
 {% from 'macros/_forms.html' import render_form %}
 
+<div class="pad10 bb">
 {% set cmt_total = cmt_obj.list.count() %}
 {% if cmt_total %}
-<p>Total : {{ cmt_obj.list.count() }}</p>
-<div id="cmt_list">
+<strong class="bb clear">Total : {{ cmt_obj.list.count() }}</strong><br>
 	{% for cmt in cmt_obj.list.all() %}
-	{{ cmt.author.avatar(cmt.is_anony)|safe }}
 	<div class="cmt_item" id="cmt_{{ cmt.id }}">
+		{{ cmt.author.avatar(cmt.is_anony)|safe }}
 		<p>{{ cmt.author.name(cmt.is_anony)|safe }}:{{ cmt.ctime|timesince }}</p>
 		<p>{{ cmt.content|safe }}</p>
 		<p>
@@ -18,16 +18,18 @@
 				<input type="submit" value="{% if g.user in  cmt.liker %}Unlike{% else %}Like{% endif %}">
 			</form>
 			{% endif %}
-			<span>Like({{ cmt.n_liked }})</span>
+			<span class="status">赞({{ cmt.n_liked }})</span>
 			<a href="javascript:;" class="cmt_reply">Reply</a>
 		</p>
 	</div>
 	{% endfor %}
-</div>
 {% else %}
-暂无评论
+<strong class="bb">暂无评论</strong>
 {% endif %}
-<hr>	
+</div>
+
+<div class="pad10">
 <p>Add your opinions:</p>
 <div>{{ render_form(cmt_obj.form) }}</div>
+</div>
 {% endmacro %}

@@ -9,40 +9,41 @@
 {% endblock %}
 
 {% block bbs_main %}
-<h2 class="nmnp">{{ X.post.title }}</h2>
-<p>
-	[<a href="{{ url_for('index', nodename=X.post.node.name) }}">{{ X.post.node.name }}({{ X.post.node.n_post }})</a>]
-	{{ X.post.author.name(X.post.is_anony)|safe }} - {{ X.post.ctime|timesince }}
-</p>
-<div class="pad5">{{ X.post.content }}</div>
+<div class="pad10 bb">
+	<h1 class="p0m0">{{ X.post.title }}</h1>
+	<p>
+		{{ X.post.author.name(X.post.is_anony)|safe }} - {{ X.post.ctime|timesince }}
+	</p>
+</div>
+<div class="pad10">{{ X.post.content }}</div>
 
 {% for append in X.post.appends %}
-<div class="b-yellow">
+<div class="b-yellow pad10 bb">
 	<p>附言添加于{{ append.ctime|timesince }}</p>
 	<p>{{ append.content }}</p>
 </div>
 {% endfor %}
 
-<span class="left">Liked({{ X.post.n_liked }})
-Marked({{ X.post.n_marked }})
-</span>
+<div class="pad10 bb">
+	<span class="status">赞({{ X.post.n_liked }})</span>
+	<span class="status">收藏({{ X.post.n_marked }})</span>
 
-<span class="right">
-{% if X.post.author != g.user %}
-<form class="left" action="{{ url_for('action', type='like', post_id=X.post.id) }}" method="post">
-	{{ X.act_form.hidden_tag() }}
-	<input type="submit" value="{% if g.user in  X.post.liker %}Unlike{% else %}Like{% endif %}" />
-</form>
-<form class="left" action="{{ url_for('action', type='mark', post_id=X.post.id) }}" method="post">
-	{{ X.act_form.hidden_tag() }}
-	<input type="submit" value="{% if g.user in X.post.marker %}Unmark{% else %}Mark{% endif %}" />
-</form>
-{% else %}
-<a href="{{ url_for('append', post_id=X.post.id) }}">添加附言</a>
-{% endif %}
-</span>
-
-<hr class="clear">
+	<span class="right">
+	{% if X.post.author != g.user %}
+	<form class="left" action="{{ url_for('action', type='like', post_id=X.post.id) }}" method="post">
+		{{ X.act_form.hidden_tag() }}
+		<input type="submit" value="{% if g.user in  X.post.liker %}Unlike{% else %}Like{% endif %}" />
+	</form>
+	<form class="left" action="{{ url_for('action', type='mark', post_id=X.post.id) }}" method="post">
+		{{ X.act_form.hidden_tag() }}
+		<input type="submit" value="{% if g.user in X.post.marker %}Unmark{% else %}Mark{% endif %}" />
+	</form>
+	{% else %}
+	<a href="{{ url_for('append', post_id=X.post.id) }}">添加附言</a>
+	{% endif %}
+	</span>
+	<div class="empty-clear"></div>
+</div>
 
 <div>{{ render_cmt(X.cmt) }}</div>
 {% endblock %}
