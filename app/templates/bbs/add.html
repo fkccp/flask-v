@@ -1,5 +1,13 @@
 {% extends 'bbs/layout.html' %}
 
+{% block bc %}
+<a href="{{ url_for('bbs.index') }}">首页</a> ›
+{% if X.nodename %}
+<a href="{{ url_for('bbs.index', nodename=X.nodename) }}">{{ X.nodename }}</a> ›
+{% endif %}
+添加新主题
+{% endblock %}
+
 {% block bbs_main %}
-{{ render_form(X.form) }}
+<div class="pad10">{{ render_form(X.form) }}</div>
 {% endblock %}

@@ -52,7 +52,7 @@ def add(nodename=''):
 
 	if nodename and not form.nodename.data:
 		form.nodename.data = nodename
-	X = {'form': form}
+	X = {'form': form, 'nodename': nodename}
 	return render_template('bbs/add.html', X=X)
 
 @bbs.route('/detail/<int:post_id>', methods=['GET', 'POST'])
