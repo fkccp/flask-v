@@ -2,9 +2,11 @@
 {% from 'macros/_cmt.html' import render_cmt with context %}
 {% from 'macros/_forms.html' import render_like_form with context %}
 
+{% block title %}{{ X.post.title }} - 社区{% endblock %}
+
 {% block bc %}
-<a href="{{ url_for('bbs.index') }}">Index page</a> &gt;
-<a href="{{ url_for('bbs.index', nodename=X.post.node.name) }}">{{ X.post.node.name }}</a> &gt;
+<a href="{{ url_for('bbs.index') }}">首页</a> ›
+<a href="{{ url_for('bbs.index', nodename=X.post.node.name) }}">{{ X.post.node.name }}</a> ›
 {{ X.post.title }}
 {% endblock %}
 
@@ -41,7 +43,9 @@
 <div>{{ render_cmt(X.cmt) }}</div>
 {% endblock %}
 
-{% from 'macros/_right.html' import right_user with context %}
+
 {% block right %}
-{{ right_user(X.post.author) }}
+{% if g.user != X.post.author %}
+<div class="cell">{{ right_user(X.post.author) }}</div>
+{% endif %}
 {% endblock %}

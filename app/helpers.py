@@ -5,32 +5,27 @@ from datetime import datetime
 
 def timesince(dt, default=None):
 	if default is None:
-		default = 'Just now'
+		default = u'刚刚'
 
 	now = datetime.utcnow()
 	diff = now - dt
 
 	periods = (
-		(diff.days / 365, "year", "years"),
-		(diff.days / 30, "month", "months"),
-		(diff.days / 7, "week", "weeks"),
-		(diff.days, "day", "days"),
-		(diff.seconds / 3600, "hour", "hours"),
-		(diff.seconds / 60, "minute", "minutes"),
-		(diff.seconds, "second", "seconds"),
+		(diff.days / 365, u'年'),
+		(diff.days / 30, u'个月'),
+		(diff.days / 7, u'个星期'),
+		(diff.days, u'天'),
+		(diff.seconds / 3600, u'小时'),
+		(diff.seconds / 60, u'分钟'),
+		(diff.seconds, u'秒'),
 	)
 
-	for period, sinular, plural in periods:
+	for period, sinular in periods:
 
 		if not period:
 			continue
 
-		if period == 1:
-			re = '%d %s ago' % (period, sinular)
-		else:
-			re = '%d %s ago' % (period, plural)
-
-		return re
+		return u'%d%s前' % (period, sinular)
 
 	return default
 

@@ -66,3 +66,7 @@ def connect_callback(provider='qq'):
 		return redirect(request.args.get('next') or url_for('bbs.index'))
 
 	user = User()
+
+@site.route('/help')
+def help():
+	return render_template('site/help.html', X=[])

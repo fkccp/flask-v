@@ -3,9 +3,9 @@
 {% set user_curr_tab = "msg" %}
 
 {% block user_main %}
-<a href="{{ url_for('mark_as_read') }}">Mark all as read</a><br>
+<a href="{{ url_for('mark_as_read') }}" class="btn">标记所有为已读</a><br>
 {% for msg in X.msgs.items %}
-<p {% if X.S_UNREAD == msg.status %}class="unread"{% endif %}>{{ msg.content|safe }}</p>
+<p class="bb {% if X.S_UNREAD == msg.status %} unread{% endif %}">{{ msg.content|safe }} - {{ msg.ctime|timesince }}</p>
 {% endfor %}
 {{ render_pager(X.msgs, X.pager_url) }}
 {% endblock %}

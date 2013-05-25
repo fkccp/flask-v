@@ -3,3 +3,10 @@
 {% set header_curr_tab = 'bbs' %}
 
 {% block main %}{% block bbs_main %}{% endblock %}{% endblock %}
+
+{% block title %}
+{% if X.nodename %}
+{{ X.nodename }} -
+{% endif %}
+社区
+{% endblock %}

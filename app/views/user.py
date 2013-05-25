@@ -93,3 +93,17 @@ def point(page=1):
 	X['pager_url'] = lambda page: url_for('point', page=page)
 
 	return render_template('user/point.html', X=X)
+
+@user.route('/top_point')
+@user.route('/top_point/<int:page>')
+def top_point(page=1):
+	X = {'list': []}
+	X['pager_url'] = lambda page: url_for('top_point', page=page)
+	return render_template('user/top_point', page=page)
+
+@user.route('/top_cost')
+@user.route('/top_cost/<int:page>')
+def top_cost(page=1):
+	X = {'list': []}
+	X['pager_url'] = lambda page: url_for('top_point', page=page)
+	return render_template('user/top_point', page=page)

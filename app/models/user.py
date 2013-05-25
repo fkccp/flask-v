@@ -110,7 +110,7 @@ class User(db.Model):
 			obj = obj.filter_by(status=Msg.S_UNREAD)
 		return obj
 
-	def avatar(self, is_anony, width=50):
+	def avatar(self, is_anony=0, width=50):
 		if is_anony:
 			return '<img class="avatar" src="/static/img/avatar.png" width="%d" height="%d">' % (width, width)
 		else:

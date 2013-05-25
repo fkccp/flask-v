@@ -3,21 +3,21 @@
 {% set user_curr_tab = "invite" %}
 
 {% block user_main %}
-<a href="{{ url_for('gen_invite') }}">Generate</a>
+<a href="{{ url_for('gen_invite') }}">生成邀请码</a>
 
 <table border='1'>
 	<tr>
-		<th>Code</th>
-		<th>Ctime</th>
-		<th>Status</th>
-		<th>Utime</th>
-		<th>User</th>
+		<th>邀请码</th>
+		<th>生成时间</th>
+		<th>状态</th>
+		<th>使用时间</th>
+		<th>被邀请用户</th>
 	</tr>
 	{% for invite in X.invites.items %}
 	<tr>
 		<td>{{ invite.code }}</td>
 		<td>{{ invite.ctime|timesince }}</td>
-		<td>{% if invite.status %}Used{% else %}Unused{% endif %}</td>
+		<td>{% if invite.status %}已使用{% else %}未使用{% endif %}</td>
 		<td>{% if invite.status %} {{ invite.utime|timesince }} {% endif %}</td>
 		<td>{% if invite.status %} <a href="{{ url_for('user.info', urlname=invite.guest.urlname) }}">{{ invite.guest.nickname }} {% endif %}</td>
 	</tr>

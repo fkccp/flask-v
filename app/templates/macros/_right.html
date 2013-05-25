@@ -1,12 +1,28 @@
 {% macro right_user(user) %}
-<div id="right_user">
-	{{ user.avatar(0, 100)|safe }}
-	<div>
-		<a href="{{ url_for('user.info', urlname=user.urlname) }}">{{ user.nickname }}</a><br>
-		{% if user == g.user %}
-		<a href="{{ url_for('user.msg') }}">Msg({{ user.get_msg().count() }})</a><br>
-		<a href="{{ url_for('user.point') }}">Point({{ user.point }})</a>
-		{% endif %}
-	</div>
-</div>
+	{% if user == g.user %}
+	<h3>我：</h3>
+	{% else %}
+	<h3>作者：</h3>
+	{% endif %}
+	<p>
+		{{ user.avatar()|safe }}
+		<a class="ml10" href="{{ url_for('user.info', urlname=user.urlname) }}">{{ user.nickname }}</a><br>
+		<span class="ml10">积分 : {{ user.point }}</span><br>
+		<span class="ml10">等级 : {{ user.level }}</span>
+		<div class="empty-clear"></div>
+	</p>
+	{% if user == g.user %}
+	<a href="{{ url_for('user.msg') }}">站内提醒({{ user.get_msg().count() }})</a> |
+	<a href="{{ url_for('user.point') }}">积分({{ user.point }})</a> |
+	<a href="{{ url_for('user.invite') }}">邀请新用户</a>
+	{% endif %}
+	{% if user.sign %}
+	<p class="sign">{{ user.sign }}</p>
+	{% endif %}
+{% endmacro %}
+
+{% macro right_top() %}
+<h3>社区排行榜：</h3>
+<a href="{{ url_for('user.top_point') }}">积分排行榜</a><br>
+<a href="{{ url_for('user.top_cost') }}">消费排行榜</a>
 {% endmacro %}

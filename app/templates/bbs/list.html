@@ -3,14 +3,10 @@
 {% from 'macros/_pager.html' import render_pager %}
 
 {% block bc %}
-<span class="left">
 <a href="{{ url_for('bbs.index') }}">首页</a>
 {% if X.nodename %}
 › <a href="{{ url_for('bbs.index', nodename=X.nodename) }}">{{ X.nodename }}</a>
 {% endif %}
-</span>
-
-<span class="right"><a href="{{ url_for('add', nodename=X.nodename) }}" class="bbs_add_entry">ADD</a></span>
 {% endblock %}
 
 {% block bbs_main %}

@@ -1,31 +1,33 @@
 {% extends 'base.html' %}
 {% from 'macros/_forms.html' import render_form %}
 {% from 'macros/_utils.html' import tabbed_link %}
+{% from 'macros/_right.html' import right_user, right_top with context %}
 
 {% block content %}
 <div id="header">
-	<ul id="header_menu">
-		<li><a href="">LOGO</a></li>
-		<li>{{ tabbed_link(header_curr_tab, 'index', 'Index', url_for('site.index')) }}</li>
-		<li>{{ tabbed_link(header_curr_tab, 'bbs', 'Bbs', url_for('bbs.index')) }}</li>
-		<li>{{ tabbed_link(header_curr_tab, 'user', g.user.nickname, url_for('user.info')) }}</li>
-		<li><a href="{{ url_for('user.msg') }}">Msg({{ g.user.get_msg().count() }})</a></li>
-		<li><a href="{{ url_for('site.logout') }}">退出</a></li>
-	</ul>
-	<div class="empty-clear"></div>
+	<span id="header_menu">
+		<a href="/">LOGO</a>
+		{{ tabbed_link(header_curr_tab, 'index', '首页', url_for('site.index')) }}
+		{{ tabbed_link(header_curr_tab, 'bbs', '社区', url_for('bbs.index')) }}
+		{{ tabbed_link(header_curr_tab, 'user', g.user.nickname, url_for('user.info')) }}
+		<a href="{{ url_for('site.logout') }}">退出</a>
+	</span>
 </div>
 <div id="container">
 	<div id="main">
 		<div id="bc">{% block bc %}bc{% endblock %}<div class="empty-clear"></div></div>
 		{% block main %}{% endblock %}</div>
 	<div id="right">
-		{% block right %}
-			{% from 'macros/_right.html' import right_user with context %}
-			{{ right_user(g.user) }}
-		{% endblock %}
+		<div class="cell"><a href="{{ url_for('bbs.add', nodename=X.nodename) }}">添加新主题</a></div>
+		{% block right %}{% endblock %}
+		<div class="cell">{{ right_user(g.user) }}</div>
+		<div class="cell">{{ right_top() }}</div>
 	</div>
 	<div class="clear"></div>
-	<div id="footer">Footer</div>
+	<div id="footer">
+		&copy; v5snj.com - since 2013.06 |
+		<a href="{{ url_for('site.help') }}">帮助页面</a>
+	</div>
 </div>
 
 {% endblock %}

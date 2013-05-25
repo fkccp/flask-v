@@ -4,12 +4,12 @@
 
 {% block user_main %}
 {% if X.post_cmts.total %}
-<h4 class="nmnp">Post_cmts :</h4>
+<h2>{{ X.user.nickname }} 发表的评论 :</h2>
 	{% for cmt in X.post_cmts.items %}
-	<p>
-		{{ X.user.nickname }} replied <a target="_blank" href="{{ url_for('bbs.detail', post_id=cmt.sid, _anchor='cmt_%d'%cmt.id) }}">{{ cmt.title }}</a> {{ cmt.ctime|timesince }} :
+	<div>
+		<p class="b-grey">{{ X.user.nickname }} replied <a target="_blank" href="{{ url_for('bbs.detail', post_id=cmt.sid, _anchor='cmt_%d'%cmt.id) }}">{{ cmt.title }}</a> {{ cmt.ctime|timesince }} :</p>
 		<p>{{ cmt.content|safe }}</p>
-	</p>
+	</div>
 	{% endfor %}
 
 <div>{{ render_pager(X.post_cmts, X.pager_url) }}</div>

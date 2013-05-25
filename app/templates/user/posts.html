@@ -4,11 +4,10 @@
 
 {% block user_main %}
 {% if X.posts.total %}
-<h4 class="nmnp">Posts :</h4>
+<h2>{{ X.user.nickname }} 发表的主题 :</h2>
 	{% for post in X.posts.items %}
 	<p>{{ X.user.nickname }} posted <a target="_blank" href="{{ url_for('bbs.detail', post_id=post.id) }}">{{ post.title }}</a> {{ post.ctime|timesince }}</p>
 	{% endfor %}
-
 <div>{{ render_pager(X.posts, X.pager_url) }}</div>
 {% else %}
 这位童鞋还没有发表过主题

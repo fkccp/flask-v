@@ -2,14 +2,10 @@
 {% from 'macros/_bbs.html' import render_post %}
 
 {% block bc %}
-<span class="left">
 <a href="{{ url_for('bbs.index') }}">首页</a>
 {% if X.nodename %}
 › {{ X.nodename }}
 {% endif %}
-</span>
-<a href="{{ url_for('add', nodename=X.nodename) }}" class="right">添加新主题</a>
-<div class="empty-clear"></div>
 {% endblock %}
 
 {% block bbs_main %}

@@ -1,17 +1,18 @@
+# -*- coding: utf-8 -*-
 from .utils import *
 
 class UserSetForm(Form):
-	sex = RadioField('sex', choices=[
-		('1', 'Male'),
-		('0', 'Female')
+	sex = RadioField(u'性别', choices=[
+		('1', u'男生'),
+		('0', u'女生')
 		], default=1)
 
-	birth = DateField('birth')
-	job = TextField('job')
-	home_pos = TextField('home pos', id="home_pos")
-	live_pos = TextField('live pos', id="live_pos")
-	sign = TextAreaField('sign')
-	submit = SubmitField('Submit')
+	birth = DateField(u'生日')
+	job = TextField(u'职业/专业')
+	home_pos = TextField(u'家乡', id="home_pos")
+	live_pos = TextField(u'现居', id="live_pos")
+	sign = TextAreaField(u'个人签名')
+	submit = SubmitField(u'确认修改')
 
 	def __init__(self, user, *args, **kwargs):
 		kwargs['obj'] = user
