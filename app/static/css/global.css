@@ -4,12 +4,12 @@ body, textarea {background: #f6f6f6; line-height: 1.3; overflow-x: hidden;font-s
 
 a {text-decoration: none; color:#00BA53;}
 a:hover {text-decoration: underline;color: #00d35e}
-table {width: 710px; border-collapse: collapse;border-spacing: 0px}
+table {width: 700px; border-collapse: collapse;border-spacing: 0px;margin-bottom: 5px;}
 table td {padding: 1px 5px;}
 textarea {padding-bottom: 10px; width:99%;height: 100px;background: #fff}
 li {float: left;margin-right: 10px; list-style: none}
 h2 {font-size: 20px}
-p, blockquote {margin:0 0 5px 0}
+p, blockquote {margin:0 0 5px 0; line-height: 18px}
 .indent-p p {text-indent: 2em}
 blockquote {border-left: 5px solid #ececec; padding-left: 5px;opacity: 0.4; filter:Alpha(Opacity=40);}
 form {display: inline;}
@@ -20,7 +20,7 @@ form {display: inline;}
 .clear {clear: both}
 .empty-clear {float: none; clear: both;margin: 0;padding: 0;width: 0;height: 0; overflow: hidden;}
 .bold {font-weight: bold}
-.error {color: red}
+.red, .error {color: red}
 .avatar {float: left;}
 .btn, a.btn {padding:0 5px;  cursor: pointer;background-color: #000; color: #fff;border: 0}
 .btn:hover, a.btn:hover {background-color: #fff; color: #000;border: 0; text-decoration: none}
@@ -62,7 +62,8 @@ ul.errors {margin-bottom: 10px;}
 
 #header_menu , #container {width: 960px;margin: 0 auto;}
 #main {float: left; width: 720px; margin-right:10px; background: #fff; box-shadow: 1px 1px 1px #ddd}
-#right {float: right;width: 230px; font-size: 90%}
+#right {float: right;width: 230px}
+#right, #right * {font-size: 95%}
 #right h3 {margin: 0;padding: 0; border-bottom: 1px solid #eee;margin-bottom: 10px}
 #right div.cell {background-color: #fff; padding:10px; margin-bottom: 10px;border: 1px solid #ddd; box-shadow: 1px 1px 1px #ddd}
 #right .sign {margin:5px 0; padding:5px; border:1px solid #e7e7bb; background-color: #ffffd3}
@@ -76,9 +77,12 @@ div.arts span.statis {float: right;}
 .cmt_item {padding:10px 0}
 .cmt_right {margin-left: 60px;}
 
-#setting_map {width: 100%; height: 300px;}
+#bbs_form_content {height:300px;}
+
 
 /* user */
 #user_tabs {background-color: #DBDBFF; height: 18px; overflow: hidden;}
 #user_tabs a {padding: 0 23px; text-align: center;color: #66f}
 #user_tabs a:hover, #user_tabs a.on {background-color: #c8c8ff; color: #4242e4}
+
+#setting_map {width: 100%; height: 300px;}

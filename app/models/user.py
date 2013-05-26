@@ -13,6 +13,12 @@ class User(db.Model):
 	S_FEMALE = 0
 	S_MALE = 1
 
+	# marry
+	M_SINGLE = 1
+	M_LOVING = 2
+	M_MARRIED = 3
+	M_SECRET = 4
+
 	# status
 	S_NORMAL = 1
 	S_UNACTIVE = 2
@@ -28,6 +34,7 @@ class User(db.Model):
 
 	email = db.Column(db.String(150))
 	sex = db.Column(db.SmallInteger, default=S_MALE)
+	marry = db.Column(db.SmallInteger, default=M_SINGLE)
 	birth = db.Column(db.Date)
 	job = db.Column(db.String(30))
 	sign = db.Column(db.String(250))

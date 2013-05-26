@@ -14,7 +14,7 @@
 	{% if user == g.user %}
 	<a href="{{ url_for('user.msg') }}">站内提醒({{ user.get_msg().count() }})</a> |
 	<a href="{{ url_for('user.point') }}">积分({{ user.point }})</a> |
-	<a href="{{ url_for('user.invite') }}">邀请新用户</a>
+	<a href="{{ url_for('user.invite') }}" class="red">邀请新用户</a>
 	{% endif %}
 	{% if user.sign %}
 	<p class="sign">{{ user.sign }}</p>

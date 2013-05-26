@@ -6,6 +6,12 @@ class UserSetForm(Form):
 		('1', u'男生'),
 		('0', u'女生')
 		], default=1)
+	marry = RadioField(u'个人情况', choices=[
+		('1', u'单身'),
+		('2', u'热恋中'),
+		('3', u'已婚'),
+		('4', u'保密'),
+		], default=1)
 
 	birth = DateField(u'生日')
 	job = TextField(u'职业/专业')

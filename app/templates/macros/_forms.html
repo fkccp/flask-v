@@ -6,7 +6,7 @@
 	{% elif 'SubmitField' == field.type %}
 		<p class="clear">{{ field() }}</p>
 	{% elif 'BooleanField' == field.type or 'RadioField' == field.type %}
-		<p class="clear"><span class="bold">{{ field.label }} :</span> {{ field() }}</p>
+		<p class="clear"><span class="bold">{{ field.label }} :</span> {{ field() }} <div class="empty-clear"></div></p>
 	{% else %}
 		<p class="clear"><strong>{{ field.label }} :</strong></p>
 		<p class="clear">{{ field(size=100) }}
