@@ -3,6 +3,9 @@
 {% set user_curr_tab = "invite" %}
 
 {% block user_main %}
+{% if not X.invite_permit %}
+对不起，您不具有邀请权限。
+{% else %}
 <a href="{{ url_for('gen_invite') }}">生成邀请码</a>
 
 <table border='1'>
@@ -24,4 +27,5 @@
 	{% endfor %}
 </table>
 {{ render_pager(X.invites, X.pager_url) }}
+{% endif %}
 {% endblock %}

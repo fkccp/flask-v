@@ -1,0 +1,25 @@
+{% extends 'layout.html' %}
+{% from 'macros/_pager.html' import render_pager %}
+
+{% block title %}用户积分排行榜{% endblock %}
+
+{% block bc %}
+<a href="{{ url_for('site.index') }}">首页</a> › 用户积分排行榜
+{% endblock %}
+
+{% block main %}
+<div>
+	{% for user in X.list.items %}
+	<div class="pad10 bb">
+		{{ user.avatar()|safe }}
+		<div>		
+			<p>{{ user.name()|safe }}</p>
+			<p>注册于 {{ user.date_joined|timesince }}，现有积分{{ user.point }}</p>
+			{% if user.sign %}<p class="sign ml60">{{ user.sign }}</p>{% endif %}
+		</div>
+		<div class="empty-clear"></div>
+	</div>
+	{% endfor %}
+</div>
+<div id="pager">{{ render_pager(X.list, X.pager_url) }}</div>
+{% endblock %}

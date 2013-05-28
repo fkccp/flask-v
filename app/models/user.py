@@ -123,7 +123,7 @@ class User(db.Model):
 		else:
 			return '<img class="avatar" src="/static/img/avatar.png" width="%d" height="%d">' % (width, width)
 
-	def name(self, is_anony):
+	def name(self, is_anony = 0):
 		if is_anony:
 			return self.anonyname
 		else:

@@ -40,7 +40,6 @@ def info(urlname=''):
 	X = {'user': u}
 	X['posts'] = u.get_bbs_posts().limit(5).all()
 	X['cmts'] = u.get_cmts(Bbs_post).limit(5).all()
-
 	return render_template('user/info.html', X=X)
 
 @user.route('/posts')
@@ -75,14 +74,19 @@ def get_user(urlname):
 @user.route('/invite')
 @user.route('/invite/<int:page>')
 def invite(page=1):
-	invites = Invite.query.filter_by(uid=g.user.id).order_by(Invite.ctime.desc()).paginate(page=page, per_page=20)
-	X = {'invites': invites, 'user': g.user}
-	X['pager_url'] = lambda page: url_for('invite', page=page)
+	X = {}
+	X['invite_permit'] = g.user.role != User.R_GUEST
+	X['user'] = g.user
+	if X['invite_permit']:
+		invites = Invite.query.filter_by(uid=g.user.id).order_by(Invite.ctime.desc()).paginate(page=page, per_page=20)
+		X['invites'] = invites
+		X['pager_url'] = lambda page: url_for('invite', page=page)
 	return render_template('user/invite.html', X=X)
 
 @user.route('/gen_invite')
 def gen_invite():
-	Invite().generate(g.user)
+	if g.user.role != User.R_GUEST:
+		Invite().generate(g.user)
 	return redirect(url_for('invite'))
 
 @user.route('/point')
@@ -91,19 +95,19 @@ def point(page=1):
 	points = Point.query.filter_by(uid=g.user.id).order_by(Point.ctime.desc()).paginate(page, per_page=20)
 	X = {'points': points, 'user': g.user}
 	X['pager_url'] = lambda page: url_for('point', page=page)
-
 	return render_template('user/point.html', X=X)
 
 @user.route('/top_point')
 @user.route('/top_point/<int:page>')
 def top_point(page=1):
-	X = {'list': []}
+	X = {}
+	X['list'] = User.query.order_by(User.point.desc()).paginate(page, per_page=20)
 	X['pager_url'] = lambda page: url_for('top_point', page=page)
-	return render_template('user/top_point', page=page)
+	return render_template('user/top_point.html', X=X)
 
 @user.route('/top_cost')
 @user.route('/top_cost/<int:page>')
 def top_cost(page=1):
 	X = {'list': []}
 	X['pager_url'] = lambda page: url_for('top_point', page=page)
-	return render_template('user/top_point', page=page)
+	return render_template('user/top_point', X=X)

@@ -6,9 +6,9 @@
 	{% endif %}
 	<p>
 		{{ user.avatar()|safe }}
-		<a class="ml10" href="{{ url_for('user.info', urlname=user.urlname) }}">{{ user.nickname }}</a><br>
-		<span class="ml10">积分 : {{ user.point }}</span><br>
-		<span class="ml10">等级 : {{ user.level }}</span>
+		<a href="{{ url_for('user.info', urlname=user.urlname) }}">{{ user.nickname }}</a><br>
+		<span>积分 : {{ user.point }}</span><br>
+		<span>等级 : {{ user.level }}</span>
 		<div class="empty-clear"></div>
 	</p>
 	{% if user == g.user %}
@@ -16,9 +16,7 @@
 	<a href="{{ url_for('user.point') }}">积分({{ user.point }})</a> |
 	<a href="{{ url_for('user.invite') }}" class="red">邀请新用户</a>
 	{% endif %}
-	{% if user.sign %}
-	<p class="sign">{{ user.sign }}</p>
-	{% endif %}
+	{% if user.sign %}<p class="sign">{{ user.sign }}</p>{% endif %}
 {% endmacro %}
 
 {% macro right_top() %}

@@ -1,11 +1,11 @@
 {% macro render_pager(pager_obj, pager_url) %}
 {% if pager_obj.pages > 1 %}
 	{% if pager_obj.has_prev %}
-		<a href="{{ pager_url(pager_obj.page - 1) }}">&larr; Prev</a>
+		<a href="{{ pager_url(pager_obj.page - 1) }}">&larr; 上一页</a>
 	{% endif %}
 
 	{% if pager_obj.has_next %}
-		<a href="{{ pager_url(pager_obj.page + 1) }}">Next &rarr;</a>
+		<a href="{{ pager_url(pager_obj.page + 1) }}">下一页 &rarr;</a>
 	{% endif %}
 {% endif %}
 {% endmacro %}

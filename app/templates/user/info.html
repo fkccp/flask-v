@@ -16,7 +16,8 @@
 <p>Sex : {{ X.user.sex }}</p>
 <p>Birth : {{ X.user.birth }}</p>
 <p>Job : {{ X.user.job }}</p>
-<p>Sign : {{ X.user.sign }}</p>
+{% if X.user.sign %}<p class="sign">{{ X.user.sign }}</p>{% endif %}
+
 
 <hr>
 
