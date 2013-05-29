@@ -24,9 +24,9 @@ class User(db.Model):
 	S_UNACTIVE = 2
 
 	id = db.Column(db.Integer, primary_key=True)
-	nickname = db.Column(db.String(60), unique=True, nullable=False)
-	urlname = db.Column(db.String(60), unique=True, nullable=False)
-	anonyname = db.Column(db.String(60), unique=True, nullable=False)
+	nickname = db.Column(db.String(60))
+	urlname = db.Column(db.String(60), unique=True)
+	anonyname = db.Column(db.String(60), unique=True)
 	date_joined = db.Column(db.DateTime, default=datetime.utcnow)
 	date_last_login = db.Column(db.DateTime, default=datetime.utcnow)
 	role = db.Column(db.Integer, default=R_MEMBER)
@@ -47,7 +47,7 @@ class User(db.Model):
 	level = db.Column(db.SmallInteger, default=0)
 	money = db.Column(db.Integer, default=0)
 
-	# _QQ_access_token = db.Column('QQ_access_token', db.String(80), unique=True)
+	_QQ_access_token = db.Column('QQ_access_token', db.String(80), unique=True)
 	_QQ_openid = db.Column('QQ_openid', db.String(80), unique=True)
 	_QQ_info = db.Column('QQ_info', db.Text)
 
@@ -66,7 +66,6 @@ class User(db.Model):
 		return '<%s>' % self
 
 	def is_active(self):
-		return True
 		return self.status == self.S_NORMAL
 
 	def is_anonymous(self):
