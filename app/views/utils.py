@@ -1,4 +1,4 @@
-from flask import Module, url_for, render_template, redirect, g, request, flash, session, abort
+from flask import url_for, render_template, redirect, g, request, flash, session, abort, Blueprint
 from app.exts import db
 from app.forms import CmtForm
 from app.models import Cmt, Point, Msg

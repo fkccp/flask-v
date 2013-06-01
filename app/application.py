@@ -14,6 +14,7 @@ DEFAULT_BLUEPRINTS = (
 	(views.site, ''),
 	(views.bbs, '/bbs'),
 	(views.user, '/user'),
+	(views.admin, '/admin'),
 )
 
 def create_app(config=None, app_name=None, blueprints=None):

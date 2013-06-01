@@ -5,10 +5,15 @@ from app.models import User, Invite
 from app.exts import login_user, logout_user
 from app.api.qqlogin import QQLogin
 
-site = Module(__name__)
+site = Blueprint('site', __name__)
 
-@site.route('/', methods=['GET', 'POST'])
+@site.route('/')
+@site.route('/index')
 def index():
+	return render_template('site/index.html')
+
+@site.route('/login', methods=['GET', 'POST'])
+def login():
 	if g.user.is_authenticated():
 		return redirect(url_for('bbs.index'))
 	else:

@@ -2,9 +2,9 @@
 <div class="arts">
 	{{ post.author.avatar(post.is_anony)|safe }}
 	<div>
-		<p><a class="f16" href="{{ url_for('detail', post_id=post.id) }}">{{ post.title }}</a></p>
+		<p><a class="f16" href="{{ url_for('bbs.detail', post_id=post.id) }}">{{ post.title }}</a></p>
 		<p>
-			<a class="node-link" href="{{ url_for('index', nodename=post.node.name) }}">{{ post.node.name }}</a>
+			<a class="node-link" href="{{ url_for('bbs.index', nodename=post.node.name) }}">{{ post.node.name }}</a>
 			{{ post.author.name(post.is_anony)|safe }} 发布于 {{ post.ctime|timesince }}
 		</p>
 		<p>

@@ -45,7 +45,9 @@ class User(db.Model):
 	check_in_days = db.Column(db.Integer, default=0)
 	point = db.Column(db.Integer, default=0)
 	level = db.Column(db.SmallInteger, default=0)
-	money = db.Column(db.Integer, default=0)
+	coin = db.Column(db.Integer, default=10000)
+	cost = db.Column(db.Integer, default=0)
+	n_like = db.Column(db.Integer, default=0)
 
 	_QQ_access_token = db.Column('QQ_access_token', db.String(80), unique=True)
 	_QQ_openid = db.Column('QQ_openid', db.String(80), unique=True)
@@ -240,3 +242,15 @@ class Msg(db.Model):
 	def send(self):
 		db.session.add(self)
 		db.session.commit()
+
+class Cost_log(db.Model):
+
+	# type
+	T_LIKE = 1
+
+	id = db.Column(db.Integer, primary_key=True)
+	uid = db.Column(db.Integer)
+	cost = db.Column(db.Integer, default=0)
+	ctime = db.Column(db.DateTime, default=datetime.utcnow)
+	type = db.Column(db.SmallInteger)
+	data = db.Column(db.Text)

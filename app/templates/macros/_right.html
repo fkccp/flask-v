@@ -7,8 +7,8 @@
 	<p>
 		{{ user.avatar()|safe }}
 		<a href="{{ url_for('user.info', urlname=user.urlname) }}">{{ user.nickname }}</a><br>
-		<span>积分 : {{ user.point }}</span><br>
-		<span>等级 : {{ user.level }}</span>
+		<span>积分 : {{ user.point }} | 等级 : {{ user.level }}</span><br>
+		<span>金币 : {{ user.coin }}</span>
 		<div class="empty-clear"></div>
 	</p>
 	{% if user == g.user %}

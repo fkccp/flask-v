@@ -6,7 +6,7 @@
 {% if not X.invite_permit %}
 对不起，您不具有邀请权限。
 {% else %}
-<a href="{{ url_for('gen_invite') }}">生成邀请码</a>
+<a href="{{ url_for('user.gen_invite') }}">生成邀请码</a>
 
 <table border='1'>
 	<tr>

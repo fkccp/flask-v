@@ -2,7 +2,7 @@ from .utils import *
 from app.models import User, Bbs_post, Invite, Point
 from app.forms import UserSetForm
 
-user = Module(__name__)
+user = Blueprint('user', __name__)
 
 @user.route('/setting', methods=['GET', 'POST'])
 def setting():
@@ -31,7 +31,7 @@ def mark_as_read():
 			msg.status = Msg.S_READ
 			db.session.add(msg)
 	db.session.commit()
-	return redirect(url_for('msg'))
+	return redirect(url_for('.msg'))
 
 @user.route('/info')
 @user.route('/info/<urlname>')
@@ -87,7 +87,7 @@ def invite(page=1):
 def gen_invite():
 	if g.user.role != User.R_GUEST:
 		Invite().generate(g.user)
-	return redirect(url_for('invite'))
+	return redirect(url_for('user.invite'))
 
 @user.route('/point')
 @user.route('/point/<int:page>')

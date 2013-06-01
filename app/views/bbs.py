@@ -2,7 +2,7 @@ from .utils import *
 from app.models import Bbs_post, Bbs_node, Bbs_append, Point
 from app.forms import BbsAddForm, ActionForm, BbsAppendForm
 
-bbs = Module(__name__)
+bbs = Blueprint('bbs', __name__)
 
 @bbs.route('/')
 @bbs.route('/<int:page>')
