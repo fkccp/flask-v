@@ -8,7 +8,6 @@ from app.api.qqlogin import QQLogin
 site = Blueprint('site', __name__)
 
 @site.route('/')
-@site.route('/index')
 def index():
 	return render_template('site/index.html')
 
@@ -31,7 +30,7 @@ def login():
 @site.route('/logout')
 def logout():
 	logout_user()
-	return redirect(url_for('index'))
+	return redirect(url_for('site.index'))
 
 @site.route('/cmt_like/<int:cmt_id>', methods=['POST'])
 def cmt_like(cmt_id):
@@ -66,15 +65,22 @@ def connect_callback(provider='qq'):
 
 	user = User.query.filter_by(_QQ_openid=backinfo['openid']).first()
 
+	import json
 	if user is None:
 		user = User(nickname=backinfo['userinfo']['nickname'],
 			_QQ_access_token=backinfo['access_token'],
-			_QQ_openid = backinfo['openid'])
+			_QQ_openid = backinfo['openid'],
+			_QQ_info = json_dumps(backinfo['userinfo']))
 		db.session.add(user)
 		db.session.commit()
 
 	if user.is_active():
 		login_user(user, True)
+		user._QQ_access_token = backinfo['access_token']
+		user.nickname = backinfo['userinfo']['nickname']
+		user._QQ_info = json_dumps(backinfo['userinfo'])
+		db.session.add(user)
+		db.session.commit()
 		return redirect(url_for('bbs.index'))
 
 	session['active_uid'] = user.id

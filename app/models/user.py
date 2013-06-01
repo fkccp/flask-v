@@ -49,7 +49,6 @@ class User(db.Model):
 	cost = db.Column(db.Integer, default=0)
 	n_like = db.Column(db.Integer, default=0)
 
-	_QQ_access_token = db.Column('QQ_access_token', db.String(80), unique=True)
 	_QQ_openid = db.Column('QQ_openid', db.String(80), unique=True)
 	_QQ_info = db.Column('QQ_info', db.Text)
 

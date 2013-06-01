@@ -7,7 +7,7 @@ a:hover {text-decoration: underline;color: #00d35e}
 table {width: 700px; border-collapse: collapse;border-spacing: 0px;margin-bottom: 5px;}
 table td {padding: 1px 5px;}
 textarea {padding-bottom: 10px; width:99%;height: 100px;background: #fff}
-li {float: left;margin-right: 10px; list-style: none}
+ul li {float: left;margin-right: 10px; list-style: none}
 h2 {font-size: 20px}
 p, blockquote {margin:0 0 5px 0; line-height: 18px}
 .indent-p p {text-indent: 2em}
@@ -39,7 +39,7 @@ form {display: inline;}
 .b-grey {background: lightgrey}
 .red {color: red}
 .bb {border-bottom: 1px solid #ddd}
-.node-link {background-color: #FCDFF7; color: #333; font-size: 12px;padding: 3px}
+.node-link {background-color: #FCDFF7; color: #333; font-size: 12px;padding:0 3px}
 .node-link:hover {color: #000;}
 
 /* css3 */
