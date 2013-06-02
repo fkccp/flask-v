@@ -18,7 +18,11 @@
 		<div id="bc">{% block bc %}bc{% endblock %}<div class="empty-clear"></div></div>
 		{% block main %}{% endblock %}</div>
 	<div id="right">
-		<div class="cell"><a href="{{ url_for('bbs.add', nodename=X.nodename) }}">添加新主题</a></div>
+		{% if X.node %}
+		<div class="cell"><a href="{{ url_for('bbs.add', urlname=X.node.urlname) }}">在 <b>{{ X.node.name }}</b> 节点下添加新主题</a></div>
+		{% else %}
+		<div class="cell"><a href="{{ url_for('bbs.add') }}">添加新主题</a></div>
+		{%endif%}
 		{% block right %}{% endblock %}
 		<div class="cell">{{ right_user(g.user) }}</div>
 		<!-- <div class="cell">{{ right_top() }}</div> -->

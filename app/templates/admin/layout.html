@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+{% from 'macros/_utils.html' import tabbed_link %}
+{% from 'macros/_forms.html' import render_form %}
+
+{% block content %}
+<div id="header">
+	<span id="header_menu">
+		<a href="/">LOGO</a>
+		{{ tabbed_link(header_curr_tab, 'node', 'Node', url_for('admin.node')) }}
+	</span>
+</div>
+<div id="container">
+	<div id="admin_main">{% block admin_main %}{% endblock %}</div>
+	<div class="clear"></div>
+	<div id="footer">
+		&copy;v5snj.com - 好久不见，神农架 - since 2013.06 |
+		<a href="{{ url_for('site.help') }}">帮助页面</a>
+	</div>
+</div>
+
+{% endblock %}

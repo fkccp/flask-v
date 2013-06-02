@@ -6,7 +6,7 @@
 
 {% block bc %}
 <a href="{{ url_for('bbs.index') }}">首页</a> ›
-<a href="{{ url_for('bbs.index', nodename=X.post.node.name) }}">{{ X.post.node.name }}</a> ›
+<a href="{{ url_for('bbs.index', nodename=X.post.node.urlname) }}">{{ X.post.node.name }}</a> ›
 {{ X.post.title }}
 {% endblock %}
 

@@ -3,12 +3,13 @@
 
 {% block bc %}
 <a href="{{ url_for('bbs.index') }}">首页</a>
-{% if X.nodename %}
-› {{ X.nodename }}
+{% if X.node %}
+› {{ X.node.name }}
 {% endif %}
 {% endblock %}
 
 {% block bbs_main %}
+{% if X.node and X.node.desc %} <div class="node-desc"><b>{{ X.node.name }} :</b> {{ X.node.desc }}</div> {% endif %}
 {% for post in X.posts %}
 {% if loop.index0 < X.per_page %}
 {{ render_post(post) }}
@@ -16,6 +17,6 @@
 {% endfor %}
 
 {% if X.posts|length > X.per_page %}
-<div id="pager"><a href="{{ X.pager_url(2) }}">Next page</a></div>
+<div id="pager"><a href="{{ X.pager_url(2) }}">下一页 &rarr;</a></div>
 {% endif %}
 {% endblock %}

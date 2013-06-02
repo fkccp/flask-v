@@ -46,6 +46,7 @@ def config_app(app, config):
 		app.config.from_object(config)
 
 	app.config.from_envvar('APP_CONFIG', silent=True)
+	app.jinja_env.trim_blocks = True
 
 def config_logging(app):
 	if app.debug or app.testing:

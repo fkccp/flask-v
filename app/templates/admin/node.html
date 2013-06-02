@@ -1,0 +1,31 @@
+{% extends 'admin/layout.html' %}
+
+{% set header_curr_tab = 'node' %}
+
+{% block admin_main %}
+<p>
+	<table border="1">
+		<tr>
+			<th>id</th>
+			<th>name</th>
+			<th>urlname</th>
+			<th>desc</th>
+			<th>count</th>
+		</tr>
+		{% for item in X.nodelist %}
+		<tr>
+			<td>{{ item.id }}</td>
+			<td>{{ item.name }}</td>
+			<td>{{ item.urlname }}</td>
+			<td>{{ item.desc }}</td>
+			<td>{{ item.n_post }}</td>
+		</tr>
+		{% endfor %}
+	</table>
+</p>
+<hr>
+<p>
+	Add new node: <br>
+	{{ render_form(X.form) }}
+</p>
+{% endblock %}

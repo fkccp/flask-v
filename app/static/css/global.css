@@ -66,10 +66,16 @@ ul.errors {margin-bottom: 10px;}
 #right, #right * {font-size: 95%}
 #right h3 {margin: 0;padding: 0; border-bottom: 1px solid #eee;margin-bottom: 10px}
 #right div.cell {background-color: #fff; padding:10px; margin-bottom: 10px;border: 1px solid #ddd; box-shadow: 1px 1px 1px #ddd}
-.sign {margin-top:5px; margin-bottom: 0px; padding:5px; border:1px solid #e7e7bb; background-color: #ffffd3}
+.sign , .desc {margin-top:5px; margin-bottom: 0px; padding:5px; border:1px solid #e7e7bb; background-color: #ffffd3;color: #969677;}
+.desc { margin:0 0 10px;font-size: 80%}
 #footer {text-align: center;padding: 10px 0;margin-top: 10px;font-size: 90%}
 
+/* index */
+#indexmap {width: 100%; height: 400px;background-color: #ddd}
+
 /* bbs */
+.node-desc {margin: 10px; margin-bottom: 0; padding: 5px; border: 1px solid #f0f0f0;background-color: #f9f9f9; color: #999; font-size: 80%}
+
 div.arts {padding:10px; padding-bottom: 0;border-bottom: 1px solid #ddd}
 div.arts span.statis {float: right;}
 
@@ -84,3 +90,8 @@ div.arts span.statis {float: right;}
 #user_tabs a:hover, #user_tabs a.on {background-color: #c8c8ff; color: #4242e4}
 
 #setting_map {width: 100%; height: 300px;}
+
+
+/* manage */
+#admin_main {padding: 10px; background-color: #fff;box-shadow: 1px 1px 1px #ddd}
+#admin_main table {width: 100%;}

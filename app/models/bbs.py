@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from .utils import *
 from .user import User
 
@@ -87,11 +88,18 @@ class Bbs_post(db.Model):
 class Bbs_node(db.Model):
 	id = db.Column(db.Integer, primary_key=True)
 	name = db.Column(db.String(20), unique=True)
-	n_post = db.Column(db.Integer, default=1)
+	urlname = db.Column(db.String(20), unique=True)
+	n_post = db.Column(db.Integer, default=0)
 	seen = db.Column(db.SmallInteger, default=1)
 	status = db.Column(db.SmallInteger, default=1)
+	desc = db.Column(db.String, default='')
 
 	posts = db.relationship('Bbs_post', backref='node', lazy='dynamic')
+
+	@staticmethod
+	def get_all_list():
+		nodelist = Bbs_node.query.filter_by(status=1).order_by('n_post desc').all()
+		return nodelist
 
 class Bbs_append(db.Model):
 	id = db.Column(db.Integer, primary_key=True)
