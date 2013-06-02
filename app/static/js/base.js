@@ -1,3 +1,5 @@
+function $(id) { return document.getElementById(id) }
+
 function like(obj)
 {
 	var ret = true

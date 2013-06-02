@@ -6,18 +6,17 @@
 <h2>{{ X.user.nickname }} 的个人信息</h2>
 <p>{{ X.user.avatar()|safe }}</p>
 <p>昵称 : {{ X.user.nickname }}</p>
-<p>Urlname : {{ X.user.urlname }}</p>
-<p>Anonyname : {{ X.user.anonyname }}</p>
-<p>Date_joined : {{ X.user.date_joined|timesince }}</p>
-<p>Last_login : {{ X.user.date_last_login|timesince }}</p>
-<p>Seen : {{ X.user.seen }}</p>
-<p>Status : {{ X.user.status }}</p>
-<p>共送出过{{ X.user.n_like }}个赞，收到过{{ X.user.n_liked }}个赞。</p>
+<p>积分：{{ X.user.point }}分 {{ X.user.level }}级</p>
+<p>金币：{{ X.user.coin }}</p>
+<p>性别：{% if 1 == X.user.sex %}高富帅{% else %}白富美{% endif %}</p>
+{% if X.user.birth %}<p>生日：{{ X.user.bitrh }}</p>{% endif %}
+<p>职业：{{ X.user.job }}</p>
+<p>签名：{{ X.user.sign }}</p>
 
-<p>Sex : {{ X.user.sex }}</p>
-<p>Birth : {{ X.user.birth }}</p>
-<p>Job : {{ X.user.job }}</p>
-{% if X.user.sign %}<p class="sign">{{ X.user.sign }}</p>{% endif %}
+
+<p>注册时间 : {{ X.user.date_joined|timesince }}</p>
+<p>最后登录时间 : {{ X.user.date_last_login|timesince }}</p>
+<p>共送出过{{ X.user.n_like }}个赞，收到过{{ X.user.n_liked }}个赞。</p>
 
 
 <hr>

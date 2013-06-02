@@ -116,10 +116,6 @@ def config_template_filters(app):
 	def floorsign(value):
 		return helpers.floorsign(value)
 
-	@app.template_filter()
-	def pointevent(value):
-		return helpers.pointevent(value)
-
 def config_context_processors(app):
 	pass
 

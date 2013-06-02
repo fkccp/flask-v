@@ -10,8 +10,8 @@ def auth():
 		abort(404)
 
 @admin.route('/')
-# def index():
-# 	return render_template('admin/index.html')
+def index():
+	return render_template('admin/index.html')
 
 @admin.route('/node', methods=['GET', 'POST'])
 def node():
