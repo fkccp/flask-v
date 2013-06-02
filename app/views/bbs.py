@@ -1,5 +1,5 @@
 from .utils import *
-from app.models import Bbs_post, Bbs_node, Bbs_append, Point
+from app.models import Bbs_post, Bbs_node, Bbs_append, Point, Cost_log
 from app.forms import BbsAddForm, ActionForm, BbsAppendForm
 
 bbs = Blueprint('bbs', __name__)
@@ -32,6 +32,9 @@ def index(urlname='', page=1):
 @bbs.route('/add/', methods=['GET', 'POST'])
 @bbs.route('/add/<urlname>', methods=['GET', 'POST'])
 def add(urlname=''):
+	if urlname:
+		Bbs_node.query.filter_by(urlname=urlname).first_or_404()
+
 	form = BbsAddForm()
 	
 	nodelist = Bbs_node.get_all_list()
@@ -41,11 +44,8 @@ def add(urlname=''):
 		choices.append((node.urlname, node.name))
 		_c[node.urlname] = node.name
 	form.node.choices = choices
-	if form.node.data is None:
-		if urlname:
-			form.node.data = urlname
-		else:
-			form.node.data = 'tmp'
+	if urlname and 'GET' == request.method:
+		form.node.data = urlname
 
 	if form.validate_on_submit():
 		node = Bbs_node.query.filter_by(urlname=form.node.data).first()
@@ -54,7 +54,7 @@ def add(urlname=''):
 		else:
 			node.n_post += 1
 			db.session.add(node)
-			# db.session.commit()
+
 		post = Bbs_post(title=form.title.data, content=form.content.data, author=g.user, node=node, is_anony=form.is_anony.data)
 		db.session.add(post)
 		db.session.commit()
@@ -63,7 +63,8 @@ def add(urlname=''):
 		return redirect(url_for('bbs.detail', post_id=post.id))
 
 	X = {'form': form}
-	X['node'] = {'urlname':urlname, 'name':_c[urlname]}
+	if urlname:
+		X['node'] = {'urlname':urlname, 'name':_c.get(urlname)}
 	return render_template('bbs/add.html', X=X)
 
 @bbs.route('/detail/<int:post_id>', methods=['GET', 'POST'])
@@ -93,10 +94,11 @@ def action(type, post_id):
 			r = post.liked_by(g.user)
 			if 1 == r:
 				flash('Liked')
+				Cost_log.post_like(g.user, post.author, post)
 			else:
 				flash('Unliked')
 			db.session.commit()
-			return redirect(url_for('detail', post_id=post_id))
+			return redirect(url_for('bbs.detail', post_id=post_id))
 	elif 'mark' == type:
 		form = ActionForm()
 		if form.validate_on_submit():
@@ -107,7 +109,7 @@ def action(type, post_id):
 			else:
 				flash('Unmarked')
 			db.session.commit()
-			return redirect(url_for('detail', post_id=post_id))
+			return redirect(url_for('bbs.detail', post_id=post_id))
 	abort(404)
 
 @bbs.route('/append/<int:post_id>', methods=['GET', 'POST'])

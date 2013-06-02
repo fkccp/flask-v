@@ -3,8 +3,8 @@ from .utils import *
 
 class UserSetForm(Form):
 	sex = RadioField(u'性别', choices=[
-		('1', u'男生'),
-		('0', u'女生')
+		('1', u'高富帅'),
+		('0', u'白富美')
 		], default=1)
 	marry = RadioField(u'个人情况', choices=[
 		('1', u'单身'),

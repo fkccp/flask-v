@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from .utils import *
 from .user import User
 
@@ -27,7 +28,7 @@ class Cmt(db.Model):
 			if reply is not None:
 				p = re.compile('<blockquote>(.*?)</blockquote>')
 				cnt = '<blockquote><a href="#cmt_%d">%s</a>: %s</blockquote>' % (reply.id,
-					reply.author.nickname if not reply.is_anony else reply.author.anonyname,
+					reply.author.nickname if not reply.is_anony else u'匿名用户-%s'%reply.author.anonyname,
 					p.sub('', reply.content))
 				self.reply_cmt = reply
 		cnt += content
@@ -70,3 +71,10 @@ class Cmt(db.Model):
 			return True
 
 		return False
+
+	def link(self):
+		if 1 == self.type: # post link
+			from .bbs import Bbs_post
+			return Bbs_post.query.get(self.sid).get_link(self.id)
+		else:
+			return ''

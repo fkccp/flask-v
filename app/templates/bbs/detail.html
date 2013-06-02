@@ -32,8 +32,8 @@
 	
 	<span class="right">
 	{% if X.post.author != g.user %}
-		{{ render_like_form(X.act_form, url_for('action', type='like', post_id=X.post.id), X.post.liker, '赞') }}
-		{{ render_like_form(X.act_form, url_for('action', type='mark', post_id=X.post.id), X.post.marker, '收藏') }}
+		{{ render_like_form(X.act_form, url_for('bbs.action', type='like', post_id=X.post.id), X.post.liker, '赞') }}
+		{{ render_like_form(X.act_form, url_for('bbs.action', type='mark', post_id=X.post.id), X.post.marker, '收藏') }}
 	{% else %}
 		<a href="{{ url_for('bbs.append', post_id=X.post.id) }}">添加附言</a>
 	{% endif %}

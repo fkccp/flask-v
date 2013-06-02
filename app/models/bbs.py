@@ -82,8 +82,10 @@ class Bbs_post(db.Model):
 		db.session.commit()
 
 	def get_link(self, cmt_id=0):
-		return url_for('bbs.detail', post_id=self.id, _anchor='cmt_%d'%cmt_id)
-
+		if cmt_id > 0:
+			return '<a href="%s">%s</a>' % (url_for('bbs.detail', post_id=self.id, _anchor='cmt_%d'%cmt_id), self.title)
+		else:
+			return '<a href="%s">%s</a>' % (url_for('bbs.detail', post_id=self.id), self.title)
 
 class Bbs_node(db.Model):
 	id = db.Column(db.Integer, primary_key=True)

@@ -13,6 +13,7 @@
 	{% if X.user == g.user %}
 	{{ tabbed_link(user_curr_tab, 'msg', '站内提醒', url_for('user.msg')) }}
 	{{ tabbed_link(user_curr_tab, 'point', '积分', url_for('user.point')) }}
+	{{ tabbed_link(user_curr_tab, 'coin', '金币', url_for('user.coin')) }}
 	{{ tabbed_link(user_curr_tab, 'invite', '邀请', url_for('user.invite')) }}
 	{{ tabbed_link(user_curr_tab, 'setting', '个人设置', url_for('user.setting')) }}
 	{% endif %}

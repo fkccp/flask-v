@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 from .utils import *
 from app.forms import LoginForm, ActiveForm
-from app.models import User, Invite
+from app.models import User, Invite, Cost_log
 from app.exts import login_user, logout_user
 from app.api.qqlogin import QQLogin
 
@@ -38,6 +38,7 @@ def cmt_like(cmt_id):
 	r = cmt.liked_by(g.user)
 	if 1 == r:
 		flash('Liked')
+		Cost_log.cmt_like(g.user, cmt.author, cmt)
 	else:
 		flash('Unliked')
 	db.session.commit()
@@ -71,6 +72,7 @@ def connect_callback(provider='qq'):
 			_QQ_access_token=backinfo['access_token'],
 			_QQ_openid = backinfo['openid'],
 			_QQ_info = json_dumps(backinfo['userinfo']))
+		user.gen_anonyname()
 		db.session.add(user)
 		db.session.commit()
 

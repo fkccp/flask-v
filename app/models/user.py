@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from .utils import *
 from app.helpers import rand_string
 
@@ -48,6 +49,7 @@ class User(db.Model):
 	coin = db.Column(db.Integer, default=10000)
 	cost = db.Column(db.Integer, default=0)
 	n_like = db.Column(db.Integer, default=0)
+	n_liked = db.Column(db.Integer, default=0)
 
 	_QQ_openid = db.Column('QQ_openid', db.String(80), unique=True)
 	_QQ_info = db.Column('QQ_info', db.Text)
@@ -125,9 +127,20 @@ class User(db.Model):
 
 	def name(self, is_anony = 0):
 		if is_anony:
-			return self.anonyname
+			return u'匿名用户-%s' % self.anonyname
 		else:
 			return '<a href="%s">%s</a>' % (url_for('user.info', urlname=self.urlname), self.nickname)
+
+	def gen_anonyname(self):
+		import string, random
+
+		anonyname = ''
+		while True:
+			anonyname = rand_string(6)
+			if self.query.filter_by(anonyname=anonyname).first() is None:
+				break
+
+		self.anonyname = anonyname
 
 class Invite(db.Model):
 
@@ -201,6 +214,7 @@ class Point(db.Model):
 	point = db.Column(db.Integer, nullable=False)
 	event = db.Column(db.SmallInteger, nullable=False, default=0)
 	ctime = db.Column(db.DateTime, default=datetime.utcnow)
+	data = db.Column(db.Text)
 
 	def __init__(self, user, event, *args, **kwargs):
 		self.uid = user.id
@@ -219,7 +233,7 @@ class Point(db.Model):
 			pass
 		if level > user.level:
 			user.level = level
-			Msg(uid=user.id, content='U have just upgraded to level %d' % level).send()
+			Msg(uid=user.id, content=u'恭喜，您刚刚升级到了%d级' % level).send()
 		db.session.add(self)
 		db.session.add(user)
 		db.session.commit()
@@ -248,8 +262,35 @@ class Cost_log(db.Model):
 	T_LIKE = 1
 
 	id = db.Column(db.Integer, primary_key=True)
-	uid = db.Column(db.Integer)
+	suid = db.Column(db.Integer)
+	ruid = db.Column(db.Integer)
 	cost = db.Column(db.Integer, default=0)
 	ctime = db.Column(db.DateTime, default=datetime.utcnow)
 	type = db.Column(db.SmallInteger)
 	data = db.Column(db.Text)
+
+
+	@staticmethod
+	def log(suser, ruser, cost, desc):
+		suser.coin -= cost
+		suser.cost += cost
+		suser.n_like += 1
+		ruser.coin += cost
+		ruser.n_liked += 1
+		log = Cost_log(suid=suser.id, ruid=ruser.id, cost=cost, type=Cost_log.T_LIKE, data=desc)
+		db.session.add(suser)
+		db.session.add(ruser)
+		db.session.add(log)
+
+	@staticmethod
+	def post_like(suser, ruser, post):
+		V_POST = 3
+		desc = u'%s 赞了主题 %s' % (suser.name(), post.get_link())
+		Cost_log.log(suser, ruser, V_POST, desc)
+
+	@staticmethod
+	def cmt_like(suser, ruser, cmt):
+		V_CMT = 1
+		desc = u'<a href="%s">%s</a> 赞了主题 %s 下面的评论' % (url_for('user.info', urlname=suser.urlname), suser.nickname, cmt.link())
+		Cost_log.log(suser, ruser, V_CMT, desc)
+

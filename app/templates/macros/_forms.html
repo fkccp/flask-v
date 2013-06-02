@@ -25,8 +25,12 @@
 {% endmacro %}
 
 {% macro render_like_form(form, action='', sets='', word='') %}
-<form action="{{ action }}" method="post">
+{% if 0 and '赞' == word and g.user in sets %}
+已赞
+{% else %}
+<form action="{{ action }}" method="post" onsubmit="return like(this)">
 	{{ form.hidden_tag() }}
-	<input class="btn" type="submit" value="{% if g.user in  sets %}取消{{ word }}{% else %}{{ word }}{% endif %}">
+	<input class="btn" type="submit" value="{% if g.user in sets %}取消{{ word }}{% else %}{{ word }}{% endif %}">
 </form>
+{% endif %}
 {% endmacro %}

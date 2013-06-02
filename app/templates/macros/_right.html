@@ -22,5 +22,6 @@
 {% macro right_top() %}
 <h3>社区排行榜：</h3>
 <a href="{{ url_for('user.top_point') }}">积分排行榜</a><br>
-<a href="{{ url_for('user.top_cost') }}">消费排行榜</a>
+<a href="{{ url_for('user.top_point') }}">金币排行榜</a><br>
+<a href="{{ url_for('user.top_cost') }}">消费排行榜</a><br>
 {% endmacro %}

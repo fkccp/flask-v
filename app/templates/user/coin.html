@@ -1,0 +1,21 @@
+{% extends 'user/layout.html' %}
+{% from 'macros/_pager.html' import render_pager %}
+{% set user_curr_tab = "coin" %}
+
+{% block user_main %}
+<table border="1">
+	<tr>
+		<th>金额</th>
+		<th>事件</th>
+		<th>时间</th>
+	</tr>
+	{% for coin in X.coins.items %}
+	<tr>
+		<td>{% if coin.suid == g.user.id %}-{{ coin.cost }}{% else %}+{{ coin.cost }}{% endif %}</td>
+		<td>{{ coin.data|safe }}</td>
+		<td>{{ coin.ctime|timesince }}</td>
+	</tr>
+	{% endfor %}
+</table>
+{{ render_pager(X.coins, X.pager_url) }}
+{% endblock %}

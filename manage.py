@@ -60,6 +60,7 @@ def createuser(nickname=None, email=None, role=None, invite=None):
 				anonyname='%s_anony' % nickname,
 				email=email,
 				role=role)
+	user.gen_anonyname()
 
 	db.session.add(user)
 	db.session.commit()

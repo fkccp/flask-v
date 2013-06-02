@@ -74,7 +74,7 @@ ul.errors {margin-bottom: 10px;}
 #indexmap {width: 100%; height: 400px;background-color: #ddd}
 
 /* bbs */
-.node-desc {margin: 10px; margin-bottom: 0; padding: 5px; border: 1px solid #f0f0f0;background-color: #f9f9f9; color: #999; font-size: 80%}
+.node-desc {margin: 10px; padding: 5px; border: 1px solid #f0f0f0;background-color: #f9f9f9; color: #999; font-size: 80%}
 
 div.arts {padding:10px; padding-bottom: 0;border-bottom: 1px solid #ddd}
 div.arts span.statis {float: right;}
@@ -86,7 +86,7 @@ div.arts span.statis {float: right;}
 
 /* user */
 #user_tabs {background-color: #DBDBFF; height: 18px; overflow: hidden;}
-#user_tabs a {padding: 0 23px; text-align: center;color: #66f}
+#user_tabs a {padding: 0 18px; text-align: center;color: #66f}
 #user_tabs a:hover, #user_tabs a.on {background-color: #c8c8ff; color: #4242e4}
 
 #setting_map {width: 100%; height: 300px;}

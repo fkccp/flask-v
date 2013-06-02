@@ -1,5 +1,5 @@
 from .utils import *
-from app.models import User, Bbs_post, Invite, Point
+from app.models import User, Bbs_post, Invite, Point, Cost_log
 from app.forms import UserSetForm
 
 user = Blueprint('user', __name__)
@@ -96,6 +96,16 @@ def point(page=1):
 	X = {'points': points, 'user': g.user}
 	X['pager_url'] = lambda page: url_for('point', page=page)
 	return render_template('user/point.html', X=X)
+
+@user.route('/coin')
+@user.route('/coin/<int:page>')
+def coin(page=1):
+	X = {'user': g.user}
+	coins = Cost_log.query.filter(db.or_(Cost_log.suid==g.user.id, Cost_log.ruid==g.user.id)).order_by(Cost_log.id.desc()).paginate(page, per_page=20)
+	X['coins'] = coins
+	print coins.items
+	X['pager_url'] = lambda page: url_for('coin', page=page)
+	return render_template('user/coin.html', X=X)
 
 @user.route('/top_point')
 @user.route('/top_point/<int:page>')
