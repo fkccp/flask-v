@@ -5,13 +5,13 @@
 {% block user_main %}
 <table border="1">
 	<tr>
-		<th>操作</th>
-		<th>积分</th>
+		<th>事件</th>
+		<th>获得积分</th>
 		<th>时间</th>
 	</tr>
 	{% for point in X.points.items %}
 	<tr>
-		<td>{{ point.event|pointevent }}</td>
+		<td>{{ point.data|safe }}</td>
 		<td>{{ point.point }}</td>
 		<td>{{ point.ctime|timesince }}</td>
 	</tr>

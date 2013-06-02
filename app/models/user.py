@@ -87,8 +87,8 @@ class User(db.Model):
 		now = datetime.utcnow()
 		day_delta = (now.date() - self.date_last_login.date()).days
 		if day_delta > 0:
-			point = Point(self, Point.E_CHECK_IN).get_point()
-			flash('Got %d points for everyday\'s coming' % point, 'message')
+			point = Point.login(self).get_point()
+			flash(u'每日登录，获得%d个积分' % point, 'message')
 
 		# last login
 		self.date_last_login = now
@@ -180,12 +180,11 @@ class Invite(db.Model):
 		user.urlname = self.code
 		user.status = User.S_NORMAL
 		inviter = User.query.get(self.uid)
-		point = Point(inviter, Point.E_INVITE)
+		point = Point.invite(inviter, user).get_point()
 		db.session.add(self)
 		db.session.add(user)
-		db.session.add(point)
 
-		Msg(uid=self.uid, content=render_template('msg/invite.html', user=user, inviter=inviter)).send()
+		Msg(uid=self.uid, content=u'您成功邀请到用户 %s，获得%s积分奖励' % (user.name(), point)).send()
 
 		db.session.commit()
 		return True
@@ -216,30 +215,49 @@ class Point(db.Model):
 	ctime = db.Column(db.DateTime, default=datetime.utcnow)
 	data = db.Column(db.Text)
 
-	def __init__(self, user, event, *args, **kwargs):
-		self.uid = user.id
-		self.event = event
-		point = self.POINTS[event][0]
+	def get_point(self):
+		return self.point
 
-		user.point += point
-		self.point = point
+	@staticmethod
+	def record(user, event, data):
+		p = Point.POINTS[event][0]
+		point = Point(uid=user.id, point=p, event=event, data=data)
+		db.session.add(point)
 
-		super(Point, self).__init__(*args, **kwargs)
-
-		# upgrade
+		#upgrade
+		user.point += p
 		level = user.level
-		while user.point > self.LEVEL[level + 1] * self.LEVEL_RATE:
+		while user.point > Point.LEVEL[level + 1] * Point.LEVEL_RATE:
 			level += 1
-			pass
+
 		if level > user.level:
 			user.level = level
 			Msg(uid=user.id, content=u'恭喜，您刚刚升级到了%d级' % level).send()
-		db.session.add(self)
-		db.session.add(user)
+			db.session.add(user)
+
 		db.session.commit()
 
-	def get_point(self):
-		return self.point
+		return point
+
+	@staticmethod
+	def add_bbs_post(user, post):
+		desc = u'发表新主题 %s' % post.get_link()
+		return Point.record(user, Point.E_BBS_POST, desc)
+
+	@staticmethod
+	def add_cmt(user, cmt):
+		desc = u'在主题 %s 下发表评论' % cmt.link()
+		return Point.record(user, Point.E_BBS_CMT, desc)
+
+	@staticmethod
+	def login(user):
+		desc = u'每日登录'
+		return Point.record(user, Point.E_CHECK_IN, desc)
+
+	@staticmethod
+	def invite(user, newuser):
+		desc = u'成功邀请到用户 %s' % newuser.name()
+		return Point.record(user, Point.E_INVITE, desc)
 
 class Msg(db.Model):
 	# status

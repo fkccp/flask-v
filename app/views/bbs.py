@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from .utils import *
 from app.models import Bbs_post, Bbs_node, Bbs_append, Point, Cost_log
 from app.forms import BbsAddForm, ActionForm, BbsAppendForm
@@ -58,8 +59,8 @@ def add(urlname=''):
 		post = Bbs_post(title=form.title.data, content=form.content.data, author=g.user, node=node, is_anony=form.is_anony.data)
 		db.session.add(post)
 		db.session.commit()
-		point = Point(g.user, Point.E_BBS_POST).get_point()
-		flash('Post succ with getting %d points' % point, 'message')
+		point = Point.add_bbs_post(g.user, post).get_point()
+		flash(u'成功添加新主题，获得%d个积分' % point, 'message')
 		return redirect(url_for('bbs.detail', post_id=post.id))
 
 	X = {'form': form}

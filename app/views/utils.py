@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from flask import url_for, render_template, redirect, g, request, flash, session, abort, Blueprint
 from app.exts import db
 from app.forms import CmtForm
@@ -25,10 +26,10 @@ def f_cmt(obj):
 		if pid > 0 and cmt.reply(obj):
 			pass
 		elif obj.author != g.user:
-			Msg(uid = obj.author.id, content=render_template('msg/cmt.html', cmt=cmt, obj=obj)).send()
+			Msg(uid = obj.author.id, content=u'有人回复了您的主题 %s' % obj.get_link(cmt.id)).send()
 
-		point = Point(g.user, Point.E_BBS_CMT).get_point()
-		flash('Cmt succ with getting %d points' % point, 'message')
+		point = Point.add_cmt(g.user, cmt).get_point()
+		flash(u'成功添加评论，获得%d个积分' % point, 'message')
 		return cmt.id # redirect
 
 	cmts = Cmt.query.filter_by(type=type,

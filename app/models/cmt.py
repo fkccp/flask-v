@@ -23,6 +23,7 @@ class Cmt(db.Model):
 
 	def __init__(self, content, pid, *args, **kwargs):
 		cnt = ''
+		self.reply_cmt = None
 		if pid > 0:
 			reply = Cmt.query.get(pid)
 			if reply is not None:
@@ -67,7 +68,7 @@ class Cmt(db.Model):
 	def reply(self, obj):
 		if self.reply_cmt is not None and self.reply_cmt.user_id != self.user_id:
 			from .user import Msg
-			Msg(uid=self.reply_cmt.user_id, content=render_template('msg/reply.html', obj=obj, cmt=self)).send()
+			Msg(uid=self.reply_cmt.user_id, content=u'有人回复了您对主题 %s 的评论' % obj.get_link(self.id)).send()
 			return True
 
 		return False
