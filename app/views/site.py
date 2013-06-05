@@ -9,7 +9,18 @@ site = Blueprint('site', __name__)
 
 @site.route('/')
 def index():
-	return render_template('site/index.html')
+	_users = User.query.filter(User.live_pos != '').all()
+	from app.helpers import hash_geo
+	users = []
+	for u in _users:
+		_u = {}
+		_u['geo'] = hash_geo(u.live_pos)
+		if _u['geo'] == '':
+			continue
+		_u['avatar'] = u.avatar()
+		users.append(_u)
+	X = {'users':users}
+	return render_template('site/index.html', X=X)
 
 @site.route('/login', methods=['GET', 'POST'])
 def login():

@@ -2,6 +2,10 @@
 {% from 'macros/_pager.html' import render_pager %}
 {% set user_curr_tab = "invite" %}
 
+{% block user_bc %}
+› {{ X.user.nickname }}的邀请记录
+{% endblock %}
+
 {% block user_main %}
 {% if not X.invite_permit %}
 对不起，您不具有邀请权限。

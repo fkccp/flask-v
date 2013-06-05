@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from .utils import *
 from app.models import User, Bbs_post, Invite, Point, Cost_log
 from app.forms import UserSetForm
@@ -11,8 +12,8 @@ def setting():
 	if form.validate_on_submit():
 		form.populate_obj(g.user)
 		db.session.commit()
-		flash('User set succ')
-		return redirect( url_for('info') )
+		flash(u'您的个人资料修改成功')
+		return redirect( url_for('user.info') )
 
 	X = {'form': form, 'user': g.user}
 	return render_template('user/setting.html', X=X)

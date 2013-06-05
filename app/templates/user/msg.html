@@ -2,6 +2,10 @@
 {% from 'macros/_pager.html' import render_pager %}
 {% set user_curr_tab = "msg" %}
 
+{% block user_bc %}
+› {{ X.user.nickname }}的未读提醒
+{% endblock %}
+
 {% block user_main %}
 <a href="{{ url_for('user.mark_as_read') }}" class="btn">标记所有为已读</a><br>
 {% for msg in X.msgs.items %}

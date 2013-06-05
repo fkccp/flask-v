@@ -3,21 +3,28 @@
 {% set header_curr_tab = 'user' %}
 
 {% block title %}{{ X.user.nickname }}的用户信息{% endblock %}
-{% block bc %}{% endblock %}
+
+{% block bc %}
+<a href="{{ url_for('user.info', urlname=X.user.urlname) }}">{{ X.user.nickname }}的个人信息</a>
+{% block user_bc %}{% endblock %}
+{% endblock %}
 
 {% block main %}
-<div id="user_tabs">
-	{{ tabbed_link(user_curr_tab, 'info', '用户信息', url_for('user.info', urlname=X.user.urlname)) }}
-	{{ tabbed_link(user_curr_tab, 'posts', '发表的主题', url_for('user.posts', urlname=X.user.urlname)) }}
-	{{ tabbed_link(user_curr_tab, 'post_cmts', '发表的评论', url_for('user.post_cmts', urlname=X.user.urlname)) }}
-	{% if X.user == g.user %}
-	{{ tabbed_link(user_curr_tab, 'msg', '站内提醒', url_for('user.msg')) }}
-	{{ tabbed_link(user_curr_tab, 'point', '积分', url_for('user.point')) }}
-	{{ tabbed_link(user_curr_tab, 'coin', '金币', url_for('user.coin')) }}
-	{{ tabbed_link(user_curr_tab, 'invite', '邀请', url_for('user.invite')) }}
-	{{ tabbed_link(user_curr_tab, 'setting', '个人设置', url_for('user.setting')) }}
-	{% endif %}
-	<li class="empty-clear">
-</div>
 <div class="pad10">{% block user_main %}{% endblock %}</div>
+{% endblock %}
+
+{% block right_top %}
+<div class="cell">
+	<h3>{{ X.user.nickname }}的用户信息：</h3>
+	<p>{{ tabbed_link(user_curr_tab, 'info', '用户信息', url_for('user.info', urlname=X.user.urlname)) }}</p>
+	<p>{{ tabbed_link(user_curr_tab, 'posts', '发表的主题', url_for('user.posts', urlname=X.user.urlname)) }}</p>
+	<p>{{ tabbed_link(user_curr_tab, 'post_cmts', '发表的评论', url_for('user.post_cmts', urlname=X.user.urlname)) }}</p>
+	{% if X.user == g.user %}
+	<p>{{ tabbed_link(user_curr_tab, 'msg', '站内提醒', url_for('user.msg')) }}</p>
+	<p>{{ tabbed_link(user_curr_tab, 'point', '积分', url_for('user.point')) }}</p>
+	<p>{{ tabbed_link(user_curr_tab, 'coin', '金币', url_for('user.coin')) }}</p>
+	<p>{{ tabbed_link(user_curr_tab, 'invite', '邀请', url_for('user.invite')) }}</p>
+	<p>{{ tabbed_link(user_curr_tab, 'setting', '个人设置', url_for('user.setting')) }}</p>
+	{% endif %}
+</div>
 {% endblock %}

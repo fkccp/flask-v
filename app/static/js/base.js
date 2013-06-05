@@ -13,3 +13,11 @@ function like(obj)
 	}
 	return ret
 }
+
+function u(g)
+{
+	g = g.split(',')
+	a = (g[0]*1+g[1]*1)/2
+	b = (g[0]*1-g[1]*1)/2
+	return ''+a+','+b
+}

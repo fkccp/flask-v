@@ -2,6 +2,10 @@
 {% from 'macros/_pager.html' import render_pager %}
 {% set user_curr_tab = "coin" %}
 
+{% block user_bc %}
+› {{ X.user.nickname }}的交易记录
+{% endblock %}
+
 {% block user_main %}
 <table border="1">
 	<tr>

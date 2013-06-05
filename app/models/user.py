@@ -120,6 +120,10 @@ class User(db.Model):
 		return obj
 
 	def avatar(self, is_anony=0, width=50):
+		print self._QQ_info
+		import json
+		info = json.loads(self._QQ_info)
+		print info
 		if is_anony:
 			return '<img class="avatar" src="/static/img/avatar.png" width="%d" height="%d">' % (width, width)
 		else:

@@ -2,6 +2,11 @@
 {% from 'macros/_pager.html' import render_pager %}
 {% set user_curr_tab = "post_cmts" %}
 
+
+{% block user_bc %}
+› {{ X.user.nickname }}发表的评论
+{% endblock %}
+
 {% block user_main %}
 {% if X.post_cmts.total %}
 <h2>{{ X.user.nickname }} 发表的评论 :</h2>

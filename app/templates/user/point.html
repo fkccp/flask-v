@@ -2,6 +2,11 @@
 {% from 'macros/_pager.html' import render_pager %}
 {% set user_curr_tab = "point" %}
 
+
+{% block user_bc %}
+› {{ X.user.nickname }}的积分记录
+{% endblock %}
+
 {% block user_main %}
 <table border="1">
 	<tr>

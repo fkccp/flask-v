@@ -1,8 +1,12 @@
 {% extends 'user/layout.html' %}
 {% set user_curr_tab = "setting" %}
 
+{% block user_bc %}
+› {{ X.user.nickname }}的个人设置
+{% endblock %}
+
 {% block user_main %}
-<div class="desc">提示: 电子地图会根据你选择的【现居】坐标进行显示及更新。【个人签名】会显示在您的边栏、个人资料页面及社区排行榜中。</div>
+<div class="desc">提示: <br>统计人口分布的电子地图会根据你选择的【现居】坐标进行显示及更新。<br>【个人签名】会显示在您的边栏、个人资料页面及社区排行榜中。<br>生日的时间格式为 1987-02-20</div>
 {{ render_form(X.form) }}
 
 <div id="setting_map"></div>
@@ -12,7 +16,7 @@
 <script src="http://map.soso.com/api/v2/main.js"></script>
 <script src="/static/js/map.js"></script>
 <script>
-	document.getElementById('home_pos').onclick = function(){init(this)}
-	document.getElementById('live_pos').onclick = function(){init(this)}
+	$('home_pos').onclick = function(){init(this)}
+	$('live_pos').onclick = function(){init(this)}
 </script>
 {% endblock %}

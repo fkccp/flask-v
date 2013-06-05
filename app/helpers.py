@@ -34,3 +34,11 @@ def floorsign(floor=1):
 
 def rand_string(length=15):
 	return ''.join(random.choice(string.letters + string.digits) for ii in range (length))
+
+def hash_geo(address):
+	a = address.split(',')[:2]
+	if len(a) < 2:
+		return ''
+	a[0] = float(a[0])
+	a[1] = float(a[1])
+	return '%f,%f' % (a[0]+a[1], a[0]-a[1])

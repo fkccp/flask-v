@@ -2,6 +2,10 @@
 {% from 'macros/_pager.html' import render_pager %}
 {% set user_curr_tab = "posts" %}
 
+{% block user_bc %}
+› {{ X.user.nickname }}发表的主题
+{% endblock %}
+
 {% block user_main %}
 {% if X.posts.total %}
 <h2>{{ X.user.nickname }} 发表的主题 :</h2>
