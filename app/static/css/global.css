@@ -1,6 +1,7 @@
 /* reset */
 html, body, ul, div, p, table, input {margin: 0; padding: 0}
 body, textarea {background: #f6f6f6; line-height: 1.3; overflow-x: hidden;font-size: 12px; font-family: "Helvetica Neue", "Luxi Sans", "DejaVu Sans", Tahoma, "Hiragino Sans GB", STHeiti, "微软雅黑"; color: #000;}
+body {background: url(/static/img/bg.jpg);}
 
 a {text-decoration: none; color:#00BA53;}
 a:hover {text-decoration: underline;color: #00d35e}
