@@ -21,3 +21,19 @@ function u(g)
 	b = (g[0]*1-g[1]*1)/2
 	return ''+a+','+b
 }
+
+function init_index_map()
+{
+	var map = new soso.maps.Map($('indexmap'), {
+		center: new soso.maps.Latlng(0, 0),
+		zoom: 10
+	}), markers = []
+	for(i in index_data)
+	{
+		var g = index_data[i]['geo']
+		g = u(g)
+		console.log(g)
+		var marker = new soso.maps.Marker({map: map})
+		marker.setPosition(new soso.maps.LatLng(g[0], g[1]))		
+	}
+}

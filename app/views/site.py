@@ -82,7 +82,7 @@ def connect_callback(provider='qq'):
 		user = User(nickname=backinfo['userinfo']['nickname'],
 			_QQ_access_token=backinfo['access_token'],
 			_QQ_openid = backinfo['openid'],
-			_QQ_info = json_dumps(backinfo['userinfo']))
+			_QQ_info = json.dumps(backinfo['userinfo']))
 		user.gen_anonyname()
 		db.session.add(user)
 		db.session.commit()
@@ -91,7 +91,7 @@ def connect_callback(provider='qq'):
 		login_user(user, True)
 		user._QQ_access_token = backinfo['access_token']
 		user.nickname = backinfo['userinfo']['nickname']
-		user._QQ_info = json_dumps(backinfo['userinfo'])
+		user._QQ_info = json.dumps(backinfo['userinfo'])
 		db.session.add(user)
 		db.session.commit()
 		return redirect(url_for('bbs.index'))

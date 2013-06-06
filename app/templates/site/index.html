@@ -4,9 +4,9 @@
 
 {% block content %}
 <div id="header">
-	<span id="header_menu">
-		<a href="/">LOGO</a>
-	</span>
+	<div id="header_wrapper">
+		<a href="/" id="logo"><span>❄</span> SN</a>
+	</div>
 </div>
 
 <div id="container">
@@ -37,8 +37,11 @@
 		</div>
 	</div>
 	<div id="right">
+		<div class="cell"><a href="javascript:;" onclick='toQzoneLogin()'>QQ Login</a></div>
 		<div class="cell">
-			<a href="{{ url_for('site.login') }}">QQ Login</a>
+			<span class="logo">❄</span>
+			<p>本站logo是一朵绿色的雪花，表示同根和团结，象征纯洁与活力，包含着神农架春夏的草叶和秋冬的霜雪。</p>
+			<div class="empty-clear"></div>
 		</div>
 	</div>
 	<div class="clear"></div>
@@ -50,13 +53,9 @@
 {% endblock %}
 
 {% block js %}
-<script>
-	var a = {{ X.users|tojson|safe }};
-	console.log(a)
-	for(i in a)
-	{
-		var g = a[i]['geo']
-		console.log(u(g))
-	}
-</script>
+<script src="http://map.soso.com/api/v2/main.js"></script>
+<script>var index_data = {{ X.users|tojson|safe }};init_index_map();function toQzoneLogin()
+{
+	childWindow = window.open("connect/qq","TencentLogin","width=450,height=320,menubar=0,scrollbars=1, resizable=1,status=1,titlebar=0,toolbar=0,location=1");
+} </script>
 {% endblock %}

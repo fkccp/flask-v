@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 from .utils import *
 from app.helpers import rand_string
+import json
 
 class User(db.Model):
 	__tablename__ = 'user'
@@ -51,6 +52,7 @@ class User(db.Model):
 	n_like = db.Column(db.Integer, default=0)
 	n_liked = db.Column(db.Integer, default=0)
 
+	_QQ_access_token = db.Column('QQ_access_token', db.String(80), unique=True)
 	_QQ_openid = db.Column('QQ_openid', db.String(80), unique=True)
 	_QQ_info = db.Column('QQ_info', db.Text)
 
@@ -120,14 +122,18 @@ class User(db.Model):
 		return obj
 
 	def avatar(self, is_anony=0, width=50):
-		print self._QQ_info
-		import json
-		info = json.loads(self._QQ_info)
-		print info
 		if is_anony:
-			return '<img class="avatar" src="/static/img/avatar.png" width="%d" height="%d">' % (width, width)
+			src = '/static/img/avatar.png'
 		else:
-			return '<img class="avatar" src="/static/img/avatar.png" width="%d" height="%d">' % (width, width)
+			info = json.loads(self._QQ_info)
+			if width <= 30:
+				src = info['figureurl']
+			elif width <= 50:
+				src = info['figureurl_1']
+			else:
+				src = info['figureurl_2']
+
+		return '<img class="avatar" src="%s" width="%d" height="%d">' % (src, width, width)
 
 	def name(self, is_anony = 0):
 		if is_anony:

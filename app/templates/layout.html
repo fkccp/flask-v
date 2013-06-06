@@ -5,13 +5,15 @@
 
 {% block content %}
 <div id="header">
-	<span id="header_menu">
-		<a href="/">LOGO</a>
-		{{ tabbed_link(header_curr_tab, 'index', '首页', url_for('site.index')) }}
-		{{ tabbed_link(header_curr_tab, 'bbs', '社区', url_for('bbs.index')) }}
-		{{ tabbed_link(header_curr_tab, 'user', g.user.nickname, url_for('user.info')) }}
-		<a href="{{ url_for('site.logout') }}">退出</a>
-	</span>
+	<div id="header_wrapper">
+		<a href="/" id="logo"><span>❄</span> SN</a>
+		<span id="header_menu">
+			{{ tabbed_link(header_curr_tab, 'index', '首页', url_for('site.index')) }}
+			{{ tabbed_link(header_curr_tab, 'bbs', '社区', url_for('bbs.index')) }}
+			{{ tabbed_link(header_curr_tab, 'user', g.user.nickname, url_for('user.info')) }}
+			<a href="{{ url_for('site.logout') }}">退出</a>
+		</span>
+	</div>
 </div>
 <div id="container">
 	<div id="main">
