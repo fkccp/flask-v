@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 from .utils import *
 from app.forms import LoginForm, ActiveForm
-from app.models import User, Invite, Cost_log
+from app.models import User, Invite, Cost_log, Invite
 from app.exts import login_user, logout_user
 from app.api.qqlogin import QQLogin
 
@@ -20,6 +20,7 @@ def index():
 		_u['avatar'] = u.avatar()
 		users.append(_u)
 	X = {'users':users}
+	print users
 	return render_template('site/index.html', X=X)
 
 @site.route('/login', methods=['GET', 'POST'])
@@ -107,6 +108,7 @@ def active():
 		return redirect('site.index')
 
 	form = ActiveForm()
+	form.code.data = Invite().generate(User.query.get(1))
 	if form.validate_on_submit():
 		code = form.code.data
 		invite = Invite.query.filter_by(code=code, status=Invite.S_UNUSED).first()

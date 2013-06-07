@@ -17,23 +17,23 @@ function like(obj)
 function u(g)
 {
 	g = g.split(',')
-	a = (g[0]*1+g[1]*1)/2
-	b = (g[0]*1-g[1]*1)/2
-	return ''+a+','+b
+	var a = (g[0]*1+g[1]*1)/2, b = (g[0]*1-g[1]*1)/2
+	return [a, b]
 }
-
+var m = null
 function init_index_map()
 {
 	var map = new soso.maps.Map($('indexmap'), {
-		center: new soso.maps.Latlng(0, 0),
-		zoom: 10
+		center: new soso.maps.LatLng(31.547328075530842, 104.154296875),
+		zoom: 4
 	}), markers = []
+	m = map
 	for(i in index_data)
 	{
 		var g = index_data[i]['geo']
 		g = u(g)
 		console.log(g)
 		var marker = new soso.maps.Marker({map: map})
-		marker.setPosition(new soso.maps.LatLng(g[0], g[1]))		
+		marker.setPosition(new soso.maps.LatLng(g[0], g[1]))
 	}
 }

@@ -179,6 +179,7 @@ class Invite(db.Model):
 		self.uid = user.id
 		db.session.add(self)
 		db.session.commit()
+		return code
 
 	def active_user(self, user):
 		if self.status == self.S_USED or user.status == User.S_NORMAL:
