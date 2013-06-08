@@ -20,7 +20,6 @@ def index():
 		_u['avatar'] = u.avatar()
 		users.append(_u)
 	X = {'users':users}
-	print users
 	return render_template('site/index.html', X=X)
 
 @site.route('/login', methods=['GET', 'POST'])
@@ -98,7 +97,7 @@ def connect_callback(provider='qq'):
 		return redirect(url_for('bbs.index'))
 
 	session['active_uid'] = user.id
-	return redirect('active')
+	return redirect(url_for('site.active'))
 
 @site.route('/active', methods=['GET', 'POST'])
 def active():
