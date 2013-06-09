@@ -32,8 +32,8 @@ class QQLogin(object):
 		code = request.args.get('code')
 		state = request.args.get('state')
 
-		if state != session.pop('qqlogin_status', None):
-			return None
+		# if state != session.pop('qqlogin_status', None):
+		# 	return None
 
 		args = {
 			'grant_type': 'authorization_code',

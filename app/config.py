@@ -18,6 +18,9 @@ class DefaultConfig(object):
 	CACHE_TYPE = 'simple'
 	CACHE_DEFAULT_TIMEOUT = 300
 
+	SESSION_COOKIE_DOMAIN = '.v5snj.com'
+	SESSION_COOKIE_NAME = 'v5snj'
+
 class TestConfig(object):
 	TESTING = True
 	CSRF_ENABLED = False
