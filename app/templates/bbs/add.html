@@ -10,7 +10,16 @@
 
 {% block bbs_main %}
 <div class="pad10">
-	<div class="desc">提示：如果已有的节点类型不能满足你，请选择【其他】。当【其他】节点下相似主题的内容比较多时，管理员会新增相应的节点类型。</div>
-	{{ render_form(X.form) }}
+{{ render_form(X.form) }}
+</div>
+{% endblock %}
+
+{% block right_top %}
+<div class="cell">
+	<h3>提示：</h3>
+	<ol>
+		<li>如果已有的节点类型不能满足你，请选择【其他】。当【其他】节点下相似主题的内容比较多时，管理员会新增相应的节点类型。</li>
+		<li>主题标题应能够概括内容大意。</li>
+	</ol>
 </div>
 {% endblock %}

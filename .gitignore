@@ -3,3 +3,6 @@ db_repository/*
 .DS_Store
 *.db
 .directory
+todo.list
+fabric.py
+app/logs/*

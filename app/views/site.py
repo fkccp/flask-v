@@ -17,7 +17,8 @@ def index():
 		_u['geo'] = hash_geo(u.live_pos)
 		if _u['geo'] == '':
 			continue
-		_u['avatar'] = u.avatar()
+		_u['avatar'] = u.avatar_src()
+		_u['name'] = u.nickname
 		users.append(_u)
 	X = {'users':users}
 	return render_template('site/index.html', X=X)
@@ -90,7 +91,6 @@ def connect_callback(provider='qq'):
 	if user.is_active():
 		login_user(user, True)
 		user._QQ_access_token = backinfo['access_token']
-		user.nickname = backinfo['userinfo']['nickname']
 		user._QQ_info = json.dumps(backinfo['userinfo'])
 		db.session.add(user)
 		db.session.commit()

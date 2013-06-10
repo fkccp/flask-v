@@ -6,6 +6,14 @@
 <div id="header">
 	<div id="header_wrapper">
 		<a href="/" id="logo"><span>❄</span> SN</a>
+		{% if g.user and g.user.is_active() %}
+		<span id="header_menu">
+			<a href="/" class="on">首页</a>
+			<a href="/bbs/">社区</a>
+			<a href="/user/info">{{ g.user.nickname }}</a>
+			<a href="/logout">退出</a>
+		</span>
+		{% endif %}
 	</div>
 </div>
 
@@ -37,7 +45,12 @@
 		</div>
 	</div>
 	<div id="right">
-		<div class="cell"><a href="connect/qq">使用QQ账号登录</a></div>
+		{% if g.user and g.user.is_active() %}
+			{% from 'macros/_right.html' import right_user with context %}
+			<div class="cell">{{ right_user(g.user) }}</div>
+		{% else %}
+			<div class="cell"><a href="connect/qq">使用QQ账号登录</a></div>
+		{% endif %}
 		<div class="cell">
 			<span class="logo">❄</span>
 			<p>本站logo是一朵绿色的雪花，表示同根和团结，象征纯洁与活力，包含着神农架春夏的草叶和秋冬的霜雪。</p>

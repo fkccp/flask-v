@@ -6,17 +6,31 @@
 {% endblock %}
 
 {% block user_main %}
-<div class="desc">提示: <br>统计人口分布的电子地图会根据你选择的【现居】坐标进行显示及更新。<br>【个人签名】会显示在您的边栏、个人资料页面及社区排行榜中。<br>生日的时间格式为 1987-02-20</div>
 {{ render_form(X.form) }}
 
-<div id="setting_map"></div>
+<div id="setting_map_wrapper">
+	<p class="red m0p0">请用鼠标点击您的所在点，然后点击<a href="javascript:;" onclick="seting_map_close()">关闭</a>按钮来关闭地图。</p>
+	<div id="setting_map"></div>
+</div>
 {% endblock %}
 
 {% block js %}
 <script src="http://map.soso.com/api/v2/main.js"></script>
-<script src="/static/js/map.js"></script>
+<script src="/static/js/base.js"></script>
 <script>
-	$('home_pos').onclick = function(){init(this)}
-	$('live_pos').onclick = function(){init(this)}
+	$('f_home_pos').onfocus = function(){seting_map_init(this)}
+	$('f_live_pos').onfocus = function(){seting_map_init(this)}
 </script>
+{% endblock %}
+
+
+{% block user_right %}
+<div class="cell">
+	<h3>提示：</h3>
+	<ol>
+		<li>统计人口分布的电子地图会根据你选择的【现居】坐标进行显示及更新。</li>
+		<li>【个人签名】会显示在您的边栏、个人资料页面及社区排行榜中。</li>
+		<li>生日的时间格式为 1987-02-20</li>
+	</ol>
+</div>
 {% endblock %}

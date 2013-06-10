@@ -15,8 +15,8 @@ class UserSetForm(Form):
 
 	birth = DateField(u'生日')
 	job = TextField(u'职业/专业')
-	home_pos = TextField(u'家乡', id="home_pos")
-	live_pos = TextField(u'现居', id="live_pos")
+	home_pos = ReadonlyTextField(u'家乡', id="f_home_pos")
+	live_pos = ReadonlyTextField(u'现居', id="f_live_pos")
 	sign = TextAreaField(u'个人签名')
 	submit = SubmitField(u'确认修改')
 
