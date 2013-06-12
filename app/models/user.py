@@ -143,7 +143,7 @@ class User(db.Model):
 
 	def name(self, is_anony = 0):
 		if is_anony:
-			return u'匿名用户-%s' % self.anonyname
+			return u'<a>匿名用户-%s</a>' % self.anonyname
 		else:
 			return '<a href="%s">%s</a>' % (url_for('user.info', urlname=self.urlname), self.nickname)
 

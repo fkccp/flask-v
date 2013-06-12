@@ -83,6 +83,9 @@ ul.errors {margin-bottom: 10px;}
 #emotion ul {width: 200px;position: absolute;background-color: #fff}
 #emotion ul li {margin: 0;padding: 0;border-left: 1px solid #333;border-top: 1px solid #333;width: 24px;height: 24px;}
 
+#reply_tip {background-color: #f0ffef;border: 1px solid #14B80A;margin: 5px 0;display: none;}
+#reply_cnt {margin: 5px 0;margin-left: 20px;padding-left: 5px; border-left: 3px solid #3aaa34}
+
 /* form */
 #f_title {width: 500px}
 #f_home_pos, #f_live_pos {cursor:pointer;}

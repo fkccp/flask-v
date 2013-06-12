@@ -158,10 +158,9 @@ var seting_map_init = function(obj) {
 }
 
 function seting_map_close(){$('setting_map_wrapper').style.display = 'none'}
-
+// map end
 
 // editor
-var sss = null
 function init_editor()
 {
 	var ori = $('editor'), wrapper = ori.parentNode, _ = c('div')
@@ -204,7 +203,6 @@ function init_editor()
 			uls[index].style.zIndex = z_index
 		}
 	}
-	sss = _spans
 	spans[0].className += ' on'
 	uls[0].style.zIndex = z_index
 
@@ -240,5 +238,32 @@ function init_editor()
 }
 
 if($('editor')) init_editor();
-
 // editor end
+
+// reply
+function init_reply()
+{
+	var wrapper = $('reply_tip'), pid_input = $('pid'), btns = document.getElementsByClassName('cmt_reply'), reply_user = $('reply_user'), reply_cnt = $('reply_cnt')
+	for(i in btns)
+	{
+		btns[i].onclick = function()
+		{
+			var cmt_wrapper = this.parentElement.parentElement,
+				user = cmt_wrapper.getElementsByTagName('a')[0].innerHTML,
+				cnt = cmt_wrapper.getElementsByTagName('div')[0].innerHTML,
+				pid = cmt_wrapper.getAttribute('data-id')
+			reply_user.innerHTML = user
+			reply_cnt.innerHTML = cnt
+			pid_input.value = pid
+			wrapper.style.display = 'block'
+		}
+	}
+	$('reply_cancel').onclick = function()
+	{
+		pid_input.value = 0
+		wrapper.style.display = 'none'
+	}
+}
+
+if(document.getElementsByClassName('cmt_reply').length) init_reply();
+// reply end

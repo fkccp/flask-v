@@ -8,11 +8,11 @@
 	{% for cmt in cmt_obj.list.all() %}
 	<div class="cmt_item bb" id="cmt_{{ cmt.id }}">
 		{{ cmt.author.avatar(cmt.is_anony)|safe }}
-		<div class="cmt_right">
+		<div class="cmt_right" data-id={{ cmt.id }}>
 			<p>{{ cmt.author.name(cmt.is_anony)|safe }} 发表于 {{ cmt.ctime|timesince }}</p>
-			<p>{{ cmt.content|safe }}</p>
+			<div>{{ cmt.content|safe }}</div>
 			<div class="status_bar">
-				[{{ loop.index|floorsign }}]
+				<span class="right">[{{ loop.index|floorsign }}]</span>
 				<span class="status">赞({{ cmt.n_liked }})</span>
 				<a href="javascript:;" class="cmt_reply">Reply</a>
 				{% if g.user != cmt.author %}
@@ -27,5 +27,12 @@
 {% endif %}
 </div>
 
-<div id="cmt_form" class="pad10">{{ render_form(cmt_obj.form) }}</div>
+<div id="cmt_form" class="pad10">
+	<div id="reply_tip">
+		您将回复 <span id="reply_user"></span> 的评论：
+		<div id="reply_cnt">sss</div>
+		<a href="javascript:;" id="reply_cancel">取消回复</a>
+	</div>
+	{{ render_form(cmt_obj.form) }}
+</div>
 {% endmacro %}
