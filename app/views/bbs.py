@@ -123,7 +123,7 @@ def append(post_id):
 		append = Bbs_append(content=form.content.data, post_id=post.id)
 		db.session.add(append)
 		db.session.commit()
-		return redirect(url_for('detail', post_id=post_id))
+		return redirect(url_for('bbs.detail', post_id=post_id))
 
 	X = {'form': form}
 	X['post'] = post

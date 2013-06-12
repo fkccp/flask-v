@@ -122,7 +122,10 @@ class User(db.Model):
 		return obj
 
 	def avatar(self, is_anony=0, width=50):
-		return '<img class="avatar" src="%s" width="%d" height="%d">' % (self.avatar_src(is_anony, width), width, width)
+		if is_anony:
+			return u'<span class="avatar" style="font-size:%dpx;">匿</span>' % (width,)
+		else:
+			return '<img class="avatar" src="%s" width="%d" height="%d">' % (self.avatar_src(is_anony, width), width, width)
 
 	def avatar_src(self, is_anony=0, width=50):
 		if is_anony:

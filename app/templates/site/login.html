@@ -5,13 +5,4 @@
 
 {% block content %}
 {{ render_form(form) }}
-
-<a href="javascript:;" onclick='toQzoneLogin()'>QQ Login</a>
-
-<script>
-function toQzoneLogin()
-{
-	childWindow = window.open("connect/qq","TencentLogin","width=450,height=320,menubar=0,scrollbars=1, resizable=1,status=1,titlebar=0,toolbar=0,location=1");
-} 
-</script>
 {% endblock %}

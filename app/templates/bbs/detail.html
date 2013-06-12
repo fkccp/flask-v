@@ -6,7 +6,7 @@
 
 {% block bc %}
 <a href="{{ url_for('bbs.index') }}">首页</a> ›
-<a href="{{ url_for('bbs.index', nodename=X.post.node.urlname) }}">{{ X.post.node.name }}</a> ›
+<a href="{{ url_for('bbs.index', urlname=X.post.node.urlname) }}">{{ X.post.node.name }}</a> ›
 {{ X.post.title }}
 {% endblock %}
 
@@ -18,9 +18,9 @@
 <div class="pad10">{{ X.post.content }}</div>
 
 {% for append in X.post.appends %}
-<div class="b-yellow pad10 bb">
-	<p>附言添加于{{ append.ctime|timesince }}</p>
-	<p>{{ append.content }}</p>
+<div class="b-yellow pad10 bt">
+	<p>第{{ loop.index }}条附言添加于{{ append.ctime|timesince }} : </p>
+	<div>{{ append.content|safe }}</div>
 </div>
 {% endfor %}
 
@@ -41,11 +41,18 @@
 	<div class="empty-clear"></div>
 </div>
 <div>{{ render_cmt(X.cmt) }}</div>
+<style>#editor {min-height: 40px}</style>
 {% endblock %}
 
 
 {% block right_middle %}
 {% if g.user != X.post.author %}
-<div class="cell">{{ right_user(X.post.author) }}</div>
+	{% if X.post.is_anony %}
+	<div class="cell">
+		<h3>作者：匿名用户-{{ X.post.author.anonyname }}</h3>
+	</div>
+	{% else %}
+		<div class="cell">{{ right_user(X.post.author) }}</div>
+	{% endif %}
 {% endif %}
 {% endblock %}
