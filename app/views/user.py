@@ -22,7 +22,7 @@ def setting():
 @user.route('/msg/<int:page>')
 def msg(page=1):
 	X = {'msgs': g.user.get_msg(unread=False).paginate(page, per_page=20) , 'user':g.user, 'S_UNREAD': Msg.S_UNREAD}
-	X['pager_url'] = lambda page: url_for('msg', page=page)
+	X['pager_url'] = lambda page: url_for('user.msg', page=page)
 	return render_template('user/msg.html', X=X)
 
 @user.route('/mark_as_read')
@@ -51,7 +51,7 @@ def posts(urlname='', page=1):
 	u = get_user(urlname)
 	X = {'user': u}
 	X['posts'] = u.get_bbs_posts().paginate(page, per_page=20)
-	X['pager_url'] = lambda page: url_for('posts', page=page, urlname=u.urlname)
+	X['pager_url'] = lambda page: url_for('user.posts', page=page, urlname=u.urlname)
 	return render_template('user/posts.html', X=X)
 
 @user.route('/post_cmts')
@@ -62,7 +62,7 @@ def post_cmts(urlname='', page=1):
 	u = get_user(urlname)
 	X = {'user': u}
 	X['post_cmts'] = u.get_cmts(Bbs_post).paginate(page, per_page=20)
-	X['pager_url'] = lambda page: url_for('post_cmts', page=page, urlname=u.urlname)
+	X['pager_url'] = lambda page: url_for('user.post_cmts', page=page, urlname=u.urlname)
 	return render_template('user/post_cmts.html', X=X)
 
 def get_user(urlname):
@@ -81,7 +81,7 @@ def invite(page=1):
 	if X['invite_permit']:
 		invites = Invite.query.filter_by(uid=g.user.id).order_by(Invite.ctime.desc()).paginate(page=page, per_page=20)
 		X['invites'] = invites
-		X['pager_url'] = lambda page: url_for('invite', page=page)
+		X['pager_url'] = lambda page: url_for('user.invite', page=page)
 	return render_template('user/invite.html', X=X)
 
 @user.route('/gen_invite')
@@ -95,7 +95,7 @@ def gen_invite():
 def point(page=1):
 	points = Point.query.filter_by(uid=g.user.id).order_by(Point.ctime.desc()).paginate(page, per_page=20)
 	X = {'points': points, 'user': g.user}
-	X['pager_url'] = lambda page: url_for('point', page=page)
+	X['pager_url'] = lambda page: url_for('user.point', page=page)
 	return render_template('user/point.html', X=X)
 
 @user.route('/coin')
@@ -105,7 +105,7 @@ def coin(page=1):
 	coins = Cost_log.query.filter(db.or_(Cost_log.suid==g.user.id, Cost_log.ruid==g.user.id)).order_by(Cost_log.id.desc()).paginate(page, per_page=20)
 	X['coins'] = coins
 	print coins.items
-	X['pager_url'] = lambda page: url_for('coin', page=page)
+	X['pager_url'] = lambda page: url_for('user.coin', page=page)
 	return render_template('user/coin.html', X=X)
 
 @user.route('/top_point')
@@ -113,12 +113,12 @@ def coin(page=1):
 def top_point(page=1):
 	X = {}
 	X['list'] = User.query.order_by(User.point.desc()).paginate(page, per_page=20)
-	X['pager_url'] = lambda page: url_for('top_point', page=page)
+	X['pager_url'] = lambda page: url_for('user.top_point', page=page)
 	return render_template('user/top_point.html', X=X)
 
 @user.route('/top_cost')
 @user.route('/top_cost/<int:page>')
 def top_cost(page=1):
 	X = {'list': []}
-	X['pager_url'] = lambda page: url_for('top_point', page=page)
+	X['pager_url'] = lambda page: url_for('user.top_cost', page=page)
 	return render_template('user/top_point', X=X)
