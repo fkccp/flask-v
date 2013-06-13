@@ -7,7 +7,7 @@ from app.api.qqlogin import QQLogin
 
 site = Blueprint('site', __name__)
 
-@site.route('/')
+@site.route('/', methods=['GET', 'POST'])
 def index():
 	_users = User.query.filter(User.live_pos != '').all()
 	from app.helpers import hash_geo
@@ -20,8 +20,46 @@ def index():
 		_u['avatar'] = u.avatar_src()
 		_u['name'] = u.nickname
 		users.append(_u)
-	X = {'users':users}
+	X = _active()
+	X['users'] = users
 	return render_template('site/index.html', X=X)
+
+def _active():
+	if g.user.is_active():
+		return {'user': g.user}
+
+	uid = session.get('active_uid')
+	uid = 2
+	if not uid:
+		return {}
+
+	user = User.query.get(uid)
+	if user.is_active():
+		return {}
+
+	form = ActiveForm()
+	_X = {'form': form}
+	if not form.nickname.data:
+		form.nickname.data = user.nickname
+
+	if form.validate_on_submit():
+		u = User.query.filter(db.and_(User.nickname == form.nickname.data, User.id != uid)).first()
+		if u is not None:
+			form.nickname.errors.append(u'昵称已存在，换一个试试吧')
+		else:
+			code = form.code.data
+			invite = Invite.query.filter_by(code=code, status=Invite.S_UNUSED).first()
+			if invite is not None:
+				invite.active_user(user)
+				login_user(user, True)
+				return redirect(url_for('bbs.index'))
+			else:
+				import time
+				time.sleep(2)
+				form.code.errors.append(u'邀请码不可用，请重新输入')
+
+	_X['user'] = user
+	return _X
 
 @site.route('/login', methods=['GET', 'POST'])
 def login():
@@ -97,7 +135,7 @@ def connect_callback(provider='qq'):
 		return redirect(url_for('bbs.index'))
 
 	session['active_uid'] = user.id
-	return redirect(url_for('site.active'))
+	return redirect(url_for('site.index'))
 
 @site.route('/active', methods=['GET', 'POST'])
 def active():

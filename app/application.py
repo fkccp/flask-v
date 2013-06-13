@@ -102,7 +102,24 @@ def config_before_handlers(app):
 
 	@app.before_request
 	def authenticate():
+		if not current_user or not current_user.is_active():
+			p = request.path
+			safe_paths = ['/', '/login', '/logout', '/connect/qq', '/connect/callback/qq']
+			pas = False
+			for path in safe_paths:
+				if p == path:
+					pas = True
+					break
+
+			if p.startswith('/static'):
+				pas = True
+
+			if not pas:
+				return redirect('/')
+		
 		g.user = current_user
+		print g.user
+
 
 def config_after_handlers(app):
 	pass

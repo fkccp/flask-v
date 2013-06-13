@@ -45,12 +45,20 @@
 		</div>
 	</div>
 	<div id="right">
-		{% if g.user and g.user.is_active() %}
+			{% if X.form %}
+			{% from 'macros/_forms.html' import render_form %}
+			<div class="cell">
+				<h3>激活账号：</h3>
+				<div>{{ render_form(X.form) }}</div>
+			</div>
+			{% endif %}
+
+			{% if X.user %}
 			{% from 'macros/_right.html' import right_user with context %}
-			<div class="cell">{{ right_user(g.user) }}</div>
-		{% else %}
-			<div class="cell"><a href="connect/qq">使用QQ账号登录</a></div>
-		{% endif %}
+			<div class="cell">{{ right_user(X.user, 1) }}</div>
+			{% else %}
+				<div class="cell"><a href="connect/qq">使用QQ账号登录</a></div>
+			{% endif %}
 		<div class="cell">
 			<span class="logo">❄</span>
 			<p>本站logo是一朵绿色的雪花，表示同根和团结，象征纯洁与活力，包含着神农架春夏的草叶和秋冬的霜雪。</p>
@@ -67,8 +75,5 @@
 
 {% block js %}
 <script src="http://map.soso.com/api/v2/main.js"></script>
-<script>var index_data = {{ X.users|tojson|safe }};init_index_map();function toQzoneLogin()
-{
-	childWindow = window.open("connect/qq","TencentLogin","width=450,height=320,menubar=0,scrollbars=1, resizable=1,status=1,titlebar=0,toolbar=0,location=1");
-} </script>
+<script>var index_data = {{ X.users|tojson|safe }};init_index_map();
 {% endblock %}

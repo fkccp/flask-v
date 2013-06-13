@@ -1,5 +1,5 @@
-{% macro right_user(user) %}
-	{% if user == g.user %}
+{% macro right_user(user, me=0) %}
+	{% if me %}
 	<h3>我：</h3>
 	{% else %}
 	<h3>作者：</h3>
@@ -11,7 +11,7 @@
 		<span>金币 : {{ user.coin }}</span>
 		<div class="empty-clear"></div>
 	</p>
-	{% if user == g.user %}
+	{% if me %}
 	<a href="{{ url_for('user.msg') }}">站内提醒({{ user.get_msg().count() }})</a> |
 	<a href="{{ url_for('user.point') }}">积分({{ user.point }})</a> |
 	<a href="{{ url_for('user.invite') }}" class="red">邀请新用户</a>
