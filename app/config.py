@@ -3,7 +3,7 @@ import os
 basedir = os.path.abspath(os.path.dirname(__file__))
 
 class DefaultConfig(object):
-	DEBUG = False
+	DEBUG = True
 	SECRET_KEY = 'sec'
 
 	SQLALCHEMY_DATABASE_URI = 'sqlite:///' + os.path.join(basedir, 'app.db')

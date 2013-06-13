@@ -3,6 +3,7 @@ from flask import url_for, render_template, redirect, g, request, flash, session
 from app.exts import db
 from app.forms import CmtForm
 from app.models import Cmt, Point, Msg
+from app.helpers import editor_filter
 
 def f_cmt(obj):
 	cmt_form = CmtForm()
@@ -10,7 +11,8 @@ def f_cmt(obj):
 	content = cmt_form.content.data
 	pid = cmt_form.pid.data
 
-	if cmt_form.validate_on_submit():	
+	if cmt_form.validate_on_submit():
+		content = editor_filter(content)
 		cmt = Cmt(content = content,
 			pid = pid,
 			is_anony = cmt_form.is_anony.data,

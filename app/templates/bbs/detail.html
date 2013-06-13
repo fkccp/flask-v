@@ -15,7 +15,7 @@
 	<h2 class="p0m0">{{ X.post.title }}</h2>
 	{{ X.post.author.name(X.post.is_anony)|safe }} 发表于 {{ X.post.ctime|timesince }}
 </div>
-<div class="pad10">{{ X.post.content }}</div>
+<div class="pad10">{{ X.post.content|safe }}</div>
 
 {% for append in X.post.appends %}
 <div class="b-yellow pad10 bt">

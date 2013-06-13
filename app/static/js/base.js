@@ -170,54 +170,61 @@ function init_editor()
 	wrapper.appendChild(_)
 
 	// gen emos
-	var btn = $('emotion'), editor = $('editor'), emo_wrapper = btn.getElementsByTagName('div')[0], cats = ['普通表情', '文艺表情', '2X表情'], _s2 = _s3 = ''
-	for(i=0;i<3;i++)
+	var btn = $('emotion'), emo_wrapper = btn.getElementsByTagName('div')[0], emos_exist = false,
+	gen_emos = function()
 	{
-		_s2 += '<span>'+cats[i]+'</span>'
-		_s3 += '<ul>'
-		for(j=1;j<33;j++)
+		emos_exist = true
+		var editor = $('editor'), cats = ['普通表情', '文艺表情', '2X表情'], _s2 = _s3 = ''
+		for(i=0;i<3;i++)
 		{
-			var n = j;
-			if(n<10) n = '0'+n;
-			_s3 += '<li><img src="/static/img/emos/'+i+n+'.gif"></li>'
-		}
-		_s3 += '</ul>'
-	}
-	emo_wrapper.innerHTML = _s2 + _s3
-
-	var _spans = emo_wrapper.getElementsByTagName('span'), _uls = emo_wrapper.getElementsByTagName('ul'), lis = emo_wrapper.getElementsByTagName('li'), spans = [], uls = [], z_index = 1, reg = /(\s|^)on(\s|$)/
-	for(var i=0;i<3;i++)
-	{
-		uls[i] = _uls[i]
-		spans[i] = _spans[i]
-
-		spans[i].onmouseover = function()
-		{
-			var index = spans.indexOf(this)
-			for(j in spans)
+			_s2 += '<span>'+cats[i]+'</span>'
+			_s3 += '<ul>'
+			for(j=1;j<33;j++)
 			{
-				if(j != i) spans[j].className = spans[j].className.replace(reg, ' ')
+				var n = j;
+				if(n<10) n = '0'+n;
+				_s3 += '<li><img src="/static/img/emos/'+i+n+'.gif"></li>'
 			}
-			this.className += ' on'
-			z_index++
-			uls[index].style.zIndex = z_index
+			_s3 += '</ul>'
 		}
-	}
-	spans[0].className += ' on'
-	uls[0].style.zIndex = z_index
+		emo_wrapper.innerHTML = _s2 + _s3
 
-	for(i in lis)
-	{
-		lis[i].onclick = function()
+		var _spans = emo_wrapper.getElementsByTagName('span'), _uls = emo_wrapper.getElementsByTagName('ul'), lis = emo_wrapper.getElementsByTagName('li'), spans = [], uls = [], z_index = 1, reg = /(\s|^)on(\s|$)/
+
+		for(var i=0;i<3;i++)
 		{
-			editor.focus()
-			sel().html(this.innerHTML)
-			emo_wrapper.style.display = 'none'
+			uls[i] = _uls[i]
+			spans[i] = _spans[i]
+
+			spans[i].onmouseover = function()
+			{
+				var index = spans.indexOf(this)
+				for(j in spans)
+				{
+					if(j != i) spans[j].className = spans[j].className.replace(reg, ' ')
+				}
+				this.className += ' on'
+				z_index++
+				uls[index].style.zIndex = z_index
+			}
+		}
+		spans[0].className += ' on'
+		uls[0].style.zIndex = z_index
+
+		for(i in lis)
+		{
+			lis[i].onclick = function()
+			{
+				editor.focus()
+				sel().html(this.innerHTML)
+				emo_wrapper.style.display = 'none'
+			}
 		}
 	}
 
 	btn.getElementsByTagName('a')[0].onclick = function()
 	{
+		if(!emos_exist) gen_emos()
 		emo_wrapper.style.display = 'block'
 		emo_wrapper.focus()
 	}
@@ -256,6 +263,7 @@ function init_reply()
 			reply_cnt.innerHTML = cnt
 			pid_input.value = pid
 			wrapper.style.display = 'block'
+			$('editor').focus()
 		}
 	}
 	$('reply_cancel').onclick = function()

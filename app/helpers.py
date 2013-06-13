@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-import string, random
+import string, random, re
 from datetime import datetime
 
 def timesince(dt, default=None):
@@ -42,3 +42,23 @@ def hash_geo(address):
 	a[0] = float(a[0])
 	a[1] = float(a[1])
 	return '%f,%f' % (a[0]+a[1], a[0]-a[1])
+
+def editor_filter(s):
+	rand_hold = "owpmafuaoFerewaHWAFNASDJPAoSDFAQPAN"
+	p = re.compile(r'div>', re.I)
+	s = p.sub('p>', s)
+	s = s.replace('<p>', "\n<p>")
+	s = s.replace('http://www.v5snj.com', '')
+
+	p = re.compile(r'<img\ssrc="/static/img/emos/(\d+).gif">')
+	s = p.sub(r'owpmafuaoFerewaHWAFNASDJPAoSDFAQPAN\1', s)
+
+	p = re.compile(r'<(.*?)>')
+	s = p.sub('', s)
+	p = re.compile(r'owpmafuaoFerewaHWAFNASDJPAoSDFAQPAN(\d+)')
+	s = p.sub(r'<img src="/static/img/emos/\1.gif">', s)
+
+	p = re.compile(r'^$', re.M)
+	s = p.sub('<br>', s)
+	s = '<p>' + s.replace("\n", '</p><p>') + '</p>'
+	return s

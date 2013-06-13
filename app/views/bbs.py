@@ -56,7 +56,8 @@ def add(urlname=''):
 			node.n_post += 1
 			db.session.add(node)
 
-		post = Bbs_post(title=form.title.data, content=form.content.data, author=g.user, node=node, is_anony=form.is_anony.data)
+		content = editor_filter(form.content.data)
+		post = Bbs_post(title=form.title.data, content=content, author=g.user, node=node, is_anony=form.is_anony.data)
 		db.session.add(post)
 		db.session.commit()
 		point = Point.add_bbs_post(g.user, post).get_point()
@@ -120,7 +121,8 @@ def append(post_id):
 		return redirect(url_for('detail', post_id=post_id))
 	form = BbsAppendForm()
 	if form.validate_on_submit():
-		append = Bbs_append(content=form.content.data, post_id=post.id)
+		content = editor_filter(form.content.data)
+		append = Bbs_append(content=content, post_id=post.id)
 		db.session.add(append)
 		db.session.commit()
 		return redirect(url_for('bbs.detail', post_id=post_id))
