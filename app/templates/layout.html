@@ -24,7 +24,7 @@
 		{% if X.node %}
 		<div class="cell"><a href="{{ url_for('bbs.add', urlname=X.node.urlname) }}">在 <b>{{ X.node.name }}</b> 节点下添加新主题</a></div>
 		{% else %}
-		<div class="cell"><a href="{{ url_for('bbs.add') }}">添加新主题</a></div>
+		<div class="cell"><a href="{{ url_for('bbs.add') }}">添加新主题</a> | <a href="{{ url_for('bbs.nodes') }}">所有节点</a></div>
 		{%endif%}
 		{% block right_middle %}{% endblock %}
 		<div class="cell">{{ right_user(g.user, 1) }}</div>

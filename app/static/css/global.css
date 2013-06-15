@@ -54,7 +54,7 @@ span.avatar {display: inline-block;line-height: 1;background-color: #fafafa;colo
 #pager a, #bc a {color: #66f}
 #pager ul {margin: 0 auto}
 #bc {text-align: left; padding: 5px 10px;}
-#flash {position: fixed;top: 0;width:240px;margin-left: 50%; left: -120px;overflow: hidden; background-color: #ffffe0;color: #00f; border: 1px solid #D1AC38;border-top: none}
+#flash {position: fixed;top: 0;width:240px;margin-left: 50%; left: -120px;overflow: hidden; background-color: #ffffe0;color: #00f; border: 1px solid #D1AC38;border-top: none;display: none}
 #flash li {float: none;padding: 0 10px}
 ul.errors {margin-bottom: 10px;}
 

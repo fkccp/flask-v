@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 import os, logging
 from datetime import datetime, timedelta
 from logging.handlers import RotatingFileHandler
@@ -82,13 +84,13 @@ def config_error_handlers(app):
 	def unauthenized(error):
 		if request.is_xhr:
 			return jsonify(error='Login required')
-		flash('Please login to see this page', 'error')
+		flash(u'请您先登录', 'error')
 		return redirect(url_for('site.index', next=request.path)), 401
 
 	@app.errorhandler(500)
 	def error(error):
 		db.session.rollback()
-		return render_template('error/500.html', error=error), 500
+		return render_template('errors/500.html', error=error), 500
 
 def config_exts(app):
 	db.init_app(app)

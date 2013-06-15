@@ -332,7 +332,8 @@ if(by_c('cmt_reply').length > 0) init_reply();
 {
 	var f = $('flash'), h0 = h = f.clientHeight, t = null, dur = 200, delta = h/dur*10
 	f.style.top = h*-1 + - 1 + 'px'
-	if(f.getElementsByTagName('li').length == 0) return
+	if(f.getElementsByTagName('li').length == 0) return;
+	f.style.display = 'block'
 	t = setInterval(function(){
 		h -= delta
 		f.style.top = h*-1 + - 1 + 'px'
@@ -343,7 +344,11 @@ if(by_c('cmt_reply').length > 0) init_reply();
 				t = setInterval(function(){
 					h += delta
 					f.style.top = h*-1 + - 1 + 'px'
-					if(h >= h0) clearInterval(t)
+					if(h >= h0)
+					{
+						clearInterval(t)
+						f.style.display = 'none'
+					}
 				}, 10)
 			}, 3000)
 		}

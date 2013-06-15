@@ -1,9 +1,24 @@
 {% extends 'bbs/layout.html' %}
 
+{% block bc %}
+<a href="{{ url_for('bbs.index') }}">社区</a> › 所有节点
+{% endblock %}
+
 {% block bbs_main %}
-<ul>
+<table border="1" class="mar10">
+	<tr>
+		<th>Name</th>
+		<th>Urlname</th>
+		<th>Desc</th>
+		<th>Count</th>
+	</tr>
 	{% for node in X.nodes %}
-	<li><a href="{{ url_for('index' ,nodename=node.name) }}">{{ node.name }} ({{ node.n_post }})</a></li>
+	<tr>
+		<td><a href="{{ url_for('bbs.index' ,urlname=node.urlname) }}">{{ node.name }}</a></td>
+		<td>{{ node.urlname }}</td>
+		<td>{{ node.desc }}</td>
+		<td>{{ node.n_post }}</td>
+	</tr>
 	{% endfor %}
-</ul>
+</table>
 {% endblock %}

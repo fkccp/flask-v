@@ -85,7 +85,7 @@ def active_user(user):
 def createall():
 	db.create_all()
 
-	user = User(nickname='xj', urlname='admin', anonyname='xj_anony',status=User.S_NORMAL, role=User.R_ADMIN)
+	user = User(nickname=u'执事', urlname='admin', anonyname='snjjns',status=User.S_NORMAL, role=User.R_ADMIN, _QQ_openid='A67DB09059B8DAB4B541CD13A1E5932F')
 	db.session.add(user)
 	db.session.commit()
 
