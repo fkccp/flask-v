@@ -94,7 +94,7 @@ class Bbs_node(db.Model):
 	n_post = db.Column(db.Integer, default=0)
 	seen = db.Column(db.SmallInteger, default=1)
 	status = db.Column(db.SmallInteger, default=1)
-	desc = db.Column(db.String, default='')
+	desc = db.Column(db.String(100), default='')
 
 	posts = db.relationship('Bbs_post', backref='node', lazy='dynamic')
 

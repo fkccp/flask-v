@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 from .utils import *
+from flask import current_app
 from app.forms import LoginForm, ActiveForm
 from app.models import User, Invite, Cost_log, Invite
 from app.api.qqlogin import QQLogin
@@ -118,13 +119,13 @@ def qq_test():
 
 @site.route('/connect/<provider>')
 def connect(provider='qq'):
-	client = QQLogin()
+	client = QQLogin(current_app.config['QQ_APP_ID'], current_app.config['QQ_APP_KEY'])
 	login_uri = client.login()
 	return redirect(login_uri)
 
 @site.route('/connect/callback/<provider>')
 def connect_callback(provider='qq'):
-	client = QQLogin()
+	client = QQLogin(current_app.config['QQ_APP_ID'], current_app.config['QQ_APP_KEY'])
 	backinfo = client.login_callback(request)
 
 	if backinfo is None:

@@ -6,12 +6,14 @@ from flask import session
 
 class QQLogin(object):
 
-	app_id = '100397745'
-	app_key = '673dbdf46fa7a0f8debb6a7fca5fe3dc'
 	get_auth_code_url = "https://graph.qq.com/oauth2.0/authorize"
 	get_access_token_url = "https://graph.qq.com/oauth2.0/token"
 	get_openid_url = "https://graph.qq.com/oauth2.0/me"
 	get_user_info_url = 'https://graph.qq.com/user/get_user_info'
+
+	def __init__(self, app_id, app_key):
+		self.app_id = app_id
+		self.app_key = app_key
 
 	def login(self):
 		args = {

@@ -6,3 +6,4 @@ db_repository/*
 todo.list
 fabric.py
 app/logs/*
+sec_config.py
