@@ -149,9 +149,10 @@ def connect_callback(provider='qq'):
 		db.session.add(user)
 		db.session.commit()
 		return redirect(url_for('bbs.index'))
+	else:
+		session['active_uid'] = user.id
 
 	user.do_login(session)
-	session['active_uid'] = user.id
 	return redirect(url_for('site.index'))
 
 @site.route('/help')
