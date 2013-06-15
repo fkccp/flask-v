@@ -1,6 +1,14 @@
 var ie = !!(document.all)
 function $(id) { return document.getElementById(id) }
 function c(tag) {return document.createElement(tag)}
+function l(o) {if(console)console.log(o)}
+function removeClass(o, s)
+{
+	var r = new RegExp('(\\s|^)' + s.replace(/\-/g, "\\-") + '(\\s|$)'),
+	c = o.className.replace(r, ' ');
+	c = c.replace(/\s+/, ' ')
+	o.className = c
+};
 function by_c(className)
 {
 	if(document.getElementsByClassName)
@@ -26,68 +34,67 @@ if(!Array.prototype.indexOf)
 		return -1
 	}
 }
-function l(o) {console.log(o)}
 function sel()
 {
 	var s = {
 			sel:ie?document.selection:window.getSelection()
 		};
-		s.rg = ie?s.sel.createRange():s.sel.getRangeAt(0);
-		s.clear = function()
+	s.rg = ie?s.sel.createRange():s.sel.getRangeAt(0);
+	s.clear = function()
+	{
+		if(ie)
+		{
+			s.sel.clear();
+		}
+		else
+		{
+			s.rg.deleteContents();
+		}
+	};
+	s.val = function(t)
+	{
+		if('undefined' == typeof(t))
+		{
+			return ie?s.rg.text:s.sel.toString;
+		}
+		else
+		{
+			s.clear();
+			if(ie)
+			{
+				s.rg.text = t;
+			}
+			else
+			{
+				var fg = s.rg.createContextualFragment(t);
+				var lastNode = fg.lastChild;
+				s.rg.insertNode(fg);
+				s.rg.setStartAfter(lastNode);
+				s.rg.setEndAfter(lastNode);
+				s.sel.removeAllRanges();
+				s.sel.addRange(s.rg);
+			}
+		}
+	};
+	s.html = function(t)
+	{
+		if('undefined' == typeof(t))
+		{
+			return ie?s.rg.htmlText:s.sel.toString;
+		}
+		else
 		{
 			if(ie)
 			{
-				s.sel.clear();
+				s.rg.pasteHTML(t);
 			}
 			else
 			{
-				s.rg.deleteContents();
+				s.val(t);
 			}
-		};
-		s.val = function(t)
-		{
-			if('undefined' == typeof(t))
-			{
-				return ie?s.rg.text:s.sel.toString;
-			}
-			else
-			{
-				s.clear();
-				if(ie)
-				{
-					s.rg.text = t;
-				}
-				else
-				{
-					var fg = s.rg.createContextualFragment(t);
-					var lastNode = fg.lastChild;
-					s.rg.insertNode(fg);
-					s.rg.setStartAfter(lastNode);
-					s.rg.setEndAfter(lastNode);
-					s.sel.removeAllRanges();
-					s.sel.addRange(s.rg);
-				}
-			}
-		};
-		s.html = function(t)
-		{
-			if('undefined' == typeof(t))
-			{
-				return ie?s.rg.htmlText:s.sel.toString;
-			}
-			else
-			{
-				if(ie)
-				{
-					s.rg.pasteHTML(t);
-				}
-				else
-				{
-					s.val(t);
-				}
-			}
-		};
-		return s;
+		}
+	};
+	return s;
 }
 
 function like(obj)
@@ -245,7 +252,7 @@ function init_editor()
 				for(j in spans)
 				{
 					if(typeof(spans[j]) != 'function')
-						spans[j].className = spans[j].className.replace(reg, ' ')
+						removeClass(spans[j], 'on')
 				}
 				this.className += ' on'
 				z_index++
@@ -319,3 +326,81 @@ function init_reply()
 
 if(by_c('cmt_reply').length > 0) init_reply();
 // reply end
+
+// flash
+(function()
+{
+	var f = $('flash'), h0 = h = f.clientHeight, t = null, dur = 200, delta = h/dur*10
+	f.style.top = h*-1 + - 1 + 'px'
+	if(f.getElementsByTagName('li').length == 0) return
+	t = setInterval(function(){
+		h -= delta
+		f.style.top = h*-1 + - 1 + 'px'
+		if(h<=0)
+		{
+			clearInterval(t)
+			setTimeout(function(){
+				t = setInterval(function(){
+					h += delta
+					f.style.top = h*-1 + - 1 + 'px'
+					if(h >= h0) clearInterval(t)
+				}, 10)
+			}, 3000)
+		}
+	}, 10)
+
+})();
+// flash end
+
+// bbs detail
+(function()
+{
+	var d = $('bbs_detail')
+	if(d)
+	{
+		// indent repire
+		var ps = d.getElementsByTagName('p')
+		if(1 == ps.length)
+			ps[0].style.textIndent = 0
+
+		// DEFFB3 rgb(222, 255, 179) anchor bgcolor
+		var hash = location.hash
+		if(hash)
+		{
+			hash = hash.substr(1)
+			var item = $(hash), dur = 2000, c = 230, del = (255-c)/dur*100, t = null
+			if(item)
+			{
+				item.style.backgroundColor = 'rgb('+c+', 255, '+c+')'
+				t = setInterval(function(){
+					c =  Math.ceil(c + del)
+					item.style.backgroundColor = 'rgb('+c+', 255, '+c+')'
+					if(c >= 255)
+					{
+						clearInterval(t)
+						item.style.backgroundColor = ''
+					}
+				}, 100)
+			}
+		}
+	}
+})();
+// bbs detail end
+
+// mouse bg
+(function()
+{
+	var bgs = by_c('m_bg')
+	for(i in bgs)
+	{
+		bgs[i].onmouseover = function()
+		{
+			this.className += ' m_bg_on'
+		}
+		bgs[i].onmouseout = function()
+		{
+			removeClass(this, 'm_bg_on')
+		}
+	}
+})()
+// mouse bg end

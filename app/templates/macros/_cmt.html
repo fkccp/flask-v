@@ -6,13 +6,13 @@
 {% if cmt_total %}
 <strong class="bb clear">{{ cmt_obj.list.count() }}条评论：</strong><br>
 	{% for cmt in cmt_obj.list.all() %}
-	<div class="cmt_item bb" id="cmt_{{ cmt.id }}">
+	<div class="cmt_item bb m_bg" id="cmt_{{ cmt.id }}">
 		{{ cmt.author.avatar(cmt.is_anony)|safe }}
 		<div class="cmt_right" data-id={{ cmt.id }}>
 			<p>{{ cmt.author.name(cmt.is_anony)|safe }} 发表于 {{ cmt.ctime|timesince }}</p>
-			<div>{{ cmt.content|safe }}</div>
+			<div class="mar10">{{ cmt.content|safe }}</div>
 			<div class="status_bar">
-				<span class="right">[{{ loop.index|floorsign }}]</span>
+				<span class="right">{{ loop.index|floorsign }}...</span>
 				<span class="status">赞({{ cmt.n_liked }})</span>
 				<a href="javascript:;" class="cmt_reply">Reply</a>
 				{% if g.user != cmt.author %}

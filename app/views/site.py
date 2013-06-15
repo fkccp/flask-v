@@ -30,7 +30,6 @@ def _active():
 		return {'user': g.user}
 
 	uid = session.get('active_uid')
-	uid = 1
 	if not uid:
 		return {}
 
@@ -108,10 +107,8 @@ def cmt_like(cmt_id):
 	cmt = Cmt.query.get(cmt_id)
 	r = cmt.liked_by(g.user)
 	if 1 == r:
-		flash('Liked')
 		Cost_log.cmt_like(g.user, cmt.author, cmt)
-	else:
-		flash('Unliked')
+	
 	db.session.commit()
 	return redirect(request.headers['Referer'] + '#cmt_' + str(cmt.id))
 
@@ -153,6 +150,7 @@ def connect_callback(provider='qq'):
 		db.session.commit()
 		return redirect(url_for('bbs.index'))
 
+	user.do_login(session)
 	session['active_uid'] = user.id
 	return redirect(url_for('site.index'))
 

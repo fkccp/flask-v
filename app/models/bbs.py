@@ -14,7 +14,7 @@ bbs_post_mark = db.Table('bbs_post_mark',
 
 class Bbs_post(db.Model):
 
-	PER_PAGE = 5
+	PER_PAGE = 20
 	CMT_TYPE = 1
 
 	id = db.Column(db.Integer, primary_key=True)

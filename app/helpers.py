@@ -30,7 +30,18 @@ def timesince(dt, default=None):
 	return default
 
 def floorsign(floor=1):
-	return u'%d楼的朋友' % floor
+	str = u'这位小盆友在'
+
+	if 1 == floor:
+		str += u'神农顶上仰望星空，思考着下一顿吃什么'
+	elif floor < 34:
+		str += u'海拔%d米的地方被野人赶来赶去' % (3400 - floor*100)
+	elif 34 == floor:
+		str += u'海面上悠哉地漂来漂去'
+	else:
+		str += u'海下%d米的地方被鲨鱼追来追去' % (floor*100 - 3400)
+
+	return str
 
 def rand_string(length=15):
 	return ''.join(random.choice(string.letters + string.digits) for ii in range (length))

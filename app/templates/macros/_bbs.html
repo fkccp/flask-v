@@ -1,5 +1,5 @@
 {% macro render_post(post) %}
-<div class="arts">
+<div class="arts m_bg">
 	{{ post.author.avatar(post.is_anony)|safe }}
 	<div>
 		<p><a class="f16" href="{{ url_for('bbs.detail', post_id=post.id) }}">{{ post.title }}</a></p>
