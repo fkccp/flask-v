@@ -13,7 +13,7 @@ class UserSetForm(Form):
 		('4', u'保密'),
 		], default=1)
 
-	birth = DateField(u'生日')
+	birth = DateField(u'生日', validators=[Required(message=u'日期格式不对啊亲，要这样的这样的：1987-02-20')])
 	job = TextField(u'职业/专业')
 	home_pos = ReadonlyTextField(u'家乡', id="f_home_pos")
 	live_pos = ReadonlyTextField(u'现居', id="f_live_pos")

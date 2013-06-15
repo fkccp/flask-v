@@ -1,6 +1,31 @@
 var ie = !!(document.all)
 function $(id) { return document.getElementById(id) }
 function c(tag) {return document.createElement(tag)}
+function by_c(className)
+{
+	if(document.getElementsByClassName)
+		return document.getElementsByClassName(className)
+
+	var retnode = [], elem = document.getElementsByTagName('*'), i = 0
+	for(;i<elem.length;i++)
+	{
+		if((' '+elem[i].className+' ').indexOf(' '+className+' ') > -1)
+			retnode.push(elem[i])
+	}
+	return retnode
+}
+if(!Array.prototype.indexOf)
+{
+	Array.prototype.indexOf = function(val)
+	{
+		var value = this
+		for(var i = 0;i < value.length;i++)
+		{
+			if(value[i] == val) return i
+		}
+		return -1
+	}
+}
 function l(o) {console.log(o)}
 function sel()
 {
@@ -174,7 +199,7 @@ function init_editor()
 	gen_emos = function()
 	{
 		emos_exist = true
-		var editor = $('editor'), cats = ['普通表情', '文艺表情', '2X表情'], _s2 = _s3 = ''
+		var editor = $('editor'), cats = ['普通表情', '文艺表情', '2X表情'], _s2 = _s3 = '';
 		for(i=0;i<3;i++)
 		{
 			_s2 += '<span>'+cats[i]+'</span>'
@@ -187,21 +212,40 @@ function init_editor()
 			}
 			_s3 += '</ul>'
 		}
-		emo_wrapper.innerHTML = _s2 + _s3
 
-		var _spans = emo_wrapper.getElementsByTagName('span'), _uls = emo_wrapper.getElementsByTagName('ul'), lis = emo_wrapper.getElementsByTagName('li'), spans = [], uls = [], z_index = 1, reg = /(\s|^)on(\s|$)/
-
-		for(var i=0;i<3;i++)
+		try
 		{
+			emo_wrapper.innerHTML = _s2 + _s3
+		}
+		catch(e)
+		{
+			// for fuck IE6
+			_ = c('div')
+			_.innerHTML = _s2 +'<br>'+ _s3
+			_c = _.childNodes
+			for(var i=0; i< 7;i++)
+			{
+				emo_wrapper.appendChild(_c[0])
+			}
+		}
+
+		var _spans = emo_wrapper.getElementsByTagName('span'), _uls = emo_wrapper.getElementsByTagName('ul'), lis = emo_wrapper.getElementsByTagName('li'), spans = [], uls = [], z_index = 1, reg = /(\s|^)on(\s|$)/;
+
+		for(var i=0;i<4;i++)
+		{
+			if(typeof(_uls[i]) != 'object')
+				continue
+
 			uls[i] = _uls[i]
 			spans[i] = _spans[i]
-
-			spans[i].onmouseover = function()
+			spans[i].onmouseover = function()			
 			{
 				var index = spans.indexOf(this)
+
 				for(j in spans)
 				{
-					if(j != i) spans[j].className = spans[j].className.replace(reg, ' ')
+					if(typeof(spans[j]) != 'function')
+						spans[j].className = spans[j].className.replace(reg, ' ')
 				}
 				this.className += ' on'
 				z_index++
@@ -229,7 +273,7 @@ function init_editor()
 		emo_wrapper.focus()
 	}
 
-	emo_wrapper.onblur = function(){ emo_wrapper.style.display = 'none' }
+	// emo_wrapper.onblur = function(){ emo_wrapper.style.display = 'none' }
 
 	_ = wrapper
 	while(true)
@@ -250,7 +294,7 @@ if($('editor')) init_editor();
 // reply
 function init_reply()
 {
-	var wrapper = $('reply_tip'), pid_input = $('pid'), btns = document.getElementsByClassName('cmt_reply'), reply_user = $('reply_user'), reply_cnt = $('reply_cnt')
+	var wrapper = $('reply_tip'), pid_input = $('pid'), btns = by_c('cmt_reply'), reply_user = $('reply_user'), reply_cnt = $('reply_cnt')
 	for(i in btns)
 	{
 		btns[i].onclick = function()
@@ -273,5 +317,5 @@ function init_reply()
 	}
 }
 
-if(document.getElementsByClassName('cmt_reply').length) init_reply();
+if(by_c('cmt_reply').length > 0) init_reply();
 // reply end

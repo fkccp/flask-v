@@ -9,7 +9,7 @@
 <p>积分：{{ X.user.point }}分 {{ X.user.level }}级</p>
 <p>金币：{{ X.user.coin }}</p>
 <p>性别：{% if 1 == X.user.sex %}高富帅{% else %}白富美{% endif %}</p>
-{% if X.user.birth %}<p>生日：{{ X.user.bitrh }}</p>{% endif %}
+{% if X.user.birth %}<p>生日：{{ X.user.birth.isoformat() }}</p>{% endif %}
 <p>职业：{{ X.user.job }}</p>
 <p>签名：{{ X.user.sign }}</p>
 

@@ -8,6 +8,7 @@ user = Blueprint('user', __name__)
 @user.route('/setting', methods=['GET', 'POST'])
 def setting():
 	form = UserSetForm(g.user)
+	print type(g.user.birth)
 
 	if form.validate_on_submit():
 		form.populate_obj(g.user)

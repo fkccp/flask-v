@@ -13,6 +13,10 @@
 			<a href="/user/info">{{ g.user.nickname }}</a>
 			<a href="/logout">退出</a>
 		</span>
+		{% elif g.user %}
+		<span id="header_menu">
+			<a href="/logout">退出</a>
+		</span> 
 		{% endif %}
 	</div>
 </div>
@@ -50,6 +54,12 @@
 			<div class="cell">
 				<h3>激活账号：</h3>
 				<div>{{ render_form(X.form) }}</div>
+				<div class="desc">
+					提示: <br>
+					<p>1. 账号需要激活才能使用，一般来说，你从哪里知道这个网站的，哪里就有邀请码，赶紧找你的TA去要吧～</p>
+					<p>2. 昵称至少<span class="red">两个</span>字符。</p>
+					<p>3. 昵称应该是正常汉字或者英文字母，不应该是火星文等特殊字符，因为后期会添加类似微博@的功能，与昵称的首字母有关，使用不正常的字符的话其他用户不太方便@你。这点不做强求。</p>
+				</div>
 			</div>
 			{% endif %}
 
@@ -61,7 +71,7 @@
 			{% endif %}
 		<div class="cell">
 			<span class="logo">❄</span>
-			<p>本站logo是一朵绿色的雪花，表示同根和团结，象征纯洁与活力，包含着神农架春夏的草叶和秋冬的霜雪。</p>
+			<p>本站logo是一朵绿色的雪花，代表同根、团结、纯洁、活力，包含了神农架春夏的草叶和秋冬的雪霜。</p>
 			<div class="empty-clear"></div>
 		</div>
 	</div>
@@ -75,5 +85,15 @@
 
 {% block js %}
 <script src="http://map.soso.com/api/v2/main.js"></script>
-<script>var index_data = {{ X.users|tojson|safe }};init_index_map();</script>
+<script>
+	// var index_data = {{ X.users|tojson|safe }};init_index_map();
+	if($('submit'))
+	{
+		var form = $('submit').parentElement.parentElement
+		form.onsubmit = function()
+		{
+			$('submit').parentElement.innerHTML = '验证中，请稍后，嗯，打错了，稍候...'
+		}
+	}
+</script>
 {% endblock %}

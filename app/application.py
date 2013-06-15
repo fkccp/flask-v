@@ -1,10 +1,11 @@
 import os, logging
+from datetime import datetime, timedelta
 from logging.handlers import RotatingFileHandler
-from flask import Flask, request, jsonify, render_template, url_for, redirect, g, flash
+from flask import Flask, request, jsonify, render_template, url_for, redirect, g, flash, session
 from app import views, helpers
 from app.models import User
 from .config import DefaultConfig
-from .exts import db, cache, loginManager, current_user
+from .exts import db, cache
 
 __all__ = ['create_app']
 
@@ -93,16 +94,12 @@ def config_exts(app):
 	db.init_app(app)
 	cache.init_app(app)
 
-	loginManager.init_app(app)
-	@loginManager.user_loader
-	def log_user(id):
-		return User.query.get(int(id))
-
 def config_before_handlers(app):
 
 	@app.before_request
 	def authenticate():
-		if not current_user or not current_user.is_active():
+		g.user = User.init_login(session, request.cookies)
+		if not g.user or not g.user.is_active():
 			p = request.path
 			safe_paths = ['/', '/login', '/logout', '/connect/qq', '/connect/callback/qq']
 			pas = False
@@ -116,9 +113,24 @@ def config_before_handlers(app):
 
 			if not pas:
 				return redirect('/')
-		
-		g.user = current_user
-		print g.user
+
+	def _cookie_op(response):
+		if "login_cookie" not in session:
+			return response
+
+		rem = session.pop('login_cookie')
+		if "y" == rem:
+			anonyname = session.pop('anonyname')
+			sumstr = session.get('sumstr')
+			if anonyname and sumstr:
+				exp = datetime.utcnow() + timedelta(days=365)
+				response.set_cookie("vs", "%s|%s" % (anonyname, sumstr), expires=exp, domain=".v5snj.com")
+		elif "n" == rem:
+			response.delete_cookie("vs", domain=".v5snj.com")
+
+		return response
+
+	app.after_request(_cookie_op)
 
 
 def config_after_handlers(app):

@@ -1,6 +1,7 @@
 /* reset */
 html, body, ul, div, p, table, input {margin: 0; padding: 0}
 body, textarea {background: #f6f6f6; line-height: 1.3; overflow-x: hidden;font-size: 12px; font-family: "Helvetica Neue", "Luxi Sans", "DejaVu Sans", Tahoma, "Hiragino Sans GB", STHeiti, "微软雅黑"; color: #000;}
+textarea {background-color: #fff;width: 100%}
 body {background: url(/static/img/bg.jpg);}
 
 a {text-decoration: none; color:#00BA53;}
@@ -9,7 +10,7 @@ table {width: 700px; border-collapse: collapse;border-spacing: 0px;margin-bottom
 table td {padding: 1px 5px;}
 ul li {float: left;margin-right: 10px; list-style: none}
 ol {padding-left: 15px}
-h2 {font-size: 20px}
+h2 {font-size: 20px;margin-top: 10px}
 p, blockquote {margin:0 0 5px 0; line-height: 18px}
 .indent-p p {text-indent: 2em}
 blockquote {border-left: 5px solid #ececec; padding-left: 5px;opacity: 0.6; filter:Alpha(Opacity=60);}
@@ -39,7 +40,7 @@ span.avatar {display: inline-block;line-height: 1;background-color: #fafafa;colo
 .f16 {font-size: 16px}
 .f24 {font-size: 24px}
 .b-yellow {background: #fffff5}
-.b-grey {background: lightgrey}
+.b-grey {background: #eee}
 .red {color: red}
 .bb {border-bottom: 1px solid #ddd}
 .bt {border-top: 1px solid #ddd}
@@ -69,18 +70,18 @@ ul.errors {margin-bottom: 10px;}
 #main {float: left; width: 720px; margin-right:10px; background: #fff}
 #right {float: right;width: 230px;opacity: 0.9; filter:Alpha(Opacity=90);}
 #right, #right * {}
-#right h3 {margin: 0;padding: 0; border-bottom: 1px solid #eee;margin-bottom: 10px}
+#right h3 {margin: 0;padding: 0; border-bottom: 1px solid #eee;margin-bottom: 10px;font-size: 14px}
 #right div.cell {background-color: #fff; padding:10px; margin-bottom: 10px;border: 1px solid #ddd}
 .sign , .desc {margin-top:5px; margin-bottom: 0px; padding:5px; border:1px solid #e7e7bb; background-color: #ffffd3;color: #969677;}
-.desc { margin:0 0 10px;font-size: 80%}
+.desc { margin:0 0 10px}
 #footer {text-align: center;padding: 20px 0;margin-top: 10px;font-size: 90%}
 
 #editor {border: 1px solid #333; padding-bottom: 15px;min-height: 300px}
 #emotion {position: relative;}
-#emotion div {background-color: #fff;position: absolute;border: 1px solid #333;border-left: none;width: 200px;height: 118px;display: none;}
+#emotion div {background-color: #fff;position: absolute;left:0;top:15px; border: 1px solid #333;border-left: none;width: 200px;height: 118px;display: none;}
 #emotion span {width: 65px;text-align: center; background-color: #ddd;cursor:pointer;border-left: 1px solid #333;display: inline-block}
 #emotion span.on {background-color: #fff}
-#emotion ul {width: 200px;position: absolute;background-color: #fff}
+#emotion ul {width: 200px;position: absolute;background-color: #fff;height: 100px;overflow-y:hidden;}
 #emotion ul li {margin: 0;padding: 0;border-left: 1px solid #333;border-top: 1px solid #333;width: 24px;height: 24px;}
 
 #reply_tip {background-color: #f0ffef;border: 1px solid #14B80A;margin: 5px 0;display: none;}
@@ -92,7 +93,7 @@ ul.errors {margin-bottom: 10px;}
 
 /* index */
 #indexmap {height: 688px}
-#right .logo {color: #21E421; font-size: 50px;float: left;line-height: 0.7;margin:0 15px 20px 0}
+#right .logo {color: #21E421; font-size: 50px;float: left;line-height: 0.7;margin:0 10px 20px 0}
 #mapinfo {}
 
 /* bbs */
@@ -100,13 +101,15 @@ ul.errors {margin-bottom: 10px;}
 
 div.arts {padding:10px; padding-bottom: 0;border-bottom: 1px solid #ddd}
 div.arts span.statis {float: right;}
+.bbs_detail p {text-indent: 2em;font-size: 13px;line-height: 1.5;padding-bottom: 10px}
 
 .cmt_item {padding:10px 0}
 .cmt_right {margin-left: 60px}
 
+/* user */
 #setting_map_wrapper {display: none}
 #setting_map {width: 100%; height: 300px;margin-bottom: 20px}
-
+#sign {height: 40px}
 
 /* manage */
 #admin_main {padding: 10px; background-color: #fff;box-shadow: 1px 1px 1px #ddd}
@@ -115,5 +118,5 @@ div.arts span.statis {float: right;}
 
 
 /* css3 */
-.shadow, #header, #main, #right div.cell {box-shadow: 0px 0px 3px #B3B3B3}
+/*.shadow, #header, #main, #right div.cell {box-shadow: 0px 0px 3px #B3B3B3}
 .radius5 , #main, #right div.cell {border-radius: 3px;}

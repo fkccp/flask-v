@@ -2,7 +2,6 @@
 from .utils import *
 from app.forms import LoginForm, ActiveForm
 from app.models import User, Invite, Cost_log, Invite
-from app.exts import login_user, logout_user
 from app.api.qqlogin import QQLogin
 
 site = Blueprint('site', __name__)
@@ -25,11 +24,13 @@ def index():
 	return render_template('site/index.html', X=X)
 
 def _active():
-	if g.user.is_active():
+	if g.user is None:
+		return {}
+	elif g.user and g.user.is_active():
 		return {'user': g.user}
 
 	uid = session.get('active_uid')
-	uid = 2
+	uid = 1
 	if not uid:
 		return {}
 
@@ -41,29 +42,48 @@ def _active():
 	_X = {'form': form}
 	if not form.nickname.data:
 		form.nickname.data = user.nickname
+	else:
+		form.nickname.data = form.nickname.data.strip()
+		form.code.data = form.code.data.strip()
 
 	if form.validate_on_submit():
-		u = User.query.filter(db.and_(User.nickname == form.nickname.data, User.id != uid)).first()
-		if u is not None:
-			form.nickname.errors.append(u'昵称已存在，换一个试试吧')
+		name_pas = code_pas = False
+
+		# check nickname
+		nickname = form.nickname.data
+		if len(nickname) < 2:
+			form.nickname.errors.append(u'昵称太短，还是长点儿好，你懂的')
 		else:
-			code = form.code.data
-			invite = Invite.query.filter_by(code=code, status=Invite.S_UNUSED).first()
-			if invite is not None:
-				invite.active_user(user)
-				login_user(user, True)
-				return redirect(url_for('bbs.index'))
+			u = User.query.filter(db.and_(User.nickname == form.nickname.data, User.id != uid)).first()
+			if u is not None:
+				form.nickname.errors.append(u'昵称已存在，你应该与众不同')
 			else:
-				import time
-				time.sleep(2)
-				form.code.errors.append(u'邀请码不可用，请重新输入')
+				name_pas = True
+
+		# check invite code
+		code = form.code.data
+		invite = Invite.query.filter_by(code=code, status=Invite.S_UNUSED).first()
+		if invite is None:
+			import time
+			time.sleep(2)
+			form.code.errors.append(u'这个邀请码不可用，貌似你被骗了')
+		else:
+			code_pas = True
+
+		# success invite
+		if name_pas and code_pas:
+			invite.active_user(user, nickname)
+			user.do_login(session)
+			if "active_uid" in session:
+				session.pop('active_uid')
+			return {'user': user}
 
 	_X['user'] = user
 	return _X
 
 @site.route('/login', methods=['GET', 'POST'])
 def login():
-	if g.user.is_authenticated():
+	if g.user:
 		return redirect(url_for('bbs.index'))
 	else:
 		form = LoginForm()
@@ -72,14 +92,15 @@ def login():
 			if user is None:
 				flash('Error nickname', 'error')
 			else:
-				login_user(user, form.remember_me.data)
+				user.do_login(session)
 				return redirect(request.args.get('next') or url_for('bbs.index'))
 
 		return render_template('site/login.html', form=form)
 
 @site.route('/logout')
 def logout():
-	logout_user()
+	if g.user:
+		g.user.do_logout(session)
 	return redirect(url_for('site.index'))
 
 @site.route('/cmt_like/<int:cmt_id>', methods=['POST'])
@@ -108,20 +129,18 @@ def connect(provider='qq'):
 def connect_callback(provider='qq'):
 	client = QQLogin()
 	backinfo = client.login_callback(request)
-	
-	# backinfo = {'access_token': '6DFF34191E3AAD0356054D3992DC23A8', 'openid': 'A67DB09059B8DAB4B541CD13A1E5932F', 'userinfo': {u'figureurl_1': u'http://qzapp.qlogo.cn/qzapp/100397745/A67DB09059B8DAB4B541CD13A1E5932F/50', u'figureurl': u'http://qzapp.qlogo.cn/qzapp/100397745/A67DB09059B8DAB4B541CD13A1E5932F/30', u'figureurl_2': u'http://qzapp.qlogo.cn/qzapp/100397745/A67DB09059B8DAB4B541CD13A1E5932F/100', u'yellow_vip_level': u'0', u'gender': u'', u'vip': u'0', u'level': u'0', u'is_yellow_vip': u'0', u'ret': 0, u'figureurl_qq_2': u'http://q.qlogo.cn/qqapp/100397745/A67DB09059B8DAB4B541CD13A1E5932F/100', u'figureurl_qq_1': u'http://q.qlogo.cn/qqapp/100397745/A67DB09059B8DAB4B541CD13A1E5932F/40', u'is_yellow_year_vip': u'0', u'msg': u'', u'nickname': u'\u6267\u4e8b'}}
 
 	if backinfo is None:
 		abort(401)
 
 	user = User.query.filter_by(_QQ_openid=backinfo['openid']).first()
 
-	import json
+	from json import dumps
 	if user is None:
 		user = User(nickname=backinfo['userinfo']['nickname'],
 			_QQ_access_token=backinfo['access_token'],
 			_QQ_openid = backinfo['openid'],
-			_QQ_info = json.dumps(backinfo['userinfo']))
+			_QQ_info = dumps(backinfo['userinfo']))
 		user.gen_anonyname()
 		db.session.add(user)
 		db.session.commit()
@@ -129,38 +148,13 @@ def connect_callback(provider='qq'):
 	if user.is_active():
 		login_user(user, True)
 		user._QQ_access_token = backinfo['access_token']
-		user._QQ_info = json.dumps(backinfo['userinfo'])
+		user._QQ_info = dumps(backinfo['userinfo'])
 		db.session.add(user)
 		db.session.commit()
 		return redirect(url_for('bbs.index'))
 
 	session['active_uid'] = user.id
 	return redirect(url_for('site.index'))
-
-@site.route('/active', methods=['GET', 'POST'])
-def active():
-	uid = session.get('active_uid')
-	if uid is None:
-		flash(u'您没有未激活的账号', 'error')
-		return redirect('site.index')
-
-	form = ActiveForm()
-	form.code.data = Invite().generate(User.query.get(1))
-	if form.validate_on_submit():
-		code = form.code.data
-		invite = Invite.query.filter_by(code=code, status=Invite.S_UNUSED).first()
-		if invite is not None:
-			user = User.query.get(uid)
-			invite.active_user(user)
-			login_user(user, True)
-			return redirect(url_for('bbs.index'))
-
-		import time
-		time.sleep(2)
-		form.code.errors.append(u'邀请码不可用，请重新输入')
-
-	X={'form': form}
-	return render_template('site/active.html', X=X)
 
 @site.route('/help')
 def help():

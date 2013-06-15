@@ -48,6 +48,9 @@ def add(urlname=''):
 	if urlname and 'GET' == request.method:
 		form.node.data = urlname
 
+	if form.title.data:
+		form.title.data = form.title.data.strip()
+
 	if form.validate_on_submit():
 		node = Bbs_node.query.filter_by(urlname=form.node.data).first()
 		if node is None:

@@ -2,6 +2,7 @@
 from .utils import *
 from app.helpers import rand_string
 import json
+from hashlib import md5
 
 class User(db.Model):
 	__tablename__ = 'user'
@@ -70,19 +71,43 @@ class User(db.Model):
 	def __repr__(self):
 		return '<%s>' % self
 
+	@staticmethod
+	def init_login(session, cookies):
+		uid = session.get('uid')
+		sumstr = session.get('sumstr')
+		if uid and sumstr:
+			_u = User.query.get(uid)
+			if _u and sumstr == md5('v5snj' + _u.urlname + _u.anonyname + _u._QQ_openid).hexdigest():
+				return _u
+		else:
+			return User._cookie_login(session, cookies)
+
+	@staticmethod
+	def _cookie_login(session, cookies):
+		vs = cookies.get('vs')
+		if vs:
+			vss = vs.split('|')
+			_u = User.query.filter_by(anonyname=vss[0]).first()
+			if _u and vss[1] == md5('v5snj' + _u.urlname + _u.anonyname + _u._QQ_openid).hexdigest():
+				_u.do_login(session)
+				return _u
+
+		return None
+
+	def do_login(self, session):
+		self._refresh_login_time()
+		session['uid'] = self.id
+		session['anonyname'] = self.anonyname
+		session['sumstr'] = md5('v5snj' + self.urlname + self.anonyname + self._QQ_openid).hexdigest()
+		session['login_cookie'] = "y"
+
+	def do_logout(self, session):
+		session.pop('uid')
+		session.pop('sumstr')
+		session['login_cookie'] = "n"
+
 	def is_active(self):
 		return self.status == self.S_NORMAL
-
-	def is_anonymous(self):
-		return False
-
-	def is_authenticated(self):
-		self._refresh_login_time()
-		return True
-
-	def get_id(self):
-		self._refresh_login_time()
-		return unicode(self.id)
 
 	def _refresh_login_time(self):
 		# check-in everyday
@@ -187,7 +212,7 @@ class Invite(db.Model):
 		db.session.commit()
 		return code
 
-	def active_user(self, user):
+	def active_user(self, user, nickname):
 		if self.status == self.S_USED or user.status == User.S_NORMAL:
 			return False
 
@@ -195,6 +220,7 @@ class Invite(db.Model):
 		self.status = self.S_USED
 		self.guest_id = user.id
 		user.urlname = self.code
+		user.nickname = nickname
 		user.status = User.S_NORMAL
 		inviter = User.query.get(self.uid)
 		point = Point.invite(inviter, user).get_point()
