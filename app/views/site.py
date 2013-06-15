@@ -144,7 +144,6 @@ def connect_callback(provider='qq'):
 		db.session.commit()
 
 	if user.is_active():
-		login_user(user, True)
 		user._QQ_access_token = backinfo['access_token']
 		user._QQ_info = dumps(backinfo['userinfo'])
 		db.session.add(user)
