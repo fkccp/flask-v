@@ -13,18 +13,16 @@
 <p>职业：{{ X.user.job }}</p>
 <p>签名：{{ X.user.sign }}</p>
 
-
 <p>注册时间 : {{ X.user.date_joined|timesince }}</p>
 <p>最后登录时间 : {{ X.user.date_last_login|timesince }}</p>
 <p>共送出过{{ X.user.n_like }}个赞，收到过{{ X.user.n_liked }}个赞。</p>
-
 
 <hr>
 
 {% if X.posts|count %}
 <h2>{{ X.user.nickname }}发表的主题 :</h2>
 	{% for post in X.posts %}
-	<p>{{ X.user.nickname }} 发表了 <a target="_blank" href="{{ url_for('bbs.detail', post_id=post.id) }}">{{ post.title }}</a> {{ post.ctime|timesince }}</p>
+	<p>{{ X.user.nickname }} {{ post.ctime|timesince }}发表了主题 <a target="_blank" href="{{ url_for('bbs.detail', post_id=post.id) }}">{{ post.title }}</a></p>
 	{% endfor %}
 	{% if 5 == X.posts|count %}<p><a href="{{ url_for('user.posts', urlname=X.user.urlname) }}">查看更多{{ X.user.nickname }}发表的主题</a></p>{% endif %}
 {% else %}
@@ -36,7 +34,7 @@
 <h2>{{ X.user.nickname }}发表的回复：</h2>
 	{% for cmt in X.cmts %}
 	<div>
-		<p class="b-grey">{{ X.user.nickname }} 回复了主题 <a target="_blank" href="{{ url_for('bbs.detail', post_id=cmt.sid, _anchor='cmt_%d'%cmt.id) }}">{{ cmt.title }}</a> {{ cmt.ctime|timesince }} :</p>
+		<p class="b-grey">{{ X.user.nickname }} {{ cmt.ctime|timesince }}回复了主题 <a target="_blank" href="{{ url_for('bbs.detail', post_id=cmt.sid, _anchor='cmt_%d'%cmt.id) }}">{{ cmt.title }}</a> :</p>
 		<p>{{ cmt.content|safe }}</p>
 	</div>
 	{% endfor %}

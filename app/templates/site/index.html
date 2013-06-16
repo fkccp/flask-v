@@ -86,7 +86,7 @@
 {% block js %}
 <script src="http://map.soso.com/api/v2/main.js"></script>
 <script>
-	// var index_data = {{ X.users|tojson|safe }};init_index_map();
+	var index_data = {{ X.users|tojson|safe }};init_index_map();
 	if($('submit'))
 	{
 		var form = $('submit').parentElement.parentElement

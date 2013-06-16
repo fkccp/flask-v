@@ -12,7 +12,7 @@
 <h2>{{ X.user.nickname }} 发表的评论 :</h2>
 	{% for cmt in X.post_cmts.items %}
 	<div>
-		<p class="b-grey">{{ X.user.nickname }} replied <a target="_blank" href="{{ url_for('bbs.detail', post_id=cmt.sid, _anchor='cmt_%d'%cmt.id) }}">{{ cmt.title }}</a> {{ cmt.ctime|timesince }} :</p>
+		<p class="b-grey">{{ X.user.nickname }} {{ cmt.ctime|timesince }}回复了主题 <a target="_blank" href="{{ url_for('bbs.detail', post_id=cmt.sid, _anchor='cmt_%d'%cmt.id) }}">{{ cmt.title }}</a> :</p>
 		<p>{{ cmt.content|safe }}</p>
 	</div>
 	{% endfor %}

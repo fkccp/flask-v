@@ -280,7 +280,7 @@ function init_editor()
 		emo_wrapper.focus()
 	}
 
-	// emo_wrapper.onblur = function(){ emo_wrapper.style.display = 'none' }
+	emo_wrapper.onblur = function(){ emo_wrapper.style.display = 'none' }
 
 	_ = wrapper
 	while(true)
@@ -322,9 +322,28 @@ function init_reply()
 		pid_input.value = 0
 		wrapper.style.display = 'none'
 	}
-}
 
-if(by_c('cmt_reply').length > 0) init_reply();
+	// DEFFB3 rgb(222, 255, 179) anchor bgcolor
+	var hash = location.hash
+	if(hash)
+	{
+		hash = hash.substr(1)
+		var item = $(hash), dur = 2000, c = 230, del = (255-c)/dur*100, t = null
+		if(item)
+		{
+			item.style.backgroundColor = 'rgb('+c+', 255, '+c+')'
+			t = setInterval(function(){
+				c =  Math.ceil(c + del)
+				item.style.backgroundColor = 'rgb('+c+', 255, '+c+')'
+				if(c >= 255)
+				{
+					clearInterval(t)
+					item.style.backgroundColor = ''
+				}
+			}, 100)
+		}
+	}
+}
 // reply end
 
 // flash
@@ -353,43 +372,16 @@ if(by_c('cmt_reply').length > 0) init_reply();
 			}, 3000)
 		}
 	}, 10)
-
 })();
 // flash end
 
 // bbs detail
-(function()
+function bbs_detail()
 {
-	var d = $('bbs_detail')
-	if(d)
-	{
-		// indent repire
-		var ps = d.getElementsByTagName('p')
-		if(1 == ps.length)
-			ps[0].style.textIndent = 0
-
-		// DEFFB3 rgb(222, 255, 179) anchor bgcolor
-		var hash = location.hash
-		if(hash)
-		{
-			hash = hash.substr(1)
-			var item = $(hash), dur = 2000, c = 230, del = (255-c)/dur*100, t = null
-			if(item)
-			{
-				item.style.backgroundColor = 'rgb('+c+', 255, '+c+')'
-				t = setInterval(function(){
-					c =  Math.ceil(c + del)
-					item.style.backgroundColor = 'rgb('+c+', 255, '+c+')'
-					if(c >= 255)
-					{
-						clearInterval(t)
-						item.style.backgroundColor = ''
-					}
-				}, 100)
-			}
-		}
-	}
-})();
+	// indent repire
+	var ps = $('bbs_detail').getElementsByTagName('p')
+	if(1 == ps.length) ps[0].style.textIndent = 0
+}
 // bbs detail end
 
 // mouse bg

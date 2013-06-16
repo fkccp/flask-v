@@ -10,7 +10,7 @@
 {% if X.posts.total %}
 <h2>{{ X.user.nickname }} 发表的主题 :</h2>
 	{% for post in X.posts.items %}
-	<p>{{ X.user.nickname }} posted <a target="_blank" href="{{ url_for('bbs.detail', post_id=post.id) }}">{{ post.title }}</a> {{ post.ctime|timesince }}</p>
+	<p>{{ X.user.nickname }} {{ post.ctime|timesince }}发表了主题 <a target="_blank" href="{{ url_for('bbs.detail', post_id=post.id) }}">{{ post.title }}</a></p>
 	{% endfor %}
 <div>{{ render_pager(X.posts, X.pager_url) }}</div>
 {% else %}
