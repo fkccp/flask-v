@@ -4,6 +4,14 @@ from app.helpers import rand_string
 import json
 from hashlib import md5
 
+class User_ip(db.Model):
+	__tablename__ = 'user_ip'
+
+	id = db.Column(db.Integer, primary_key=True)
+	uid = db.Column('uid', db.Integer)
+	ip = db.Column('ip', db.String(20))
+	ctime = db.Column('ctime', db.DateTime, default=datetime.utcnow)
+
 class User(db.Model):
 	__tablename__ = 'user'
 
@@ -56,6 +64,9 @@ class User(db.Model):
 	_QQ_access_token = db.Column('QQ_access_token', db.String(80), unique=True)
 	_QQ_openid = db.Column('QQ_openid', db.String(80), unique=True)
 	_QQ_info = db.Column('QQ_info', db.Text)
+
+	ua = db.Column(db.String(200))
+	ip = db.Column(db.String(20))
 
 	bbs_post = db.relationship('Bbs_post', backref='author', lazy='dynamic')
 	cmt = db.relationship('Cmt', backref='author', lazy='dynamic')
@@ -119,6 +130,12 @@ class User(db.Model):
 
 		# last login
 		self.date_last_login = now
+		from flask import request
+		self.ua = request.headers.get('User-Agent')
+		self.ip = request.environ['REMOTE_ADDR']
+		if not User_ip.query.filter_by(uid=self.id, ip=self.ip).first():
+			iplog = User_ip(uid=self.id, ip=self.ip)
+			db.session.add(iplog)
 		db.session.add(self)
 		db.session.commit()
 
