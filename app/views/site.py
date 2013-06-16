@@ -21,6 +21,8 @@ def index():
 		_u['name'] = u.nickname
 		users.append(_u)
 	X = _active()
+	if X.get('redirect'):
+		return redirect(X.get('redirect'))
 	X['users'] = users
 	return render_template('site/index.html', X=X)
 
@@ -77,7 +79,7 @@ def _active():
 			user.do_login(session)
 			if "active_uid" in session:
 				session.pop('active_uid')
-			return {'user': user}
+			return {'user': user, 'redirect': url_for('user.setting')}
 
 	_X['user'] = user
 	return _X

@@ -65,6 +65,7 @@ class User(db.Model):
 	_QQ_openid = db.Column('QQ_openid', db.String(80), unique=True)
 	_QQ_info = db.Column('QQ_info', db.Text)
 
+	cookie_flag = db.Column(db.String(10), default='')
 	ua = db.Column(db.String(200))
 	ip = db.Column(db.String(20))
 
@@ -88,7 +89,7 @@ class User(db.Model):
 		sumstr = session.get('sumstr')
 		if uid and sumstr:
 			_u = User.query.get(uid)
-			if _u and sumstr == md5('v5snj' + _u.anonyname + _u._QQ_openid).hexdigest():
+			if _u and sumstr == md5('v5snj' + _u.cookie_flag + _u.anonyname + _u._QQ_openid).hexdigest():
 				return _u
 		else:
 			return User._cookie_login(session, cookies)
@@ -99,7 +100,7 @@ class User(db.Model):
 		if vs:
 			vss = vs.split('|')
 			_u = User.query.filter_by(anonyname=vss[0]).first()
-			if _u and vss[1] == md5('v5snj' + _u.anonyname + _u._QQ_openid).hexdigest():
+			if _u and vss[1] == md5('v5snj' + _u.cookie_flag + _u.anonyname + _u._QQ_openid).hexdigest():
 				_u.do_login(session)
 				return _u
 
@@ -109,7 +110,7 @@ class User(db.Model):
 		self._refresh_login_time()
 		session['uid'] = self.id
 		session['anonyname'] = self.anonyname
-		session['sumstr'] = md5('v5snj' + self.anonyname + self._QQ_openid).hexdigest()
+		session['sumstr'] = md5('v5snj' + self.cookie_flag + self.anonyname + self._QQ_openid).hexdigest()
 		session['login_cookie'] = "y"
 
 	def do_logout(self, session):
