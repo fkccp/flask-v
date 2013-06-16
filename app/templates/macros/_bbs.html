@@ -5,10 +5,13 @@
 		<p><a class="f16" href="{{ url_for('bbs.detail', post_id=post.id) }}">{{ post.title }}</a></p>
 		<p>
 			<a class="node-link" href="{{ url_for('bbs.index', urlname=post.node.urlname) }}">{{ post.node.name }}</a>
-			{{ post.author.name(post.is_anony)|safe }} 发布于 {{ post.ctime|timesince }}
+			{{ post.author.name(post.is_anony)|safe }} 发表于 {{ post.ctime|timesince }}
+			{% if post.user_last_mod %}
+			<span class="sep">//</span> {{ post.user_last_mod|safe }} 最后回复于 {{ post.date_last_mod|timesince }}
+			{% endif %}
 		</p>
 		<p>
-			<span>{{post.n_visited}}次点击 / {{ post.n_cmt }}条评论 / {{ post.n_liked }}个赞</span>
+			<span>{{post.n_visited}}次点击 <span class="sep">//</span> {{ post.n_cmt }}条评论 <span class="sep">//</span> {{ post.n_liked }}个赞</span>
 		</p>
 	</div>
 </div>

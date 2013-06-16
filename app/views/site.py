@@ -9,7 +9,7 @@ site = Blueprint('site', __name__)
 
 @site.route('/', methods=['GET', 'POST'])
 def index():
-	_users = User.query.filter(User.live_pos != '').all()
+	_users = User.query.filter(db.and_(User.live_pos != '', User.role == User.R_MEMBER)).all()
 	from app.helpers import hash_geo
 	users = []
 	for u in _users:
@@ -73,6 +73,7 @@ def _active():
 		# success invite
 		if name_pas and code_pas:
 			invite.active_user(user, nickname)
+			flash(u'账号激活成功，欢迎欢迎～～')
 			user.do_login(session)
 			if "active_uid" in session:
 				session.pop('active_uid')

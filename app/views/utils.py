@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+from datetime import datetime
 from flask import url_for, render_template, redirect, g, request, flash, session, abort, Blueprint
 from app.exts import db
 from app.forms import CmtForm
@@ -13,14 +14,18 @@ def f_cmt(obj):
 
 	if cmt_form.validate_on_submit():
 		content = editor_filter(content)
+		is_anony = cmt_form.is_anony.data
 		cmt = Cmt(content = content,
 			pid = pid,
-			is_anony = cmt_form.is_anony.data,
+			is_anony = is_anony,
 			author = g.user,
 			type=type,
 			sid = obj.id)
 		db.session.add(cmt)
+
 		obj.n_cmt += 1
+		obj.date_last_mod = datetime.utcnow()
+		obj.user_last_mod = g.user.name(is_anony)
 		db.session.add(obj)
 		db.session.commit()
 
@@ -28,7 +33,7 @@ def f_cmt(obj):
 		if pid > 0 and cmt.reply(obj):
 			pass
 		elif obj.author != g.user:
-			Msg(uid = obj.author.id, content=u'有人回复了您的主题 %s' % obj.get_link(cmt.id)).send()
+			Msg(uid = obj.author.id, content=u'有人回复了您的主题 %s，快去瞅瞅吧' % obj.get_link(cmt.id)).send()
 
 		point = Point.add_cmt(g.user, cmt).get_point()
 		flash(u'成功添加评论，获得%d个积分' % point, 'message')

@@ -5,7 +5,7 @@ from datetime import datetime
 
 def timesince(dt, default=None):
 	if default is None:
-		default = u'刚刚'
+		default = u'几秒前'
 
 	now = datetime.utcnow()
 	diff = now - dt

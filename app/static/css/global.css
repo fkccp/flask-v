@@ -54,7 +54,7 @@ span.avatar {display: inline-block;line-height: 1;background-color: #fafafa;colo
 #pager a, #bc a {color: #66f}
 #pager ul {margin: 0 auto}
 #bc {text-align: left; padding: 5px 10px;}
-#flash {position: fixed;top: 0;width:240px;margin-left: 50%; left: -120px;overflow: hidden; background-color: #ffffe0;color: #00f; border: 1px solid #D1AC38;border-top: none;display: none}
+#flash {position: fixed;top: 0;width:240px;margin-left: 50%; left: -120px;top:-100px;overflow: hidden; background-color: #ffffe0;color: #00f; border: 1px solid #D1AC38;border-top: none; padding: 5px 0}
 #flash li {float: none;padding: 0 10px}
 ul.errors {margin-bottom: 10px;}
 
@@ -88,6 +88,7 @@ ul.errors {margin-bottom: 10px;}
 #reply_tip {background-color: #f0ffef;border: 1px solid #14B80A;margin: 5px 0;display: none;}
 #reply_cnt {margin: 5px 0;margin-left: 20px;padding-left: 5px; border-left: 3px solid #3aaa34}
 .m_bg_on {background-color: #F9FEFF}
+.sep {color: #ddd;padding: 0 5px}
 
 /* form */
 #f_title {width: 500px}
@@ -103,7 +104,7 @@ ul.errors {margin-bottom: 10px;}
 
 div.arts {padding:10px; padding-bottom: 0;border-bottom: 1px solid #ddd}
 div.arts span.statis {float: right;}
-#bbs_detail p {text-indent: 2em;font-size: 13px;line-height: 1.5;padding-bottom: 10px}
+#bbs_detail p {text-indent: 2em;font-size: 13px;line-height: 1.5;margin-bottom: 10px}
 
 .cmt_item {padding:10px 0}
 .cmt_right {margin-left: 60px}
