@@ -12,10 +12,10 @@ bbs = Blueprint('bbs', __name__)
 def index(urlname='', page=1):
 	X = {}
 	if urlname == '':
-		post_obj = Bbs_post.query.filter_by(seen=1).order_by('ctime desc')
+		post_obj = Bbs_post.query.filter_by(seen=1).order_by('date_last_mod desc').order_by('ctime desc')
 	else:
 		node = Bbs_node.query.filter_by(urlname=urlname).first_or_404()
-		post_obj = Bbs_post.query.filter_by(node=node, seen=1).order_by('ctime desc')
+		post_obj = Bbs_post.query.filter_by(node=node, seen=1).order_by('date_last_mod desc').order_by('ctime desc')
 		X['node'] = node
 	X['urlname'] = urlname
 	X['pager_url'] = lambda page: url_for('bbs.index', page=page, urlname=urlname) if urlname else url_for('bbs.index', page=page)
@@ -98,10 +98,10 @@ def action(type, post_id):
 			post = Bbs_post.query.get(post_id)
 			r = post.liked_by(g.user)
 			if 1 == r:
-				flash('Liked')
+				# flash('Liked')
 				Cost_log.post_like(g.user, post.author, post)
-			else:
-				flash('Unliked')
+			# else:
+			# 	flash('Unliked')
 			db.session.commit()
 			return redirect(url_for('bbs.detail', post_id=post_id))
 	elif 'mark' == type:
@@ -109,10 +109,10 @@ def action(type, post_id):
 		if form.validate_on_submit():
 			post = Bbs_post.query.get(post_id)
 			r = post.marked_by(g.user)
-			if 1 == r:
-				flash('Marked')
-			else:
-				flash('Unmarked')
+			# if 1 == r:
+			# 	flash('Marked')
+			# else:
+			# 	flash('Unmarked')
 			db.session.commit()
 			return redirect(url_for('bbs.detail', post_id=post_id))
 	abort(404)

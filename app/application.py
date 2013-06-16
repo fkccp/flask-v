@@ -103,7 +103,7 @@ def config_before_handlers(app):
 		g.user = User.init_login(session, request.cookies)
 		if not g.user or not g.user.is_active():
 			p = request.path
-			safe_paths = ['/', '/login', '/logout', '/connect/qq', '/connect/callback/qq']
+			safe_paths = app.config['OPEN_URIS']
 			pas = False
 			for path in safe_paths:
 				if p == path:

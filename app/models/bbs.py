@@ -29,7 +29,7 @@ class Bbs_post(db.Model):
 	seen = db.Column(db.SmallInteger, default=1)
 	status = db.Column(db.SmallInteger, default=1)
 
-	date_last_mod = db.Column(db.DateTime)
+	date_last_mod = db.Column(db.DateTime, default=datetime.utcnow)
 	user_last_mod = db.Column(db.String(100), default='')
 
 	user_id = db.Column(db.Integer, db.ForeignKey('user.id'))

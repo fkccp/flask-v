@@ -1,7 +1,4 @@
-import os
 from .sec_config import SecConfig
-
-basedir = os.path.abspath(os.path.dirname(__file__))
 
 class DefaultConfig(SecConfig):
 	SQLALCHEMY_ECHO = False
