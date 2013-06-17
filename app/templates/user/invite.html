@@ -10,15 +10,7 @@
 {% if not X.invite_permit %}
 对不起，您不具有邀请权限。
 {% else %}
-<a href="{{ url_for('user.gen_invite') }}">生成邀请码</a><br><br>
-生成邀请码之后，复制下边随便一句话发给你朋友吧，欢迎原创：
-<ol>
-	<li>在吗？有一个不怎么有趣的人，做了个不怎么有趣的东西，我们一起来让它变得有趣吧： http://v5snj.com</li>
-	<li>亲，吃饭了嘛？吃的神马？吃了几碗？吃饱了嘛？刚看到一个网站还不错，推荐给你： http://v5snj.com</li>
-	<li>嗨，好久不见了，现在过得还好吧？最近突然冒出来一个神农小站，里边都是咱神农架的老乡，没事进去逛逛吧： http://v5snj.com</li>
-	<li>那个，嗯，其实，我暗恋你很久了，我在一个地方写了一些话给你，你去看看吧： http://v5snj.com</li>
-</ol>
-
+<a href="{{ url_for('user.gen_invite') }}">生成邀请码</a><br>
 <table border='1'>
 	<tr>
 		<th>邀请码</th>
