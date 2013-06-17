@@ -126,21 +126,22 @@ function init_index_map()
 		zoom: 4
 	}), markers = [], info = new soso.maps.InfoWindow({map:map})
 	info.maxWidth = 90
+	info.noScroll = true
 	new soso.maps.MapTypeControl({map:map})
 	for(i in index_data)
 	{
+		if('indexOf' == i) continue
 		var g = index_data[i]['geo']
 		g = u(g)
 		var marker = new soso.maps.Marker({map: map});
 		marker.setPosition(new soso.maps.LatLng(g[0], g[1]));
-		(function(marker){
+		(function(marker, avatar, name){
 			soso.maps.event.addListener(marker, 'click', function(){
 			info.open()
-			// info.setContent('<div style="margin:10px;">'+index_data[i]['avatar']+'</div>')
-			info.setContent('<img style="padding:3px;border:1px solid #999;margin-top:5px;" src="'+index_data[i]['avatar']+'" alt="50" title="'+index_data[i]['name']+'"  />')
+			info.setContent('<img width=50 height=50 style="padding:3px;border:1px solid #999;margin-top:5px;" src="'+avatar+'" alt="50" title="'+name+'"  />')
 			info.setPosition(marker)
 		})
-		})(marker);
+		})(marker, index_data[i]['avatar'], index_data[i]['name']);
 	}
 
 	soso.maps.event.addListener(map, 'click', function(){
