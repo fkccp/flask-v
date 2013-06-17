@@ -151,7 +151,6 @@ function init_index_map()
 var seting_map_init_obj = null
 
 var seting_map_init = function(obj) {
-	console.log(obj)
 	if(seting_map_init_obj == obj) return
 	seting_map_init_obj = obj
 
