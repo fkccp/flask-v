@@ -133,7 +133,10 @@ class User(db.Model):
 		self.date_last_login = now
 		from flask import request
 		self.ua = request.headers.get('User-Agent')
-		self.ip = request.environ['REMOTE_ADDR']
+		if not request.headers.getlist("X-Forwarded-For"):
+			self.ip = request.remote_addr
+		else:
+			self.ip = request.headers.getlist("X-Forwarded-For")[0]
 		if not User_ip.query.filter_by(uid=self.id, ip=self.ip).first():
 			iplog = User_ip(uid=self.id, ip=self.ip)
 			db.session.add(iplog)
