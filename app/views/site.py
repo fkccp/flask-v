@@ -20,7 +20,22 @@ def index():
 		_u['avatar'] = u.avatar_src()
 		_u['name'] = u.nickname
 		users.append(_u)
+
+	# virtual users
+	l = len(users)
+	if l < 50:
+		import random
+		for i in range(l, 50):
+			_u = {
+				'geo': hash_geo('%d,%d' % (random.randint(10, 50), random.randint(80, 130))),
+				'avatar': '/static/img/avatar.png',
+				'name': u'展示用户'
+			}
+			users.append(_u)
+
+
 	X = _active()
+	X['l'] = l
 	if X.get('redirect'):
 		return redirect(X.get('redirect'))
 	X['users'] = users
